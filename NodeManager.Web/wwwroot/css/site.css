@@ -1,0 +1,277 @@
+﻿html {
+  height: 100%;
+}
+
+body {
+  font-size: 20px;
+  font-style: normal;
+  position: relative;
+  min-height: 100%;
+  height: 100%;
+}
+
+
+/* Header */
+
+.grid_nav_header {
+  display: grid;
+  grid-template-columns: 15% 85%;
+}
+
+.header_nav_left {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 50% 50%;
+}
+
+.header_nav_right {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 50% 50%;
+}
+
+
+/* Header nav button*/
+
+.nav_back {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center; /*вертикальное выравнивание*/
+  justify-self: left;
+  margin: 0 5% 0 5%;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.button_search {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: center;
+  justify-self: left;
+  margin: 0 5% 0 5%;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+h5 {
+  font-size: 16px;
+  white-space: normal;
+  text-align: center;
+  font-weight: bold;
+  word-break: break-all;
+  grid-column: 1 / 4;
+  grid-row: 1;
+  width: 100%;
+  padding-right: 15%
+}
+
+.button_search_tag {
+  grid-column: 3;
+  grid-row: 2;
+  align-self: center;
+  justify-self: center;
+}
+
+.b_back, .b_search {
+  background-color: white;
+  color: black;
+  width: 90%;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 10px;
+  padding: 5px 15px;
+  line-height: 27px;
+}
+
+.b_search {
+  border: 1px solid #DAD9D9;
+}
+
+.b_search_tag {
+  background-color: white;
+  color: black;
+  width: 100%;
+  border: 1px solid #DAD9D9;
+  cursor: pointer;
+  align-items: center;
+  text-align: center;
+  border-radius: 10px;
+  padding: 5px 15px;
+  line-height: normal;
+}
+
+
+/* Container */
+
+.grid_container {
+  display: grid;
+  grid-template-columns: 15% 85%;
+  width: 100%;
+  height: 100%;
+}
+
+.nav_filters {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content_nodes {
+  height: 100%;
+}
+
+
+/* Container navbar filters*/
+
+.button_wall {
+  align-self: center;
+  justify-self: left;
+  margin: 5% 5% 5% 15%;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.button_roof, .button_window, .button_bridge, .button_overlap, .button_floor, .button_plinth {
+  align-self: center;
+  justify-self: left;
+  margin: 0 5% 5% 15%;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+
+.b_wall, .b_roof, .b_window, .b_bridge, .b_overlap, .b_floor, .b_plinth {
+  background-color: white;
+  color: black;
+  width: 90%;
+  border: 1px solid #DAD9D9;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 10px;
+  padding: 5px 15px;
+  line-height: normal;
+}
+
+
+/* Container content nodes*/
+
+.node {
+  display: inline-block;
+  width: 360px;
+  height: 350px;
+  margin: 5% 0 0 5%;
+  border: 1px solid black;
+  text-align: center;
+}
+
+img {
+  width: 100%;
+  height: 275px;
+}
+
+.node_name {
+  width: 100%;
+  border-top: 1px solid black;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/*@import url("https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
+*/
+p {
+  font-family: fontawesome !important;
+}
+
+.btn {
+  position: absolute;
+  transform: translate(-100%, -10%); /*(transform: translate(-100%, -310%);)*/
+}
+
+/* Закрываем lightbox */
+.lightbox {
+  display: none;
+}
+
+/* Открываем lightbox */
+.lightbox:target {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 80%;
+  height: 90%;
+  display: block;
+  text-align: center;
+  margin: 5% 10%;
+  z-index: 1;
+}
+
+/* Содержимое lightbox  */
+.lightbox figcaption {
+  width: 100%;
+  position: relative;
+  /*padding: 1.5em;*/
+  background-color: white;
+}
+
+.lightbox figcaption p {
+  position: relative;
+  padding: 10px;
+  border-bottom: 1px solid black;
+  /*margin: 10px;*/
+  /*background-color: lightgoldenrodyellow;*/
+}
+
+.lightbox figcaption img {
+  width: 100%;
+  height: 50%;
+  position: relative;
+  /*padding: 1.5em;*/
+  background-color: lightblue;
+}
+
+/* Кнопка закрытия */
+.lightbox .close {
+  position: fixed;
+  display: block;
+  top: 20px;
+  right: 20px;
+}
+
+/* Кнопка скачивани */
+.lightbox .dwn {
+  position: fixed;
+  display: block;
+  top: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0);
+  border: 0;
+}
+
+.lightbox .close::after {
+  right: -1rem;
+  top: -1rem;
+  width: 2rem;
+  height: 2rem;
+  position: absolute;
+  display: flex;
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  border-radius: 50%;
+  color: white;
+  /*content: "×";*/
+  cursor: pointer;
+}
+
+/* Обёртка lightbox  */
+.lightbox .close::before {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: rgba(0,0,0,.7);
+  content: "";
+  cursor: default;
+}
