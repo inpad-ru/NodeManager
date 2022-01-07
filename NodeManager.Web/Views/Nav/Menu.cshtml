@@ -1,2 +1,10 @@
-@model System.Collections.Generic.IEnumerable<NodeManager.Web.Models.NodeInfo>
+@model System.Collections.Generic.IEnumerable<NodeManager.Web.Models.NodeInfo> 
 
+<div class="nav_filters"> 
+    @foreach(var nodeInf in Model) 
+    { 
+    <div class=""> 
+        <button>nodeInf.Node.Name</button> 
+    </div> 
+    } 
+</div>
