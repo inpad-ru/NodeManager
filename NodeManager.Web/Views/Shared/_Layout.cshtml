@@ -1,8 +1,4 @@
 ﻿<!DOCTYPE html>
-@using System.ComponentModel.Design
-@model ReadRPModel
-@await Html.PartialAsync("../Shared/_AuthorPartialRP", Model.Article.AuthorName)
-@Model.Article.NodeInfo
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -39,9 +35,7 @@
 
     <main class="grid_container">
         <div class="nav_filters">
-            
-            @await Html.PartialAsync("../Nav/Menu", Model.Article.NodeInfo)
-            @*<div class="button_wall">
+            <div class="button_wall">
                 <button class=" b_wall" onclick="window.location.href='Node/List/Узлы_база узлов'";>Стена/</button>
             </div>
 
@@ -67,12 +61,12 @@
 
             <div class="button_plinth">
                 <button class="b_plinth">Цоколь</button>
-            </div>*@
+            </div>
         </div>
 
         <div class="content_nodes">
 
-            @*<div class="node">
+            <div class="node">
                 <img src="~/nodes/tmp - Чертежный вид - Кровля_Водосточная воронка.jpg">
                 <button class="btn" onclick="window.location.href='#node1';"><p class="fas fa-search-plus"></p></button>
                 <div class="node_name">
@@ -166,7 +160,7 @@
                         </figcaption>
                     </figure>
                 </div>
-            </div>*@
+            </div>
         </div>
 
         <main role="main" class="pb-3">

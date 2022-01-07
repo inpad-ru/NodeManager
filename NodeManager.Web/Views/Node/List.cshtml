@@ -1,34 +1,18 @@
 @model NodeManager.Web.Models.NodesViewModel
 
+@{
+    Layout = null;
+}
+
 <!DOCTYPE html>
 
-<html lang="ru">
+<html>
 <head>
     <title>title</title>
-    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-<div class="node">
-    @foreach (var i in Model.Symbols)
-    {
-        <img src="~/nodes/tmp - Чертежный вид - Кровля_Водосточная воронка.jpg">
-            <button class="btn" onclick="window.location.href='#@i.Id';">
-                <p class="fas fa-search-plus"></p></button>
-            <div class="node_name">
-                <p>@i.Name</p>
-            </div>
-        
-            <div class="lightbox" id="#@i.Id">
-                <figure>
-                    <button class="close" onclick="window.location.href='#';"><p class="fas fa-times"></p></button>
-                    <button class="dwn"><p class="far fa-save"></p></button>
-                    <figcaption>
-                        <p>@i.Name</p>
-                        <img src="~/nodes/tmp - Чертежный вид - Кровля_Водосточная воронка.jpg">
-                    </figcaption>
-                </figure>
-            </div>
-    }
+<div>
+      
 </div>
 </body>
 </html>
