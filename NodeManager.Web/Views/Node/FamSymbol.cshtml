@@ -1,18 +1,27 @@
 @model NodeManager.Web.Models.FamSymbolViewModel
 
-@{
-    Layout = null;
-}
-
 <!DOCTYPE html>
 
-<html>
+<html lang="ru">
 <head>
-    <title>title</title>
+    <title>title111</title>
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-<div>
-      
-</div>
+      <div class="node">
+          @foreach (var nodI in Model._revitParameters)
+          {
+                  <div class="lightbox" id="#@nodI.Id">
+                      <figure>
+                          <button class="close" onclick="window.location.href='#';"><p class="fas fa-times"></p></button>
+                          <button class="dwn"><p class="far fa-save"></p></button>
+                          <figcaption>
+                              <p>@nodI.Name</p>
+                              <img src="~/nodes/tmp - Чертежный вид - Кровля_Водосточная воронка.jpg">
+                          </figcaption>
+                      </figure>
+                  </div>
+          }
+    </div>
 </body>
 </html>
