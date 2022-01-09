@@ -35,32 +35,32 @@
 
     <main class="grid_container">
         <div class="nav_filters">
+            @*@await Html.PartialAsync("~/Nav/Menu.cshtml")*@
+            @*@await Component.InvokeAsync("~/Nav/Menu.cshtml")*@
+            @*@{await Html.RenderPartialAsync("_GetMessage");}*@
+            @*@Html.Raw("~//Nav/Menu.cshtml")*@
             <div class="button_wall">
-                <button class=" b_wall" onclick="window.location.href='Node/List/Узлы_база узлов'";>Стена/</button>
+                <button class=" b_wall" onclick="window.location.href='Node/List/Узлы_база узлов/АР'">АР</button>
             </div>
 
             <div class="button_roof">
-                <button class="b_roof">Кровля</button>
+                <button class="b_roof" onclick="window.location.href='Node/List/Узлы_база узлов/КР'">КР</button>
             </div>
 
             <div class="button_window">
-                <button class="b_window">Окно</button>
+                <button class="b_window" onclick="window.location.href='Node/List/Узлы_база узлов/КЖ'">КЖ</button>
             </div>
 
             <div class="button_bridge">
-                <button class="b_bridge">Перемычка</button>
+                <button class="b_bridge" onclick="window.location.href='Node/List/Узлы_база узлов/ОВ'">ОВ</button>
             </div>
 
             <div class="button_overlap">
-                <button class="b_overlap">Перекрытие</button>
+                <button class="b_overlap" onclick="window.location.href='Node/List/Узлы_база узлов/ВК'">ВК</button>
             </div>
 
             <div class="button_floor">
-                <button class="b_floor">Пол</button>
-            </div>
-
-            <div class="button_plinth">
-                <button class="b_plinth">Цоколь</button>
+                <button class="b_floor" onclick="window.location.href='Node/List/Узлы_база узлов/ЭЛ'">ЭЛ</button>
             </div>
         </div>
 

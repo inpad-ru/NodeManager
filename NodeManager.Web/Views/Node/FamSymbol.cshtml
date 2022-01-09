@@ -1,27 +1,98 @@
 @model NodeManager.Web.Models.FamSymbolViewModel
 
-<!DOCTYPE html>
+@{
+    Layout = null;
+}
 
-<html lang="ru">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>title111</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] Менеджер узлов</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-      <div class="node">
-          @foreach (var nodI in Model._revitParameters)
-          {
-                  <div class="lightbox" id="#@nodI.Id">
-                      <figure>
-                          <button class="close" onclick="window.location.href='#';"><p class="fas fa-times"></p></button>
-                          <button class="dwn"><p class="far fa-save"></p></button>
-                          <figcaption>
-                              <p>@nodI.Name</p>
-                              <img src="~/nodes/tmp - Чертежный вид - Кровля_Водосточная воронка.jpg">
-                          </figcaption>
-                      </figure>
-                  </div>
-          }
-    </div>
+    <header>
+        <nav class="grid_nav_header">
+            <div class="header_nav_left">
+                <div class="nav_back">
+                    <a class="b_back" asp-area="" asp-controller="Home" asp-action="Index">Назад</a>
+
+                </div>
+
+                <div class="button_search">
+                    <button class="b_search">Найти...</button>
+                </div>
+            </div>
+
+            <div class="header_nav_right">
+                <h5>Узлы предоставлены для обязательной адаптации к проекту</h5>
+
+                <div class="button_search_tag">
+                    <button class="b_search_tag">Поиск по тегу</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="grid_container">
+        <div class="nav_filters">
+            <div class="button_wall">
+                <button class=" b_wall">АР</button>
+            </div>
+
+            <div class="button_roof">
+                <button class="b_roof" >КР</button>
+            </div>
+
+            <div class="button_window">
+                <button class="b_window" >КЖ</button>
+            </div>
+
+            <div class="button_bridge">
+                <button class="b_bridge" >ОВ</button>
+            </div>
+
+            <div class="button_overlap">
+                <button class="b_overlap" >ВК</button>
+            </div>
+
+            <div class="button_floor">
+                <button class="b_floor" >ЭЛ</button>
+            </div>
+        </div>
+
+        <div class="content_nodes">
+            <div class="nodes">
+                @foreach (var nodI in Model._revitParameters)
+                {
+                    <div class="node">
+                        <img src="~/nodes/tmp - Чертежный вид - Кровля_Водосточная воронка.jpg">
+                        <button class="btn" onclick="window.location.href='#node1';"><p class="fas fa-search-plus"></p></button>
+                        <div class="node_name">
+                            <p>@nodI.Name</p>
+                        </div>
+                        <div class="lightbox" id="#node1">
+                            <figure>
+                                <button class="close" onclick="window.location.href='#';"><p class="fas fa-times"></p></button>
+                                <button class="dwn"><p class="far fa-save"></p></button>
+                                <figcaption>
+                                    <p>@nodI.Name</p>
+                                    <img src="~/nodes/tmp - Чертежный вид - Кровля_Водосточная воронка.jpg">
+                                </figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </main>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>
