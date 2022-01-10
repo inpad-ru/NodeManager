@@ -19,14 +19,18 @@ namespace NodeManager.Web.Controllers
         
         public ViewResult List(string category, int page)
         {
+            if (!repos.Nodes.Any(x => x.Name == category))
+            {
+                category = (string) null;
+            }
             Node cat = repos.Nodes.FirstOrDefault(x => x.Name == category);
             NodesViewModel model = new NodesViewModel()
             {
                 Symbols = repos.FamilySymbols
                     .Where(x => category == null || x.FamilyId == cat.Id)
                     .OrderBy(x => x.Id)
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize),
+                    .Skip((page - 1) * pageSize),
+                    //.Take(pageSize),
                 PagingInfo = new PagingInfo()
                 {
                     CurrentPage = page,
