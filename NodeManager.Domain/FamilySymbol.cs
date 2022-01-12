@@ -28,6 +28,7 @@ namespace NodeManager.Domain
         public string Name { get; set; }
         public string ImagePath { get; set; }
         public Nullable<int> Scale { get; set; }
+        public byte[] Image { get; set; }
 
         [ForeignKey("FamilyId")]
         public virtual Node Node { get; set; }
