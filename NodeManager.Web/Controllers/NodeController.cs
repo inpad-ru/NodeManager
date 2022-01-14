@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using NodeManager.Web.Abstract;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using NodeManager.Web.Models;
+using System.Drawing;
+using System.IO;
 
 namespace NodeManager.Web.Controllers
 {
@@ -55,5 +58,21 @@ namespace NodeManager.Web.Controllers
             };
             return View(model);
         }
+
+        [Authorize]
+        //[AcceptVerbs( HttpVerbs.Get )]
+        public ActionResult DisplayImage( int id )
+        {
+            var symb = dbContext.FamilySymbols.FirstOrDefault(r => r.Id == id);
+            
+            return File( symb.Image, "image/jpg" );
+        }
+        
+        //public Image byteArrayToImage(byte[] byteArrayIn)
+        //{
+        //    MemoryStream ms = new MemoryStream(byteArrayIn);
+        //    Image returnImage = Image.FromStream(ms);
+        //    return returnImage;
+        //}
     }
 }
