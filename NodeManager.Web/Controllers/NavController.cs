@@ -16,20 +16,20 @@ namespace NodeManager.Web.Controllers
         {
             repository = repo;
         }
-        // GET
+        // GET : Nav
         public PartialViewResult Menu(string category)
         {
             //ViewBag.SelectedCategory = category;
-            FamilySymbol cat = repository.FamilySymbols.FirstOrDefault(x => x.Name == category);
-            IEnumerable<NodeInfo> categories = repository.FamilySymbols
+            //Node cat = repository.Nodes.FirstOrDefault(x => x.Name == category);
+            IEnumerable<NodeInfo> categories = repository.Nodes
                 .Select(symb => new NodeInfo()
                 {
-                    Node = symb.Node,
-                    IsSelected = category != null ? symb.Node.Id == cat.Id : false
-                })
-                .GroupBy(p => p.Node.Id)
-                .Select(g => g.First())
-                .OrderBy(x => x.Node.Id);
+                    Node = symb,
+                    IsSelected = category != null ? symb.Name == category : false
+                });
+                //.GroupBy(p => p.Node.Id)
+                //.Select(g => g.First())
+                //.OrderBy(x => x.Node.Id);
             return PartialView(categories);
         }
     }

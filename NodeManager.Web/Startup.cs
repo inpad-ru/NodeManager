@@ -93,7 +93,7 @@ namespace NodeManager.Web
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{category?}");
+                    pattern: "{controller=Node}/{action=List}/{category?}");
 
                 
             });
