@@ -15,10 +15,14 @@ namespace NodeManager.Web.Repository
             this.dbContext = dbContext;
         }
 
-        public IEnumerable<Node> Nodes => dbContext.Nodes;
+        //public IEnumerable<Node> Nodes => dbContext.Nodes;
 
         public IEnumerable<FamilySymbol> FamilySymbols => dbContext.FamilySymbols;
 
         public IEnumerable<RevitParameter> RevParameters => dbContext.RevitParameters;
+
+        public IEnumerable<Categories> Categories => dbContext.Categories;
+
+        public IEnumerable<Sections> Sections => dbContext.Sections;
     }
 }

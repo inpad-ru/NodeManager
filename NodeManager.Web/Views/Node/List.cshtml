@@ -42,27 +42,27 @@
     <main class="grid_container">
         <div class="nav_filters">
             <div class="button_wall">
-                <button class=" b_wall">АР</button>
+                <button class=" b_wall" onclick="window.location.href='Node/List/Стена/КЖ'">Стена/КЖ</button>
             </div>
 
             <div class="button_roof">
-                <button class="b_roof" >КР</button>
+                <button class="b_roof" >КР1</button>
             </div>
 
             <div class="button_window">
-                <button class="b_window" >КЖ</button>
+                <button class="b_window" >КЖ1</button>
             </div>
 
             <div class="button_bridge">
-                <button class="b_bridge" >ОВ</button>
+                <button class="b_bridge" >ОВ1</button>
             </div>
 
             <div class="button_overlap">
-                <button class="b_overlap" >ВК</button>
+                <button class="b_overlap" >ВК1</button>
             </div>
 
             <div class="button_floor">
-                <button class="b_floor" >ЭЛ</button>
+                <button class="b_floor" >ЭЛ1</button>
             </div>
         </div>
 
@@ -82,7 +82,7 @@
                                 <button class="dwn"><p class="far fa-save"></p></button>
                                 <figcaption>
                                     <p>@nodI.Name</p>
-                                    <img src="~/nodes/tmp - Чертежный вид - Кровля_Водосточная воронка.jpg">
+                                    <img class="img-responsive center-block" src="data:image/jpg;base64,@FamSymbolViewModel.ImageByteToBase64ImageTag(nodI.Image)"/>
                                 </figcaption>
                             </figure>
                         </div>

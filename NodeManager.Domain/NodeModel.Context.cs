@@ -38,7 +38,9 @@ namespace NodeManager.Domain
         //}
 
         public virtual DbSet<FamilySymbol> FamilySymbols { get; set; }
-        public virtual DbSet<Node> Nodes { get; set; }
+        //public virtual DbSet<Node> Nodes { get; set; }
         public virtual DbSet<RevitParameter> RevitParameters { get; set; }
+        public virtual DbSet<Categories> Categories { get; set; }
+        public virtual DbSet<Sections> Sections { get; set; }
     }
 }

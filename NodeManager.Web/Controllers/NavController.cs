@@ -20,16 +20,16 @@ namespace NodeManager.Web.Controllers
         public PartialViewResult Menu(string category)
         {
             //ViewBag.SelectedCategory = category;
-            FamilySymbol cat = repository.FamilySymbols.FirstOrDefault(x => x.Name == category);
+            Categories cat = repository.Categories.FirstOrDefault(x => x.Name == category);
             IEnumerable<NodeInfo> categories = repository.FamilySymbols
                 .Select(symb => new NodeInfo()
                 {
-                    Node = symb.Node,
-                    IsSelected = category != null ? symb.Node.Id == cat.Id : false
+                    Category = symb.Category,
+                    IsSelected = category != null ? symb.Category.Id == cat.Id : false
                 })
-                .GroupBy(p => p.Node.Id)
+                .GroupBy(p => p.Category.Id)
                 .Select(g => g.First())
-                .OrderBy(x => x.Node.Id);
+                .OrderBy(x => x.Category.Id);
             return PartialView(categories);
         }
     }

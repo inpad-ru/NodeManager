@@ -20,29 +20,35 @@ namespace NodeManager.Web.Controllers
             repos = repo;
         }
         
-        public ViewResult List(string category, int page)
+        public ViewResult List(string category, string section)
         {
-            if (!repos.Nodes.Any(x => x.Name == category))
+            if (!repos.Categories.Any(x => x.Name == category))
             {
                 category = (string) null;
             }
-            Node cat = repos.Nodes.FirstOrDefault(x => x.Name == category);
+            if (!repos.Sections.Any(x => x.Name == section))
+            {
+                section = (string)null;
+            }
+            Categories cat = repos.Categories.FirstOrDefault(x => x.Name == category);
+            Sections sec = repos.Sections.FirstOrDefault(x => x.Name == section);
             NodesViewModel model = new NodesViewModel()
             {
                 Symbols = repos.FamilySymbols
-                    .Where(x => category == null || x.FamilyId == cat.Id)
-                    .OrderBy(x => x.Id)
-                    .Skip((page - 1) * pageSize),
+                    .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
+                    //.Where(x => section == null || x.SectionId == sec.Id)
+                    .OrderBy(x => x.Id),
+                    //.Skip((page - 1) * pageSize),
                     //.Take(pageSize),
-                PagingInfo = new PagingInfo()
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = pageSize,
-                    TotalItems = category == null ?
-                        repos.FamilySymbols.Count() :
-                        repos.FamilySymbols.Where(g => g.FamilyId == cat.Id).Count()
-                },
-                CurrentNode = cat
+                //PagingInfo = new PagingInfo()
+                //{
+                //    CurrentPage = page,
+                //    ItemsPerPage = pageSize,
+                //    TotalItems = category == null ?
+                //        repos.FamilySymbols.Count() :
+                //        repos.FamilySymbols.Where(g => g.CategoryId == cat.Id).Count()
+                //},
+                CurrentCat = cat
             };
             return View(model);
         }
@@ -56,6 +62,27 @@ namespace NodeManager.Web.Controllers
                     .Where(c => c.FamilySymbol.Id == id)
                     .OrderBy(c=>c.Id)
             };
+            return View(model);
+        }
+
+        public ViewResult Search(string tag)
+        {
+            NodesViewModel model = new NodesViewModel();
+            FamilySymbol sym = repos.FamilySymbols.FirstOrDefault();
+            foreach(var f in repos.FamilySymbols)
+            {
+                var splitedTags = f.Tags.Split(";");
+                foreach(var t in splitedTags)
+                {
+                    if (t.Equals(tag))
+                    {
+                        model.AddSymbol(f);
+                    }
+                }
+            }
+
+            //NodesViewModel model = new NodesViewModel();
+            
             return View(model);
         }
 

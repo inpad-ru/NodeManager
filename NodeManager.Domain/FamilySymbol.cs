@@ -24,14 +24,27 @@ namespace NodeManager.Domain
         public int Id { get; set; }
 
         
-        public Nullable<int> FamilyId { get; set; }
+        public Nullable<int> AuthorId { get; set; }
         public string Name { get; set; }
         public string ImagePath { get; set; }
         public Nullable<int> Scale { get; set; }
         public byte[] Image { get; set; }
+        public string Tags { get; set; }
+        public Nullable<int> CategoryId { get; set; }
+        public Nullable<int> SectionId { get; set; }
 
-        [ForeignKey("FamilyId")]
-        public virtual Node Node { get; set; }
+
+
+
+        //[ForeignKey("FamilyId")]
+        //public virtual Node Node { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public virtual Categories Category { get; set; }
+
+        [ForeignKey("SectionId")]
+        public virtual Sections Section { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
         public virtual ICollection<RevitParameter> RevitParameters { get; set; }

@@ -20,6 +20,7 @@ namespace NodeManager.Domain
         public string Name { get; set; }
         public string Value { get; set; }
         public Nullable<int> StorageType { get; set; }
+
         [ForeignKey("SymbolId")]
         public virtual FamilySymbol FamilySymbol { get; set; }
     }

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
-
 using NodeManager.Domain;
 
 namespace NodeManager.Web.Models
@@ -21,8 +20,8 @@ namespace NodeManager.Web.Models
         }*/
         public static string ImageByteToBase64ImageTag(byte[] array)
         {
-            string base64 = Convert.ToBase64String(array);
-            return base64;
+            //string base64 = Convert.ToBase64String(array);
+            return Convert.ToBase64String(array);
         }
     }
 }

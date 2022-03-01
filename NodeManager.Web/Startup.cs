@@ -64,17 +64,17 @@ namespace NodeManager.Web
                 endpoints.MapControllerRoute(
                     name: "Node2",
                     pattern: "Node/List",
-                    defaults: new { controller = "Node", action = "List", category = (string)null, page = 1 });
+                    defaults: new { controller = "Node", action = "List", category = (string)null, section = (string)null });
 
                 endpoints.MapControllerRoute(
                     name: "Node1",
                     pattern: "Node/List/{category}",
-                    defaults: new { controller = "Node", action = "List", category = "category", page = 1 });
+                    defaults: new { controller = "Node", action = "List", category = "category", section = (string)null });
 
                 endpoints.MapControllerRoute(
                     name: "Node",
-                    pattern: "Node/List/{category}/{page}",
-                    defaults: new { controller = "Node", action = "List", category = "category", page = "page" });
+                    pattern: "Node/List/{category}/{section}",
+                    defaults: new { controller = "Node", action = "List", category = "category", section = "section" });
 
                 endpoints.MapControllerRoute(
                     name: "FamSymbol",
@@ -93,7 +93,7 @@ namespace NodeManager.Web
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{category?}");
+                    pattern: "{controller=Node}/{action=List}/{category?}");
 
                 
             });
