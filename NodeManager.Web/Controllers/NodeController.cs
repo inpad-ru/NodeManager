@@ -36,18 +36,7 @@ namespace NodeManager.Web.Controllers
             {
                 Symbols = repos.FamilySymbols
                     .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
-                    //.Where(x => section == null || x.SectionId == sec.Id)
                     .OrderBy(x => x.Id),
-                    //.Skip((page - 1) * pageSize),
-                    //.Take(pageSize),
-                //PagingInfo = new PagingInfo()
-                //{
-                //    CurrentPage = page,
-                //    ItemsPerPage = pageSize,
-                //    TotalItems = category == null ?
-                //        repos.FamilySymbols.Count() :
-                //        repos.FamilySymbols.Where(g => g.CategoryId == cat.Id).Count()
-                //},
                 CurrentCat = cat
             };
             return View(model);
