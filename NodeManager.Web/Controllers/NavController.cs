@@ -19,18 +19,34 @@ namespace NodeManager.Web.Controllers
         // GET
         public PartialViewResult Menu(string category)
         {
+            CategorySection categorySection = new CategorySection();
+            foreach(var item in repository.Categories)
+            {
+                categorySection.Menu.Add(item, repository.FamilySymbols
+                    .Where(x => x.Category == item)
+                    .Select(symb => new Sections() { Id = symb.Section.Id, Name = symb.Section.Name })
+                    .GroupBy(p => p.Id)
+                    .Select(g => g.First())
+                    .OrderBy(x => x.Id));
+            }
+            //Categories cat = repository.Categories.FirstOrDefault(x => x.Name == category);
+
+
+
+
+
             //ViewBag.SelectedCategory = category;
-            Categories cat = repository.Categories.FirstOrDefault(x => x.Name == category);
-            IEnumerable<NodeInfo> categories = repository.FamilySymbols
-                .Select(symb => new NodeInfo()
-                {
-                    Category = symb.Category,
-                    IsSelected = category != null ? symb.Category.Id == cat.Id : false
-                })
-                .GroupBy(p => p.Category.Id)
-                .Select(g => g.First())
-                .OrderBy(x => x.Category.Id);
-            return PartialView(categories);
+            //Categories cat = repository.Categories.FirstOrDefault(x => x.Name == category);
+            //IEnumerable<NodeInfo> categories = repository.FamilySymbols
+            //    .Select(symb => new NodeInfo()
+            //    {
+            //        Category = symb.Category,
+            //        IsSelected = category != null ? symb.Category.Id == cat.Id : false
+            //    })
+            //    .GroupBy(p => p.Category.Id)
+            //    .Select(g => g.First())
+            //    .OrderBy(x => x.Category.Id);
+            return PartialView(categorySection);
         }
     }
 }
