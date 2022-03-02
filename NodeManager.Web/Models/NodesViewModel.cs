@@ -7,7 +7,9 @@ namespace NodeManager.Web.Models
     {
         public IEnumerable<FamilySymbol> Symbols { get; set; }
        // public PagingInfo PagingInfo { get; set; }
-        public Categories CurrentCat { get; set; }
+        public Sections CurrentSec { get; set; }
+
+        public CategorySection categorySection { get; set; }
 
     }
 }

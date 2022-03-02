@@ -13,7 +13,7 @@ namespace NodeManager.Web.Controllers
     {
         private INodes repos;
         private readonly NodeManagerDBEntities dbContext;
-        public int pageSize = 4;
+        //public int pageSize = 4;
         
         public NodeController(INodes repo)
         {
@@ -37,8 +37,31 @@ namespace NodeManager.Web.Controllers
                 Symbols = repos.FamilySymbols
                     .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
                     .OrderBy(x => x.Id),
-                CurrentCat = cat
+                CurrentSec = sec
             };
+
+            CategorySection categorySection = new CategorySection();
+            if (repos.FamilySymbols.Count() != 0)
+            {
+                foreach (var item in repos.Sections)
+                {
+                    categorySection.Menu.Add(item, repos.FamilySymbols
+                        .Where(x => x.Section == item)
+                        .Select(symb => new Categories() { Id = symb.Category.Id, Name = symb.Category.Name })
+                        .GroupBy(p => p.Id)
+                        .Select(g => g.First())
+                        .OrderBy(x => x.Id));
+                }
+            }
+            if (sec == null)
+            {
+                categorySection.SelectedSection = null;
+            }
+            else
+            {
+                categorySection.SelectedSection = sec.Id;
+            }
+            model.categorySection=categorySection;
             return View(model);
         }
 

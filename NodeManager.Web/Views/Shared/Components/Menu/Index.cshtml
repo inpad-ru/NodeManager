@@ -1,0 +1,15 @@
+﻿@model NodeManager.Web.Models.CategorySection
+
+@foreach (var category in Model.Menu)
+{
+    <button asp-controller="Node" asp-action="List" asp-route-section="КЖ">@category.Key.Name</button>
+
+    if (category.Key.Id == Model.SelectedSection)
+    {
+        foreach (var i in category.Value)
+        {
+            <button>@i.Name</button>
+        }
+    }
+    
+}

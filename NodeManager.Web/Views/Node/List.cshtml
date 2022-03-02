@@ -41,8 +41,9 @@
 
     <main class="grid_container">
         <div class="nav_filters">
-            <div class="button_wall">
-                <button class=" b_wall" onclick="window.location.href='Node/List/Стена/КЖ'">Стена/КЖ</button>
+            @await Component.InvokeAsync("Menu", Model.categorySection)
+            @*<div class="button_wall">
+                <button class=" b_wall" onclick="window.location.href='Node/Search/Стена/КЖ'">Стена/КЖ</button>
             </div>
 
             <div class="button_roof">
@@ -63,7 +64,7 @@
 
             <div class="button_floor">
                 <button class="b_floor" >ЭЛ1</button>
-            </div>
+            </div>*@
         </div>
 
         <div class="content_nodes">

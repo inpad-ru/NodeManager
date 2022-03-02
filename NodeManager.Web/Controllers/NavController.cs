@@ -20,11 +20,11 @@ namespace NodeManager.Web.Controllers
         public PartialViewResult Menu(string category)
         {
             CategorySection categorySection = new CategorySection();
-            foreach(var item in repository.Categories)
+            foreach(var item in repository.Sections)
             {
                 categorySection.Menu.Add(item, repository.FamilySymbols
-                    .Where(x => x.Category == item)
-                    .Select(symb => new Sections() { Id = symb.Section.Id, Name = symb.Section.Name })
+                    .Where(x => x.Section == item)
+                    .Select(symb => new Categories() { Id = symb.Category.Id, Name = symb.Section.Name })
                     .GroupBy(p => p.Id)
                     .Select(g => g.First())
                     .OrderBy(x => x.Id));
