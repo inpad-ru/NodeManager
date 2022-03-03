@@ -1,5 +1,6 @@
 ﻿using NodeManager.Domain;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace NodeManager.Web.Models
 {

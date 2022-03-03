@@ -3,7 +3,7 @@ namespace NodeManager.Web.Models
 {
     public class NodeInfo
     {
-        public Categories Category { get; set; }
+        public Sections Section { get; set; }
         public bool IsSelected { get; set; }
     }
 }
