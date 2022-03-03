@@ -9,6 +9,9 @@ using System.IO;
 
 namespace NodeManager.Web.Controllers
 {
+    [Route("")]
+    [Route("Node")]
+
     public class NodeController : Controller
     {
         private INodes repos;
@@ -19,7 +22,20 @@ namespace NodeManager.Web.Controllers
         {
             repos = repo;
         }
-        
+
+        //[Route("")]
+
+        //public ViewResult Index()
+        //{ 
+        //    return View();
+        //}
+
+        [Route("")]
+        //[Route("List")]
+        //[Route("List/{section:string}")]
+        [Route("List/{section?}/{category?}")]
+
+
         public ViewResult List(string category, string section)
         {
             if (!repos.Categories.Any(x => x.Name == category))
@@ -65,6 +81,7 @@ namespace NodeManager.Web.Controllers
             return View(model);
         }
 
+        [Route("Symbol")]
         public ViewResult FamSymbol(int id)
         {
             FamSymbolViewModel model = new FamSymbolViewModel()
@@ -77,6 +94,7 @@ namespace NodeManager.Web.Controllers
             return View(model);
         }
 
+        [Route("Search")]
         public ViewResult Search(string tag)
         {
             NodesViewModel model = new NodesViewModel();
@@ -98,14 +116,14 @@ namespace NodeManager.Web.Controllers
             return View(model);
         }
 
-        [Authorize]
-        //[AcceptVerbs( HttpVerbs.Get )]
-        public ActionResult DisplayImage( int id )
-        {
-            var symb = dbContext.FamilySymbols.FirstOrDefault(r => r.Id == id);
+        //[Authorize]
+        ////[AcceptVerbs( HttpVerbs.Get )]
+        //public ActionResult DisplayImage( int id )
+        //{
+        //    var symb = dbContext.FamilySymbols.FirstOrDefault(r => r.Id == id);
             
-            return File( symb.Image, "image/jpg" );
-        }
+        //    return File( symb.Image, "image/jpg" );
+        //}
         
         //public Image byteArrayToImage(byte[] byteArrayIn)
         //{

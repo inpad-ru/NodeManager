@@ -2,7 +2,7 @@
 
 @foreach (var category in Model.Menu)
 {
-    <button asp-controller="Node" asp-action="List" asp-route-section="КЖ">@category.Key.Name</button>
+    <button onclick="window.location.href='Node/List/@category.Key.Name'">@category.Key.Name</button>
 
     if (category.Key.Id == Model.SelectedSection)
     {

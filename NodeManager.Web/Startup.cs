@@ -57,55 +57,57 @@ namespace NodeManager.Web
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "Node",
-                    pattern: "Node/List/{category}/{section}",
-                    defaults: new { controller = "Node", action = "List", category = "category", section = "section" });
+                //endpoints.MapControllerRoute(
+                //    name: "Node",
+                //    pattern: "Node/List/{category}/{section}",
+                //    defaults: new { controller = "Node", action = "List", category = "category", section = "section" });
+
+                //endpoints.MapControllerRoute(
+                //    name: "Node1",
+                //    pattern: "Node/List/{category}",
+                //    defaults: new { controller = "Node", action = "List", section = "category", category = (string)null });
+
+                //endpoints.MapControllerRoute(
+                //    name: "Node2",
+                //    pattern: "Node/List",
+                //    defaults: new { controller = "Node", action = "List", category = (string)null, section = (string)null });
+
+
+
+
+
+                //endpoints.MapControllerRoute(
+                //    name: "FamSymbol",
+                //    pattern: "Node/FamSymbol/{id}",
+                //    defaults: new { controller = "Node", action = "FamSymbol", id="id" });
+
+                //endpoints.MapControllerRoute(
+                //    name: "Search",
+                //    pattern: "Node/Search/{tag}",
+                //    defaults: new { controller = "Node", action = "Search", tag = "tag" });
+
+                //endpoints.MapControllerRoute(
+                //   name: "Nav1",
+                //   pattern: "Nav/Menu",
+                //   defaults: new { controller = "Nav", action = "Menu", category = (string)null });
+
+                //endpoints.MapControllerRoute(
+                //   name: "Nav",
+                //   pattern: "Nav/Menu/{category}",
+                //   defaults: new { controller = "Nav", action = "Menu", category = "category" });
 
                 endpoints.MapControllerRoute(
-                    name: "Node1",
-                    pattern: "Node/List/{category}",
-                    defaults: new { controller = "Node", action = "List", section = "category", category = (string)null });
+                name: "default",
+                pattern: "{controller=Demo}/{action=List}");
 
-                endpoints.MapControllerRoute(
-                    name: "Node2",
-                    pattern: "Node/List",
-                    defaults: new { controller = "Node", action = "List", category = (string)null, section = (string)null });
 
-                
 
-                
 
-                endpoints.MapControllerRoute(
-                    name: "FamSymbol",
-                    pattern: "Node/FamSymbol/{id}",
-                    defaults: new { controller = "Node", action = "FamSymbol", id="id" });
-
-                endpoints.MapControllerRoute(
-                    name: "Search",
-                    pattern: "Node/Search/{tag}",
-                    defaults: new { controller = "Node", action = "Search", tag = "tag" });
-
-                endpoints.MapControllerRoute(
-                   name: "Nav1",
-                   pattern: "Nav/Menu",
-                   defaults: new { controller = "Nav", action = "Menu", category = (string)null });
-
-                endpoints.MapControllerRoute(
-                   name: "Nav",
-                   pattern: "Nav/Menu/{category}",
-                   defaults: new { controller = "Nav", action = "Menu", category = "category" });
-
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Node}/{action=List}/{category?}");
-
-                
-            });
+        });
         }
     }
 }
