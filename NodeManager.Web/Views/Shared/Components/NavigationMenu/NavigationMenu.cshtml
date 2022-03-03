@@ -1,0 +1,37 @@
+﻿@model NodeManager.Web.Models.CategorySection
+
+@*@Html.ActionLink("Домой", "List", "Menu",
+    new { @class = "b_back" })
+
+    @Html.RouteLink("АР", new
+        {
+        controller = "Node",
+        action = "List",
+        category = "АР"
+        })
+
+        @Html.RouteLink("КЖ", new
+        {
+        controller = "Node",
+        action = "List",
+        category = "КЖ"
+        })
+
+        @Html.RouteLink("ОВ", new
+        {
+        controller = "Node",
+        action = "List",
+        category = "ОВ"
+        })*@
+
+<div class="nav_filters">
+    @foreach (var category in Model.Menu)
+    {
+        <div class="but_category">
+            <button class="">@category.Key</button>
+        </div>
+
+        
+    }
+</div>
+

@@ -175,11 +175,16 @@ img {
   border-top: 1px solid black;
   text-align: center;
   vertical-align: middle;
+  padding-top: 20px;
+}
+
+.p:hover::after {
+    content: attr(title);
 }
 
 /*@import url("https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
 */
-p {
+p, span {
   font-family: fontawesome !important;
 }
 
@@ -275,4 +280,23 @@ p {
   background-color: rgba(0,0,0,.7);
   content: "";
   cursor: default;
+}
+
+
+/* Параметры узлов, файл FamSymbol.cshtml  */
+
+.parameters {
+    display: inline-block;
+}
+
+.node_parameters {
+    display: inline-block;
+}
+
+.parameter_name {
+
+}
+
+.parameter_value {
+
 }
