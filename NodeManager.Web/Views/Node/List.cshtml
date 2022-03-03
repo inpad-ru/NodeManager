@@ -73,14 +73,14 @@
                 {
                     <div class="node">
                         <img class="img-responsive center-block" src="data:image/jpg;base64,@FamSymbolViewModel.ImageByteToBase64ImageTag(nodI.Image)"/>
-                        <button class="btn" onclick="window.location.href='#@nodI.Id';"><p class="fas fa-search-plus"></p></button>
+                        <button class="btn" onclick="window.location.href='#@nodI.Id';"><span class="fas fa-search-plus"></span></button>
                         <div class="node_name">
-                            <p>@nodI.Name</p>
+                            <p title="@nodI.Name">@FamSymbolViewModel.GetCutString(nodI.Name)</p>
                         </div>
                         <div class="lightbox" id="@nodI.Id">
                             <figure>
-                                <button class="close" onclick="window.location.href='#';"><p class="fas fa-times"></p></button>
-                                <button class="dwn"><p class="far fa-save"></p></button>
+                                <button class="close" onclick="window.location.href='#';"><span class="fas fa-times"></span></button>
+                                <button class="dwn"><span class="far fa-save fa-lg" style="color: white"></span></button>
                                 <figcaption>
                                     <p>@nodI.Name</p>
                                     <img class="img-responsive center-block" src="data:image/jpg;base64,@FamSymbolViewModel.ImageByteToBase64ImageTag(nodI.Image)"/>

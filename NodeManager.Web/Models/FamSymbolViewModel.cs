@@ -23,5 +23,11 @@ namespace NodeManager.Web.Models
             //string base64 = Convert.ToBase64String(array);
             return Convert.ToBase64String(array);
         }
+
+        public static string GetCutString(string str)
+        {
+            if (str.Length < 27) return str;
+            else return str.Substring(0, 27) + "...";
+        }
     }
 }
