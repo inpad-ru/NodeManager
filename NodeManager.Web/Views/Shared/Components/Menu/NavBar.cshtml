@@ -2,13 +2,13 @@
 
 @foreach (var category in Model.Menu)
 {
-    <button onclick="window.location.href='Node/List/@category.Key.Name'">@category.Key.Name</button>
+    <button onclick="window.location.href='/Node/List/@category.Key.Name'">@category.Key.Name</button>
 
     if (category.Key.Id == Model.SelectedSection)
     {
         foreach (var i in category.Value)
         {
-            <button>@i.Name</button>
+            <button onclick="window.location.href='/Node/List/@category.Key.Name/@i.Name'">@i.Name</button>
         }
     }
     

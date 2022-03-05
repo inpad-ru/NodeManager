@@ -11,7 +11,7 @@ namespace NodeManager.Web.ViewComponents
     {
         public async Task<IViewComponentResult> InvokeAsync(CategorySection cat)
         {
-            return View("Index", cat);
+            return View("NavBar", cat);
         }
     }
 }

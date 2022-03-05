@@ -5,7 +5,12 @@ namespace NodeManager.Web.Models
 {
     public class NodesViewModel
     {
-        public IEnumerable<FamilySymbol> Symbols { get; set; }
+        public NodesViewModel()
+        {
+            Symbols = new List<FamilySymbol>();
+        }
+
+        public List<FamilySymbol> Symbols { get; set; }
        // public PagingInfo PagingInfo { get; set; }
         public Sections CurrentSec { get; set; }
 

@@ -36,7 +36,7 @@ namespace NodeManager.Web.Controllers
         [Route("List/{section?}/{category?}")]
 
 
-        public ViewResult List(string category, string section)
+        public ViewResult List(string section, string category)
         {
             if (!repos.Categories.Any(x => x.Name == category))
             {
@@ -52,36 +52,24 @@ namespace NodeManager.Web.Controllers
             {
                 Symbols = repos.FamilySymbols
                     .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
-                    .OrderBy(x => x.Id),
+                    .OrderBy(x => x.Id).ToList(),
                 CurrentSec = sec
             };
+            model.categorySection = GetCategorySection();
 
-            CategorySection categorySection = new CategorySection();
-            if (repos.FamilySymbols.Count() != 0)
-            {
-                foreach (var item in repos.Sections)
-                {
-                    categorySection.Menu.Add(item, repos.FamilySymbols
-                        .Where(x => x.Section == item)
-                        .Select(symb => new Categories() { Id = symb.Category.Id, Name = symb.Category.Name })
-                        .GroupBy(p => p.Id)
-                        .Select(g => g.First())
-                        .OrderBy(x => x.Id));
-                }
-            }
             if (sec == null)
             {
-                categorySection.SelectedSection = null;
+                model.categorySection.SelectedSection = null;
             }
             else
             {
-                categorySection.SelectedSection = sec.Id;
+                model.categorySection.SelectedSection = sec.Id;
             }
-            model.categorySection=categorySection;
+            
             return View(model);
         }
 
-        [Route("Symbol")]
+        [Route("Symbol/{id:int}")]
         public ViewResult FamSymbol(int id)
         {
             FamSymbolViewModel model = new FamSymbolViewModel()
@@ -94,26 +82,49 @@ namespace NodeManager.Web.Controllers
             return View(model);
         }
 
-        [Route("Search")]
+        [Route("Search/{tag}")]
         public ViewResult Search(string tag)
         {
             NodesViewModel model = new NodesViewModel();
-            FamilySymbol sym = repos.FamilySymbols.FirstOrDefault();
+            //FamilySymbol sym = repos.FamilySymbols.FirstOrDefault();
             foreach(var f in repos.FamilySymbols)
             {
+                if (f.Tags == null) continue;
                 var splitedTags = f.Tags.Split(";");
                 foreach(var t in splitedTags)
                 {
                     if (t.Equals(tag))
                     {
-                        model.AddSymbol(f);
+                        model.Symbols.Add(f);
                     }
                 }
             }
+            model.categorySection = GetCategorySection();
+            model.categorySection.SelectedSection = null;
+
 
             //NodesViewModel model = new NodesViewModel();
-            
-            return View(model);
+
+            return View("List",model);
+        }
+
+        private CategorySection GetCategorySection()
+        {
+            CategorySection categorySection = new CategorySection();
+            if (repos.FamilySymbols.Count() != 0)
+            {
+                var list = repos.FamilySymbols.ToList();
+                foreach (var item in repos.Sections)
+                {
+                    categorySection.Menu.Add(item, list
+                        .Where(x => x.Section == item)
+                        .Select(symb => new Categories() { Id = symb.CategoryId.Value, Name = repos.Categories.FirstOrDefault(x => x.Id == symb.CategoryId).Name })
+                        .GroupBy(p => p.Id)
+                        .Select(g => g.First())
+                        .OrderBy(x => x.Id));
+                }
+            }
+            return categorySection;
         }
 
         //[Authorize]
