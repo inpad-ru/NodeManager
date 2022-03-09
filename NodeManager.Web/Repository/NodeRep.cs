@@ -24,5 +24,9 @@ namespace NodeManager.Web.Repository
         public IEnumerable<Categories> Categories => dbContext.Categories;
 
         public IEnumerable<Sections> Sections => dbContext.Sections;
+
+        public IEnumerable<Tags> Tags => dbContext.Tags;
+
+        public IEnumerable<FSTags> FSTags => dbContext.FSTags;
     }
 }

@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using NodeManager.Web.Models;
 using System.Drawing;
 using System.IO;
+using NodeManager.Web.Repository;
+using System;
+using System.Collections.Generic;
 
 namespace NodeManager.Web.Controllers
 {
@@ -22,13 +25,6 @@ namespace NodeManager.Web.Controllers
         {
             repos = repo;
         }
-
-        //[Route("")]
-
-        //public ViewResult Index()
-        //{ 
-        //    return View();
-        //}
 
         [Route("")]
         //[Route("List")]
@@ -82,30 +78,41 @@ namespace NodeManager.Web.Controllers
             return View(model);
         }
 
-        [Route("Search/{tag}")]
-        public ViewResult Search(string tag)
+        [Route("Search/{tags}")]
+        public ViewResult Search(string tags)
         {
             NodesViewModel model = new NodesViewModel();
-            //FamilySymbol sym = repos.FamilySymbols.FirstOrDefault();
-            foreach(var f in repos.FamilySymbols)
+            var splittedTags = tags.Split(';');
+            HashSet<int> tagsId = new HashSet<int>();
+            IEnumerable<int> connections;
+            try
             {
-                if (f.Tags == null) continue;
-                var splitedTags = f.Tags.Split(";");
-                foreach(var t in splitedTags)
+                foreach (var tag in splittedTags)
                 {
-                    if (t.Equals(tag))
-                    {
-                        model.Symbols.Add(f);
-                    }
+                    tagsId.Add(repos.Tags.FirstOrDefault(x => x.Value.Equals(tag)).Id);
+                }
+                connections = repos.FSTags.Where(x => x.TagId == tagsId.FirstOrDefault()).Select(x => x.FSId);
+
+                foreach (var tag in tagsId.Skip(1))
+                {
+                    connections = connections.Intersect(repos.FSTags.Where(x => x.TagId == tag).Select(x => x.FSId));
+                }
+
+                var symbols = repos.FamilySymbols.ToList();
+                foreach (var fs in connections)
+                {
+                    model.Symbols.Add(symbols.FirstOrDefault(x => x.Id == fs));
                 }
             }
+            catch (Exception ex)
+            {
+                model.Symbols = repos.FamilySymbols.ToList();
+            }
+            
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
 
-
-            //NodesViewModel model = new NodesViewModel();
-
-            return View("List",model);
+            return View("List", model);
         }
 
         private CategorySection GetCategorySection()

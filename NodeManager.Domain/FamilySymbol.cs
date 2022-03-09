@@ -19,6 +19,7 @@ namespace NodeManager.Domain
         public FamilySymbol()
         {
             this.RevitParameters = new HashSet<RevitParameter>();
+            Tags1 = new List<FSTags>();
         }
     
         public int Id { get; set; }
@@ -29,7 +30,7 @@ namespace NodeManager.Domain
         public string ImagePath { get; set; }
         public Nullable<int> Scale { get; set; }
         public byte[] Image { get; set; }
-        public string Tags { get; set; }
+        //public string Tags { get; set; }
         public Nullable<int> CategoryId { get; set; }
         public Nullable<int> SectionId { get; set; }
 
@@ -48,5 +49,7 @@ namespace NodeManager.Domain
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
         public virtual ICollection<RevitParameter> RevitParameters { get; set; }
+
+        public virtual ICollection<FSTags> Tags1 { get; set; }
     }
 }

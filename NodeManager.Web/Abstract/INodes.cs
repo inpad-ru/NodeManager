@@ -10,6 +10,7 @@ namespace NodeManager.Web.Abstract
         IEnumerable<RevitParameter> RevParameters { get; }
         IEnumerable<Categories> Categories { get; }
         IEnumerable<Sections> Sections { get; }
-
+        IEnumerable<Tags> Tags { get; }
+        IEnumerable<FSTags> FSTags { get; }
     }
 }

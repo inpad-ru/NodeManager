@@ -1,15 +1,21 @@
 ﻿@model NodeManager.Web.Models.CategorySection
 
-@foreach (var category in Model.Menu)
-{
-    <button onclick="window.location.href='/Node/List/@category.Key.Name'">@category.Key.Name</button>
-
-    if (category.Key.Id == Model.SelectedSection)
-    {
-        foreach (var i in category.Value)
-        {
-            <button onclick="window.location.href='/Node/List/@category.Key.Name/@i.Name'">@i.Name</button>
-        }
-    }
-    
-}
+<ul class="accordion-menu"> 
+    @foreach(var category in Model.Menu )
+    { 
+    <li> 
+        <button onclick="window.location.href='/Node/List/@category.Key.Name'">@category.Key.Name</button> 
+        <ul class="submenu"> 
+        @if (category.Key.Id == Model.SelectedSection) 
+        { 
+            @foreach (var subcategory in category.Value) 
+            { 
+                <li> 
+                    <button onclick="window.location.href='/Node/List/@category.Key.Name/@subcategory.Name'">@subcategory.Name</button> 
+                </li> 
+            } 
+        } 
+        </ul> 
+    </li> 
+    } 
+</ul>
