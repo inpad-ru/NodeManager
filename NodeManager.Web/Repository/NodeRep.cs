@@ -28,5 +28,8 @@ namespace NodeManager.Web.Repository
         public IEnumerable<Tags> Tags => dbContext.Tags;
 
         public IEnumerable<FSTags> FSTags => dbContext.FSTags;
+
+        public IEnumerable<Users> Users => dbContext.Users;
+
     }
 }
