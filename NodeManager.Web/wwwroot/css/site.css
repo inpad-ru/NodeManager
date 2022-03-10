@@ -15,7 +15,7 @@ body {
 
 .grid_nav_header {
   display: grid;
-  grid-template-columns: 15% 85%;
+  grid-template-columns: 20% 80%;
 }
 
 .header_nav_left {
@@ -105,7 +105,7 @@ h5 {
 
 .grid_container {
   display: grid;
-  grid-template-columns: 15% 85%;
+  grid-template-columns: 20% 80%;
   width: 100%;
   height: 100%;
 }
@@ -283,6 +283,113 @@ p, span {
 }
 
 
+/* Иерархическое меню, файл NavBar.cshtml  */
+
+ul {
+    list-style-type: none;
+}
+
+.accordion-menu {
+    list-style-type: none;
+    width: 90%;
+    /*max-width: 350px;*/
+    /*margin: 60px auto 20px;*/
+    background: #fff;
+    border-radius: 4px;
+
+    align-self: center;
+    justify-self: left;
+    margin: 5% 5% 5% 15%;
+    box-sizing: border-box;
+    background-color: white;
+    color: black;
+    width: 90%;
+    border: 1px solid #DAD9D9;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 10px;
+    padding: 5px 15px;
+    line-height: normal;
+}
+
+.but_category {
+    text-decoration: none;
+    list-style-type: none;
+    width: 90%;
+    color: black;
+}
+
+.but_subcategory {
+    list-style-type: none;
+    text-decoration: none;
+    width: 100%;
+    color: black;
+}
+
+.accordion-menu li.open .dropdownlink {
+    /*color: #CDDC39;*/
+        
+}
+
+.accordion-menu li.open .dropdownlink .fa-caret-down {
+    transform: rotate(180deg);
+}
+
+.accordion-menu li:last-child .dropdownlink {
+    border-bottom: 0;
+}
+
+.dropdownlink {
+    cursor: pointer;
+    display: block;
+    padding: 5% 5% 0 15%;
+    /*font-size: 18px;*/
+    /*border-bottom: 1px solid #ccc;*/
+    color: black;
+    position: relative;
+    transition: all 0.4s ease-out;
+}
+
+.dropdownlink span {
+    position: absolute;
+    top: 35%;
+    left: 0;
+}
+
+.dropdownlink .fa-caret-down {
+    /*left: 5%;*/
+    right: auto;
+}
+
+.submenu {
+    display: block;
+    /*background: #C8E6C9;*/
+    padding-left: 0;
+    /*word-break: break-all;*/
+}
+
+.submenu li {
+    /*border-bottom: 1px solid #B6B6B6;*/
+    position: static;
+    left: 0;
+
+}
+
+.submenu a {
+    display: block;
+    color: black;
+    padding: 5% 0 0 0;
+    transition: all 0.4s ease-out;
+    /*word-break: break-all;*/
+}
+
+.submenu a:hover {
+    /*background-color: #CDDC39;*/
+    /*color: #fff;*/
+}
+
+
+
 /* Параметры узлов, файл FamSymbol.cshtml  */
 
 .parameters {
@@ -294,9 +401,7 @@ p, span {
 }
 
 .parameter_name {
-
 }
 
 .parameter_value {
-
 }
