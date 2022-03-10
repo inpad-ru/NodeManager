@@ -21,6 +21,10 @@
                 <div class="button_search">
                     <button class="b_search">Найти...</button>
                 </div>
+                <form action="" method="get">
+                    <input name="s" placeholder="Поиск по тегу" type="search">
+                    <button type="submit">Поиск</button>
+                </form>
             </div>
 
             <div class="header_nav_right">
@@ -39,7 +43,10 @@
             @*@await Component.InvokeAsync("~/Nav/Menu.cshtml")*@
             @*@{await Html.RenderPartialAsync("_GetMessage");}*@
             @*@Html.Raw("~//Nav/Menu.cshtml")*@
-            <div class="button_wall">
+
+            @*@await Component.InvokeAsync("NavigationMenu")*@
+
+            @*<div class="button_wall">
                 <button class=" b_wall" onclick="window.location.href='Node/List/Стена'">Стена</button>
             </div>
 
@@ -61,7 +68,7 @@
 
             <div class="button_floor">
                 <button class="b_floor" onclick="window.location.href='Node/List/ЭЛ'">ЭЛ1</button>
-            </div>
+            </div>*@
         </div>
 
         <div class="content_nodes">
