@@ -30,8 +30,6 @@ namespace NodeManager.Web.Controllers
         //[Route("List")]
         //[Route("List/{section:string}")]
         [Route("List/{section?}/{category?}")]
-
-
         public ViewResult List(string section, string category)
         {
             if (!repos.Categories.Any(x => x.Name == category))

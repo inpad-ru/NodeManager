@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Configuration;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace NodeManager.Web
 {
@@ -37,6 +38,11 @@ namespace NodeManager.Web
             services.AddDbContext<NodeManagerDBEntities>(options => options.UseSqlServer(_configString.GetConnectionString("NodeManagerDBEntities")));
             services.AddControllersWithViews();
             services.AddTransient<INodes, NodeRep>();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => //CookieAuthenticationOptions
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,7 +63,8 @@ namespace NodeManager.Web
 
             app.UseRouting();
 
-            //app.UseAuthorization();
+            app.UseAuthentication();    // аутентификация
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
