@@ -59,7 +59,8 @@ namespace NodeManager.Web.Controllers
 
                     await Authenticate(model.Email); // аутентификация
 
-                    return RedirectToAction("Index", "Home");
+                    //return RedirectToAction("Index", "Home");
+                    return RedirectToAction("List", "Node");
                 }
                 else
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");

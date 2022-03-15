@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace NodeManager.Web.Controllers
 {
+    [Route("")]
     [Route("Home")]
     public class HomeController : Controller
     {
@@ -21,10 +22,13 @@ namespace NodeManager.Web.Controllers
         }
 
         [Authorize]
+        [Route("")]
         [Route("Index")]
         public IActionResult Index()
         {
-            return Content(User.Identity.Name);
+            //return RedirectToAction("Logout", "Account");
+            return View(User);
+            //return Content(User.Identity.Name);
         }
         [Route("Privacy")]
         public IActionResult Privacy()

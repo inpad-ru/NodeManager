@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace NodeManager.Web.Controllers
 {
-    [Route("")]
+    //[Route("")]
     [Route("Node")]
 
     public class NodeController : Controller
@@ -26,7 +26,7 @@ namespace NodeManager.Web.Controllers
             repos = repo;
         }
 
-        [Route("")]
+        //[Route("")]
         //[Route("List")]
         //[Route("List/{section:string}")]
         [Route("List/{section?}/{category?}")]
