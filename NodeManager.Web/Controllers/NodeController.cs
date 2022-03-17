@@ -9,10 +9,11 @@ using System.IO;
 using NodeManager.Web.Repository;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace NodeManager.Web.Controllers
 {
-    //[Route("")]
+    [Route("")]
     [Route("Node")]
 
     public class NodeController : Controller
@@ -26,9 +27,10 @@ namespace NodeManager.Web.Controllers
             repos = repo;
         }
 
-        //[Route("")]
+        [Route("")]
         //[Route("List")]
         //[Route("List/{section:string}")]
+        //[Authorize(Policy = "OnlyForInpad")]
         [Route("List/{section?}/{category?}")]
         public ViewResult List(string section, string category)
         {
@@ -113,6 +115,14 @@ namespace NodeManager.Web.Controllers
             return View("List", model);
         }
 
+        [Route("Delete/{id:int}")]
+        public IActionResult Delete(int id)
+        {
+            var fs = repos.FamilySymbols.FirstOrDefault(x=> x.Id == id);
+            dbContext.Entry(fs).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+            return RedirectToAction("List", "Node");
+            //repos.FamilySymbols.Remove(repos.FamilySymbols.FirstOrDefault(x => x.Id == id));
+        }
         private CategorySection GetCategorySection()
         {
             CategorySection categorySection = new CategorySection();

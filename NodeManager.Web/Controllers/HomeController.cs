@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NodeManager.Web.Controllers
 {
-    [Route("")]
+    //[Route("")]
     [Route("Home")]
     public class HomeController : Controller
     {
@@ -21,8 +21,8 @@ namespace NodeManager.Web.Controllers
             _logger = logger;
         }
 
-        [Authorize]
-        [Route("")]
+        //[Authorize]
+        //[Route("")]
         [Route("Index")]
         public IActionResult Index()
         {

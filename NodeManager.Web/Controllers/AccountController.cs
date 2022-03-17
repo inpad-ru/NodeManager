@@ -31,9 +31,9 @@ namespace NodeManager.Web.Controllers
                 Users user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
                 if (user != null)
                 {
-                    await Authenticate(model.Email); // аутентификация
+                    await Authenticate(user); // аутентификация
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("List", "Node");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
@@ -54,10 +54,11 @@ namespace NodeManager.Web.Controllers
                 if (user == null)
                 {
                     // добавляем пользователя в бд
-                    db.Users.Add(new Users { Email = model.Email, Password = model.Password });
+                    var u = new Users { Email = model.Email, Password = model.Password, Company = model.Company };
+                    db.Users.Add(u);
                     await db.SaveChangesAsync();
 
-                    await Authenticate(model.Email); // аутентификация
+                    await Authenticate(u); // аутентификация
 
                     //return RedirectToAction("Index", "Home");
                     return RedirectToAction("List", "Node");
@@ -68,12 +69,14 @@ namespace NodeManager.Web.Controllers
             return View(model);
         }
 
-        private async Task Authenticate(string userName)
+        private async Task Authenticate(Users user)
         {
             // создаем один claim
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Name),
+                new Claim("Company", user.Company)
             };
             // создаем объект ClaimsIdentity
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
