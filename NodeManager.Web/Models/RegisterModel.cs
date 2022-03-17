@@ -14,6 +14,9 @@ namespace NodeManager.Web.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Пароль введен неверно")]
         public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "Не указана компания")]
+        public string Company { get; set; }
     }
 
 }
