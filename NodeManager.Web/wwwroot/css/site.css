@@ -10,6 +10,38 @@ body {
   height: 100%;
 }
 
+.main_container {
+    display: grid;
+}
+
+/* Header */
+
+.main_header {
+    background-color: white;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+}
+
+/* Content */
+
+.main_content {
+
+}
+
+.nav_filters {
+}
+
+.plug {
+    display: none;
+}
+
+.scroll {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 5%;
+}
+
 
 /* Header */
 
