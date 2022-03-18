@@ -1,15 +1,16 @@
 @model NodeManager.Web.Models.NodesViewModel
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Менеджер узлов";
+    //Layout = null;
 }
 
-<!DOCTYPE html>
+@*<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] Менеджер узлов</title>
+    <title>@ViewData["Title"] = "Менеджер узлов"</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -40,9 +41,9 @@
                 </div>
             </div>
         </nav>
-    </header>
+    </header>*@
 
-    <main class="grid_container">
+    @*<main class="grid_container">*@
         <div class="nav_filters">
             @await Component.InvokeAsync("Menu", Model.categorySection)
         </div>
@@ -76,10 +77,10 @@
                 }
             </div>
         </div>
-    </main>
+    @*</main>
     </main>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
-</html>
+</html>*@

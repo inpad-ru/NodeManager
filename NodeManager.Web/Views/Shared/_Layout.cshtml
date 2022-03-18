@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Менеджер узлов</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <main class="main_container">
+    @*<main class="main_container">
         <header class="main_header">
             <div class="button_search">
                 <button class="b_search">Найти...</button>
@@ -69,14 +69,14 @@
 
     <main class="grid_container">
         <div class="nav_filters">
-            @*@await Html.PartialAsync("~/Nav/Menu.cshtml")*@
-            @*@await Component.InvokeAsync("~/Nav/Menu.cshtml")*@
-            @*@{await Html.RenderPartialAsync("_GetMessage");}*@
-            @*@Html.Raw("~//Nav/Menu.cshtml")*@
+            @await Html.PartialAsync("~/Nav/Menu.cshtml")
+            @await Component.InvokeAsync("~/Nav/Menu.cshtml")
+            @{await Html.RenderPartialAsync("_GetMessage");}
+            @Html.Raw("~//Nav/Menu.cshtml")
 
-            @*@await Component.InvokeAsync("NavigationMenu")*@
+            @await Component.InvokeAsync("NavigationMenu")
 
-            @*<div class="button_wall">
+            <div class="button_wall">
                 <button class=" b_wall" onclick="window.location.href='Node/List/Стена'">Стена</button>
             </div>
 
@@ -98,7 +98,7 @@
 
             <div class="button_floor">
                 <button class="b_floor" onclick="window.location.href='Node/List/ЭЛ'">ЭЛ1</button>
-            </div>*@
+            </div>
         </div>
 
         <div class="content_nodes">
@@ -198,7 +198,7 @@
                     </figure>
                 </div>
             </div>
-        </div>
+        </div>*@
 
         <main role="main" class="pb-3">
             @RenderBody()
