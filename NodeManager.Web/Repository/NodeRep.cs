@@ -8,7 +8,7 @@ namespace NodeManager.Web.Repository
 {
     public class NodeRep : INodes
     {
-        private readonly NodeManagerDBEntities dbContext;
+        private NodeManagerDBEntities dbContext;
 
         public NodeRep(NodeManagerDBEntities dbContext)
         {
@@ -31,5 +31,6 @@ namespace NodeManager.Web.Repository
 
         public IEnumerable<Users> Users => dbContext.Users;
 
+        NodeManagerDBEntities INodes.dbContext => dbContext;
     }
 }

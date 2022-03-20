@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Менеджер узлов</title>
+    <title>@ViewData["Title"] Менеджер узлов</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -12,197 +12,38 @@
 <body>
     <main class="main_container">
         <header class="main_header">
-            <div class="button_search">
-                <button class="b_search">Найти...</button>
-            </div>
-            <div class="button_search">
-                <button class="b_search">Редактировать...</button>
-            </div>
-            <div class="button_search">
-                <button class="b_search">Удалить...</button>
-            </div>
             <h5>Узлы предоставлены для обязательной адаптации к проекту</h5>
 
-            <div class="button_search_tag">
+            @*<div class="button_search_tag">
                 <button class="b_search_tag">Поиск по тегу</button>
-            </div>
+            </div>*@
             <form action="" method="get">
                 <input name="s" placeholder="Поиск по тегу" type="search">
                 <button type="submit">Поиск</button>
             </form>
+            <span class="fa-solid fa-user"></span>
+            
+            <div class="dropdown">
+            <button class="dropbtn"><span class="fa-solid fa-user"></span>Dropdown</button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            
+            @*<div class="wrapper">
+                <div class="user"></div>
+            </div> *@   
         </header>
         <div class="main_content">
             <div class="nav_menu">
-
+                @await Component.InvokeAsync("Menu", Model.categorySection)
             </div>
             <div class="content_nodes">
-
+                @RenderBody()
             </div>
         </div>
-    </main>
-    <header>
-        <nav class="grid_nav_header">
-            <div class="header_nav_left">
-                <div class="nav_back">
-                    <a class="b_back" asp-area="" asp-controller="Home" asp-action="Index">Назад</a>
-
-                </div>
-
-                <div class="button_search">
-                    <button class="b_search">Найти...</button>
-                </div>
-                <form action="" method="get">
-                    <input name="s" placeholder="Поиск по тегу" type="search">
-                    <button type="submit">Поиск</button>
-                </form>
-            </div>
-
-            <div class="header_nav_right">
-                <h5>Узлы предоставлены для обязательной адаптации к проекту</h5>
-
-                <div class="button_search_tag">
-                    <button class="b_search_tag">Поиск по тегу</button>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <main class="grid_container">
-        <div class="nav_filters">
-            @*@await Html.PartialAsync("~/Nav/Menu.cshtml")*@
-            @*@await Component.InvokeAsync("~/Nav/Menu.cshtml")*@
-            @*@{await Html.RenderPartialAsync("_GetMessage");}*@
-            @*@Html.Raw("~//Nav/Menu.cshtml")*@
-
-            @*@await Component.InvokeAsync("NavigationMenu")*@
-
-            @*<div class="button_wall">
-                <button class=" b_wall" onclick="window.location.href='Node/List/Стена'">Стена</button>
-            </div>
-
-            <div class="button_roof">
-                <button class="b_roof" onclick="window.location.href='Node/List/КР'">КР1</button>
-            </div>
-
-            <div class="button_window">
-                <button class="b_window" onclick="window.location.href='Node/List/КЖ'">КЖ1</button>
-            </div>
-
-            <div class="button_bridge">
-                <button class="b_bridge" onclick="window.location.href='Node/List/ОВ'">ОВ1</button>
-            </div>
-
-            <div class="button_overlap">
-                <button class="b_overlap" onclick="window.location.href='Node/List/ВК'">ВК1</button>
-            </div>
-
-            <div class="button_floor">
-                <button class="b_floor" onclick="window.location.href='Node/List/ЭЛ'">ЭЛ1</button>
-            </div>*@
-        </div>
-
-        <div class="content_nodes">
-
-            <div class="node">
-                <img src="~/nodes/tmp - Чертежный вид - Кровля_Водосточная воронка.jpg">
-                <button class="btn" onclick="window.location.href='#node1';"><p class="fas fa-search-plus"></p></button>
-                <div class="node_name">
-                    <p>Кровля_Водосточная воронка</p>
-                </div>
-
-                <div class="lightbox" id="node1">
-                    <figure>
-                        <button class="close" onclick="window.location.href='#';"><p class="fas fa-times"></p></button>
-                        <button class="dwn"><p class="far fa-save fa-lg" style="color: white"></p></button>
-                        <figcaption>
-                            <p>Чертежный вид - Кровля_Водосточная воронка</p>
-                            <img src="~/nodes/tmp - Чертежный вид - Кровля_Водосточная воронка.jpg">
-                        </figcaption>
-                    </figure>
-                </div>
-            </div>
-
-            <div class="node">
-                <img src="~/nodes/tmp - Чертежный вид - Стена_Связь стен2_Кирпич_Монолит.jpg">
-                <button class="btn" onclick="window.location.href='#node3';"><p class="fas fa-search-plus"></p></button>
-                <div class="node_name">
-                    <p>Стена_Связь стен2_Кирпич_Монолит</p>
-                </div>
-
-                <div class="lightbox" id="node3">
-                    <figure>
-                        <button class="close" onclick="window.location.href='#';"><p class="fas fa-times"></p></button>
-                        <button class="dwn"><p class="far fa-save"></p></button>
-                        <figcaption>
-                            <p>Чертежный вид - Стена_Связь стен2_Кирпич_Монолит</p>
-                            <img src="~/nodes/tmp - Чертежный вид - Стена_Связь стен2_Кирпич_Монолит.jpg">
-                        </figcaption>
-                    </figure>
-                </div>
-            </div>
-
-            <div class="node">
-                <img src="~/nodes/tmp - Чертежный вид - ОВ_Узел прохода.jpg">
-                <button class="btn" onclick="window.location.href='#node2';"><p class="fas fa-search-plus"></p></button>
-                <div class="node_name">
-                    <p>Чертежный вид - ОВ_Узел прохода</p>
-                </div>
-
-                <div class="lightbox" id="node2">
-                    <figure>
-                        <button class="close" onclick="window.location.href='#';"><p class="fas fa-times"></p></button>
-                        <button class="dwn"><p class="far fa-save"></p></button>
-                        <figcaption>
-                            <p>Чертежный вид - ОВ_Узел прохода</p>
-                            <img src="~/nodes/tmp - Чертежный вид - ОВ_Узел прохода.jpg">
-                        </figcaption>
-                    </figure>
-                </div>
-            </div>
-
-
-            <div class="node">
-                <img src="~/nodes/tmp - Чертежный вид - Окно_ Окно3.jpg">
-                <button class="btn" onclick="window.location.href='#node4';"><p class="fas fa-search-plus"></p></button>
-                <div class="node_name">
-                    <p>Чертежный вид - Окно_ Окно3</p>
-                </div>
-
-                <div class="lightbox" id="node4">
-                    <figure>
-                        <button class="close" onclick="window.location.href='#';"><p class="fas fa-times"></p></button>
-                        <button class="dwn"><p class="far fa-save"></p></button>
-                        <figcaption>
-                            <p>Чертежный вид - Окно_ Окно3</p>
-                            <img src="~/nodes/tmp - Чертежный вид - Окно_ Окно3.jpg">
-                        </figcaption>
-                    </figure>
-                </div>
-            </div>
-
-            <div class="node">
-                <img src="~/nodes/tmp - Чертежный вид - Окно_Окно1.jpg">
-                <button class="btn" onclick="window.location.href='#node5';"><p class="fas fa-search-plus"></p></button>
-                <div class="node_name">
-                    <p>Чертежный вид - Окно_Окно1</p>
-                </div>
-
-                <div class="lightbox" id="node5">
-                    <figure>
-                        <button class="close" onclick="window.location.href='#';"><p class="fas fa-times"></p></button>
-                        <button class="dwn"><p class="far fa-save"></p></button>
-                        <figcaption>
-                            <p>Чертежный вид - Окно_Окно1</p>
-                            <img src="~/nodes/tmp - Чертежный вид - Окно_Окно1.jpg">
-                        </figcaption>
-                    </figure>
-                </div>
-            </div>
-        </div>
-
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
     </main>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

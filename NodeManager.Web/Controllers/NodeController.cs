@@ -72,7 +72,7 @@ namespace NodeManager.Web.Controllers
             {
                 _familySymbol = repos.FamilySymbols.FirstOrDefault(x => x.Id == id),
                 _revitParameters = repos.RevParameters
-                    .Where(c => c.FamilySymbol.Id == id)
+                    .Where(c => c.SymbolId == id)
                     .OrderBy(c=>c.Id)
             };
             return View(model);
@@ -118,8 +118,11 @@ namespace NodeManager.Web.Controllers
         [Route("Delete/{id:int}")]
         public IActionResult Delete(int id)
         {
-            var fs = repos.FamilySymbols.FirstOrDefault(x=> x.Id == id);
-            dbContext.Entry(fs).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+            //var fs = repos.FamilySymbols.FirstOrDefault(x=> x.Id == id);
+            //dbContext.Entry(fs).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+            var fs = repos.FamilySymbols.FirstOrDefault(x => x.Id == id);
+            repos.dbContext.Remove(fs);
+            repos.dbContext.SaveChanges();
             return RedirectToAction("List", "Node");
             //repos.FamilySymbols.Remove(repos.FamilySymbols.FirstOrDefault(x => x.Id == id));
         }
