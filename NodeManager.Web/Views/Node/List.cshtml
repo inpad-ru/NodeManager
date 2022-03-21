@@ -1,5 +1,9 @@
 @model NodeManager.Web.Models.NodesViewModel
 
+<div class="nav_menu">
+    @await Component.InvokeAsync("Menu", Model.categorySection)
+</div>
+<div class="content_nodes">
 <div class="nodes">
     @foreach (var nodI in Model.Symbols)
     {
@@ -11,4 +15,5 @@
             </div>
         </div>
     }
+</div>
 </div>

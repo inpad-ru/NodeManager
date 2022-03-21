@@ -13,36 +13,45 @@
     <main class="main_container">
         <header class="main_header">
             <h5>Узлы предоставлены для обязательной адаптации к проекту</h5>
-
-            @*<div class="button_search_tag">
+            <div class="search_tag">
+            @if (@Model.tagList != null)
+            {
+                @*<div class="button_search_tag">
                 <button class="b_search_tag">Поиск по тегу</button>
-            </div>*@
-            <form action="" method="get">
-                <input name="s" placeholder="Поиск по тегу" type="search">
-                <button type="submit">Поиск</button>
-            </form>
-            <span class="fa-solid fa-user"></span>
+                </div>*@
+                <form action="" method="get">
+
+                    <input name="search_text" placeholder="Поиск по тегу" type="search" list="tegi">
+                    @*<input type="submit" formaction="/Search/" value="Найти" >*@
+                    <button class="b_search_tag" onclick="/Search/"><span class="fa fa-search"></span></button>
+                    <datalist id="tegi" multiple="multiple">
+                        @foreach(var nameTag in Model.tagList)
+                        {
+                            <option>@nameTag</option>
+                        }
+                    </datalist>
+                </form>
+            }
+            </div>
             
-            <div class="dropdown">
-            <button class="dropbtn"><span class="fa-solid fa-user"></span>Dropdown</button>
-                <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+
+            <div class="user">
+                <button class="but_user"><span class="fa-solid fa-user"></span></button>
+                <div class="user_info">
+                    <p>@Model.userName</p>
+                    @if (Model.userName == null)
+                    {
+                        @Html.ActionLink("Войти","Login","Account")
+                        @Html.ActionLink("Зарегистрироваться","Register","Account")
+                    }
+                    else {
+                        @Html.ActionLink("Выйти","Logout","Account")
+                    }
                 </div>
             </div>
-            
-            @*<div class="wrapper">
-                <div class="user"></div>
-            </div> *@   
         </header>
         <div class="main_content">
-            <div class="nav_menu">
-                @await Component.InvokeAsync("Menu", Model.categorySection)
-            </div>
-            <div class="content_nodes">
                 @RenderBody()
-            </div>
         </div>
     </main>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
