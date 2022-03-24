@@ -36,24 +36,29 @@
            </div>
         </div>
         <div class="contentNode">
-            <div class="param_section">
-                <table class="parameters" style="border-radius: 30px;">
-                <thead class="paramHead">
-                    <tr>
-                        <th class="headTable">Название</th>
-                        <th class="headTable">Значение</th>
-                    </tr>
-                </thead>
-                <tbody class="paramBody">
-                    @foreach (var parameter in Model._revitParameters)
-                    {
+            <div class=param_section>
+                <div class="scroll">
+                    <table class="parameters" style="border-radius: 30px;">
+                    <thead class="paramHead">
                         <tr>
-                            <td class="parameter_name">@parameter.Name</td>
-                            <td class="parameter_value">@parameter.Value</td>
+                            <th class="headTable">Название</th>
+                            <th class="headTable">Значение</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="paramBody">
+                        @foreach (var parameter in Model._revitParameters)
+                        {
+                            <tr>
+                                <td class="parameter_name">@parameter.Name</td>
+                                <td class="parameter_value">@parameter.Value</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                </div>
+                <div class="plug">
+                    <p>Заглушка</p>
+                </div>
             </div>
             <div class="node_picture">
                 <img class="nodePic" src="data:image/jpg;base64,@FamSymbolViewModel.ImageByteToBase64ImageTag(Model._familySymbol.Image)"/>

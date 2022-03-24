@@ -181,7 +181,7 @@ input[type="search"] {
 .scroll {
     position: -webkit-sticky; /* Safari */
     position: sticky;
-    top: 10%;
+    top: 11%;
 }
 
 /* Container content nodes*/
@@ -510,6 +510,9 @@ ul {
 
 .param_section {
     margin: 5% 5% 5% 10%;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 10%;
 }
 
 .parameters {
