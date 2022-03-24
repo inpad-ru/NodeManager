@@ -10,10 +10,6 @@ body {
   height: 100%;
 }
 
-/*html * {
-    box-sizing: border-box;
-}*/
-
 .main_container {
     display: grid;
 }
@@ -49,11 +45,9 @@ h5 {
     text-align: center;
     font-weight: bold;
     word-break: break-all;
-    /*grid-column: 1 / 4;*/
     grid-row: 1;
     grid-column: 1 / 4;
     width: 100%;
-    /*padding-right: 15%*/
 }
 
 
@@ -70,7 +64,6 @@ h5 {
     background-color: white;
     color: black;
     font-size: 20px;
-    /*width: 100%;*/
     border: 1px solid #DAD9D9;
     cursor: pointer;
     align-items: center;
@@ -93,7 +86,6 @@ input[type="search"] {
     background-color: white;
     color: black;
     font-size: 20px;
-    /*width: 100%;*/
     border: 1px solid #DAD9D9;
     cursor: pointer;
     align-items: start;
@@ -206,11 +198,9 @@ input[type="search"] {
 
 .node_name {
   width: 100%;
-  /*height: 75px;*/
   border-top: 1px solid black;
   text-align: center;
   vertical-align: middle;
-  /*padding-top: 20px;*/
 }
 
 .p:hover::after {
@@ -228,115 +218,8 @@ p, span {
     transform: translate(395%, -10%);
 }
 
-/* Nodes content */
 
-
-
-
-
-
-/* Container */
-
-
-
-
-/* Container navbar filters*/
-
-
-
-
-
-/* Закрываем lightbox */
-/*.lightbox {
-  display: none;
-}*/
-
-/* Открываем lightbox */
-/*.lightbox:target {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 80%;
-  height: 90%;
-  display: block;
-  text-align: center;
-  margin: 5% 10%;
-  z-index: 1;
-}*/
-
-/* Содержимое lightbox  */
-/*.lightbox figcaption {
-  width: 100%;
-  position: relative;*/
-  /*padding: 1.5em;*/
-  /*background-color: white;
-}
-
-.lightbox figcaption p {
-  position: relative;
-  padding: 10px;
-  border-bottom: 1px solid black;*/
-  /*margin: 10px;*/
-  /*background-color: lightgoldenrodyellow;*/
-/*}
-
-.lightbox figcaption img {
-  width: 100%;
-  height: 50%;
-  position: relative;*/
-  /*padding: 1.5em;*/
-  /*background-color: lightblue;
-}*/
-
-/* Кнопка закрытия */
-/*.lightbox .close {
-  position: fixed;
-  display: block;
-  top: 20px;
-  right: 20px;
-}*/
-
-/* Кнопка скачивания */
-/*.lightbox .dwn {
-  position: fixed;
-  display: block;
-  top: 20px;
-  left: 20px;
-  background: rgba(0, 0, 0, 0);
-  border: 0;
-}
-
-.lightbox .close::after {
-  right: -1rem;
-  top: -1rem;
-  width: 2rem;
-  height: 2rem;
-  position: absolute;
-  display: flex;
-  z-index: 1;
-  align-items: center;
-  justify-content: center;
-  background-color: black;
-  border-radius: 50%;
-  color: white;*/
-  /*content: "×";*/
-  /*cursor: pointer;
-}*/
-
-/* Обёртка lightbox  */
-/*.lightbox .close::before {
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  background-color: rgba(0,0,0,.7);
-  content: "";
-  cursor: default;
-}*/
-
-
-/* Иерархическое меню, файл NavBar.cshtml  */
+/* Иерархическое меню, файл NavBar.cshtml ----------------------------------------------------------------- */
 
 ul {
     list-style-type: none;
@@ -345,8 +228,6 @@ ul {
 .accordion-menu {
     list-style-type: none;
     width: 90%;
-    /*max-width: 350px;*/
-    /*margin: 60px auto 20px;*/
     align-self: center;
     justify-self: left;
     margin: 5% 5% 5% 10%;
@@ -376,8 +257,6 @@ ul {
 }
 
 .accordion-menu li.open .dropdownlink {
-    /*color: #CDDC39;*/
-        
 }
 
 .accordion-menu li.open .dropdownlink .fa-caret-down {
@@ -392,8 +271,6 @@ ul {
     cursor: pointer;
     display: block;
     padding: 5% 5% 0 10%;
-    /*font-size: 18px;*/
-    /*border-bottom: 1px solid #ccc;*/
     color: black;
     position: relative;
     transition: all 0.4s ease-out;
@@ -406,19 +283,15 @@ ul {
 }
 
 .dropdownlink .fa-caret-down {
-    /*left: 5%;*/
     right: auto;
 }
 
 .submenu {
     display: block;
-    /*background: #C8E6C9;*/
     padding-left: 0;
-    /*word-break: break-all;*/
 }
 
 .submenu li {
-    /*border-bottom: 1px solid #B6B6B6;*/
     position: static;
     left: 0;
 
@@ -427,18 +300,15 @@ ul {
 .submenu a {
     display: block;
     color: black;
-    padding: 0;  /*padding: 5% 0 0 0;*/
+    padding: 0;
     transition: all 0.4s ease-out;
-    /*word-break: break-all;*/
 }
 
 .submenu a:hover {
-    /*background-color: #CDDC39;*/
-    /*color: #fff;*/
 }
 
 
-/* Страница узлов, файл FamSymbol.cshtml  */
+/* Страница узлов, файл FamSymbol.cshtml ------------------------------------------------------ */
 
 .containerNode {
     display: grid;
@@ -543,4 +413,69 @@ td {
 
 .node_picture {
     text-align: center;
+}
+
+
+
+/* Страница авторизации Login.cshtml --------------------------------------------------------------- */
+
+
+
+/* Страница регистрации Register.cshtml ------------------------------------------------------------ */
+
+.page_register, .page_login {
+   /* background: yellow;*/
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+}
+
+.registration, .authorization {
+    margin: auto;
+}
+
+.registration h2, .authorization h2{
+    text-align: center;
+}
+
+.formRegistration, .formAuthorization {
+}
+
+.fieldForm, .form-group {
+    display: grid;
+    grid-template-rows: auto;
+    grid-auto-columns: 50% 50%;
+    align-items: center;
+}
+
+.fieldForm label, .form-group label {
+    grid-column: 1 / 2;
+    justify-self: end;
+    margin-right: 5px;
+}
+
+.fieldForm input, .form-group input {
+    grid-column: 2 / 3;
+}
+
+.registration input {
+    border-radius: 10px;
+    border: 1px solid #DAD9D9;
+}
+
+.registration input:focus{
+    border: 1px solid black;
+}
+
+.but_reg {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.registration input[type="submit"] {
+
+    margin: 10px auto;
+    display: block;
 }

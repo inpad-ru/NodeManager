@@ -23,6 +23,6 @@ namespace NodeManager.Web.Models
             else return str.Substring(0, 27) + "...";
         }
 
-        public string userName = "dfghjkl";
+        public string userName = null;
     }
 }

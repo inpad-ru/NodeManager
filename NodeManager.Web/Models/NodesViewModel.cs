@@ -16,7 +16,7 @@ namespace NodeManager.Web.Models
 
         public CategorySection categorySection { get; set; }
 
-        public string userName = "dfsgfdf";
+        public string userName = null;
 
         public List<string> tagList = new List<string> {"tag1", "tag2", "tag3", "tag4", "tag5"};
 

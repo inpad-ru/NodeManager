@@ -2,33 +2,59 @@
 @{
     Layout = null;
 }
-<h2>Регистрация</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] Менеджер узлов</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<div class="page_register">
+    <div class="registration">
+        <h2>Регистрация</h2>
  
-<form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
-    <div class="validation" asp-validation-summary="ModelOnly"></div>
-    <div>
-        <div>
-            <label asp-for="Email">Введите Email</label><br />
-            <input type="text" asp-for="Email" />
-            <span asp-validation-for="Email" />
-        </div>
-        <div>
-            <label asp-for="Password">Введите пароль</label><br />
-            <input asp-for="Password" />
-            <span asp-validation-for="Password" />
-        </div>
-        <div>
-            <label asp-for="ConfirmPassword">Повторите пароль</label><br />
-            <input asp-for="ConfirmPassword" />
-            <span asp-validation-for="ConfirmPassword" />
-        </div>
-        <div>
-            <label asp-for="Company">Введите название компании</label><br />
-            <input type="text" asp-for="Company" />
-            <span asp-validation-for="Company" />
-        </div>
-        <div>
-            <input type="submit" value="Регистрация" />
-        </div>
+        <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
+            <div class="validation" asp-validation-summary="ModelOnly"></div>
+            <div class="formRegistration">
+                <div class="fieldForm">
+                    <label asp-for="Name">Введите имя</label>
+                    <input type="text" asp-for="Name" />
+                    <span asp-validation-for="Name" />
+                </div>
+                <div class="fieldForm">
+                    <label asp-for="Email">Введите Email</label>
+                    <input type="text" asp-for="Email" />
+                    <span asp-validation-for="Email" />
+                </div>
+                <div class="fieldForm">
+                    <label asp-for="Password">Введите пароль</label>
+                    <input asp-for="Password" />
+                    <span asp-validation-for="Password" />
+                </div>
+                <div class="fieldForm">
+                    <label asp-for="ConfirmPassword">Повторите пароль</label>
+                    <input asp-for="ConfirmPassword" />
+                    <span asp-validation-for="ConfirmPassword" />
+                </div>
+                <div class="fieldForm">
+                    <label asp-for="Company">Введите название компании</label>
+                    <input type="text" asp-for="Company" />
+                    <span asp-validation-for="Company" />
+                </div>
+                <div class="but_reg">
+                    <input type="submit" value="Регистрация" />
+                </div>
+            </div>
+        </form>
     </div>
-</form>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
