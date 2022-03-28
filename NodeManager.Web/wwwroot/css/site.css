@@ -417,11 +417,7 @@ td {
 
 
 
-/* Страница авторизации Login.cshtml --------------------------------------------------------------- */
-
-
-
-/* Страница регистрации Register.cshtml ------------------------------------------------------------ */
+/* Страница авторизации Login.cshtml и регистрации Register.cshtml ------------------------------------------------------------ */
 
 .page_register, .page_login {
    /* background: yellow;*/
@@ -441,6 +437,7 @@ td {
 }
 
 .formRegistration, .formAuthorization {
+    margin: auto;
 }
 
 .fieldForm, .form-group {
@@ -460,21 +457,21 @@ td {
     grid-column: 2 / 3;
 }
 
-.registration input {
+.registration input, .authorization input {
     border-radius: 10px;
     border: 1px solid #DAD9D9;
 }
 
-.registration input:focus{
+.registration input:focus, .authorization input:focus{
     border: 1px solid black;
 }
 
-.but_reg {
+.but_reg, .but_login {
     margin-left: auto;
     margin-right: auto;
 }
 
-.registration input[type="submit"] {
+.button_register, .button_login {
 
     margin: 10px auto;
     display: block;
