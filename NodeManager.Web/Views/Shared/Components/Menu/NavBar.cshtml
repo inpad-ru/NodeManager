@@ -19,12 +19,12 @@
 
 <div class="nav_filters">
     <div class="scroll">
-
     <ul class="accordion-menu">
         @foreach (var category in Model.Menu)
         {
         <li>
             <div class="dropdownlink">
+                @*< fa fa-chevron-down    fa-solid fa-caret-down    button class="but_category" onclick="window.location.href='/Node/List/@category.Key.Name'">@category.Key.Name<span class="fa fa-chevron-down"></span></button>*@
                 <a class="but_category" href="/Node/List/@category.Key.Name">@category.Key.Name<span class="fa-solid fa-caret-down fa-xs"></span></a>
             </div>
         
@@ -35,6 +35,7 @@
                     {
                         <li>
                             <a class="but_subcategory" href="/Node/List/@category.Key.Name/@subcategory.Name">@subcategory.Name</a>
+                            @*<button class="but_subcategory" onclick="window.location.href='/Node/List/@category.Key.Name/@subcategory.Name'">@subcategory.Name</button>*@
                         </li>
                     }
                 }
@@ -42,7 +43,8 @@
         </li>
         }
     </ul>
-</div>
-<div class="plug">
-    <p>Заглушка</p>
+    </div>
+    <div class="plug">
+        <p>Заглушка</p>
+    </div>
 </div>
