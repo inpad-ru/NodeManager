@@ -16,5 +16,6 @@ namespace NodeManager.Web.Models
 
         public CategorySection categorySection { get; set; }
 
+        public string userName = "dfsgfdf";
     }
 }
