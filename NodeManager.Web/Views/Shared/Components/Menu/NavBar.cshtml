@@ -1,6 +1,25 @@
 ﻿@model NodeManager.Web.Models.CategorySection
 
-<div class="scroll">
+@{
+    ViewData["Title"] = "Menu";
+}
+
+@*@foreach (var category in Model.Menu)
+{
+    <button onclick="window.location.href='/Node/List/@category.Key.Name'">@category.Key.Name</button>
+
+    if (category.Key.Id == Model.SelectedSection)
+    {
+        foreach (var i in category.Value)
+        {
+            <button onclick="window.location.href='/Node/List/@category.Key.Name/@i.Name'">@i.Name</button>
+        }
+    } 
+}*@
+
+<div class="nav_filters">
+    <div class="scroll">
+
     <ul class="accordion-menu">
         @foreach (var category in Model.Menu)
         {
