@@ -10,6 +10,8 @@ using NodeManager.Web.Repository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace NodeManager.Web.Controllers
 {
@@ -62,6 +64,7 @@ namespace NodeManager.Web.Controllers
             {
                 model.categorySection.SelectedSection = sec.Id;
             }
+            model.userName = HttpContext.User.Identity.Name;
             
             return View(model);
         }
@@ -116,6 +119,7 @@ namespace NodeManager.Web.Controllers
             return View("List", model);
         }
 
+        [Authorize]
         [Route("Delete/{id:int}")]
         public IActionResult Delete(int id)
         {
