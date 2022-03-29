@@ -19,7 +19,7 @@ namespace NodeManager.Web.Controllers
     public class NodeController : Controller
     {
         private INodes repos;
-        private readonly NodeManagerDBEntities dbContext;
+        //private readonly NodeManagerDBEntities dbContext;
         //public int pageSize = 4;
         
         public NodeController(INodes repo)
@@ -34,6 +34,7 @@ namespace NodeManager.Web.Controllers
         [Route("List/{section?}/{category?}")]
         public ViewResult List(string section, string category)
         {
+            //using(NodeManagerDBEntities r = new NodeManagerDBEntities())
             if (!repos.Categories.Any(x => x.Name == category))
             {
                 category = (string) null;
@@ -118,13 +119,10 @@ namespace NodeManager.Web.Controllers
         [Route("Delete/{id:int}")]
         public IActionResult Delete(int id)
         {
-            //var fs = repos.FamilySymbols.FirstOrDefault(x=> x.Id == id);
-            //dbContext.Entry(fs).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
             var fs = repos.FamilySymbols.FirstOrDefault(x => x.Id == id);
             repos.dbContext.Remove(fs);
             repos.dbContext.SaveChanges();
             return RedirectToAction("List", "Node");
-            //repos.FamilySymbols.Remove(repos.FamilySymbols.FirstOrDefault(x => x.Id == id));
         }
         private CategorySection GetCategorySection()
         {
