@@ -7,7 +7,6 @@ namespace NodeManager.Web.Abstract
     {
         NodeManagerDBEntities dbContext { get; }
         //IEnumerable<Node> Nodes { get; }
-        NodeManagerDBEntities dbContext { get; }
         IEnumerable<FamilySymbol> FamilySymbols { get; }
         IEnumerable<RevitParameter> RevParameters { get; }
         IEnumerable<Categories> Categories { get; }
