@@ -5,7 +5,7 @@ namespace NodeManager.Web.Abstract
 {
     public interface INodes
     {
-        NodeManagerDBEntities dbContext { get; }
+       
         //IEnumerable<Node> Nodes { get; }
         NodeManagerDBEntities dbContext { get; }
         IEnumerable<FamilySymbol> FamilySymbols { get; }
