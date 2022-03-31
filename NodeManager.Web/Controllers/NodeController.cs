@@ -80,7 +80,7 @@ namespace NodeManager.Web.Controllers
 
         [HttpPost]
         [Route("Search")]
-        public ViewResult Search(string[] tags)
+        public IActionResult Search(string[] tags)
         {
             NodesViewModel model = new NodesViewModel();
             //var splittedTags = tags.Split(';');
@@ -90,9 +90,9 @@ namespace NodeManager.Web.Controllers
             {
                 foreach (var tag in tags)
                 {
-                    tagsId.Add(repos.Tags.FirstOrDefault(x => x.Value.Equals(tag)).Id);
+                    tagsId.Add(repos.Tags.FirstOrDefault(x => x.Value.Equals(tag.ToLower())).Id);
                 }
-                connections = repos.FSTags.Where(x => x.TagId == tagsId.FirstOrDefault()).Select(x => x.FSId);
+                connections = repos.FSTags.Where(x => x.TagId == tagsId.First()).Select(x => x.FSId);
 
                 foreach (var tag in tagsId.Skip(1))
                 {

@@ -21,7 +21,7 @@
                 {
                     <form action="~/Node/Search" method="post">
                         
-                        <select data-placeholder="Поиск по тегу..." class="chosen-select" name="splittedTags" multiple>
+                        <select data-placeholder="Поиск по тегу..." class="chosen-select" name="tags" multiple>
                         @foreach(var nameTag in Model.tagList)
                         {
                             <option value="@nameTag">@nameTag</option>
