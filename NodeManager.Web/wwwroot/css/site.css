@@ -74,12 +74,12 @@ h5 {
     margin: auto;
 }
 
-input[type="search"]::-ms-clear { /* нестандартный псевдоэлемент IE */
-    display: none;
+/*input[type="search"]::-ms-clear {*/ /* нестандартный псевдоэлемент IE */
+    /*display: none;
 }
 
-input[type="search"]::-webkit-search-cancel-button { /* нестандартный псевдоэлемент WebKit/Blink, но Esc по-прежнему будет удалять раннее введённый текст */
-    display: none;
+input[type="search"]::-webkit-search-cancel-button {*/ /* нестандартный псевдоэлемент WebKit/Blink, но Esc по-прежнему будет удалять раннее введённый текст */
+    /*display: none;
 }
 
 input[type="search"] {
@@ -94,7 +94,28 @@ input[type="search"] {
     padding: 5px 10px;
     line-height: normal;
     box-sizing: border-box;
+}*/
+
+
+input {
+  height: 20px;
 }
+
+span.fa {
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  margin-right: -26px;
+  position: relative;
+  z-index: 1;
+  float: left;
+}
+
+span.fa + input {
+  padding-left: 26px;
+}
+
 
 
 /* Профиль, кнопки войти, зарегистрироваться и выйти */
