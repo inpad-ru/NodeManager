@@ -82,20 +82,21 @@ namespace NodeManager.Web.Controllers
             return View(model);
         }
 
-        [Route("Search/{tags}")]
-        public ViewResult Search(string tags)
+        [HttpPost]
+        [Route("Search")]
+        public IActionResult Search(string[] tags)
         {
             NodesViewModel model = new NodesViewModel();
-            var splittedTags = tags.Split(';');
+            //var splittedTags = tags.Split(';');
             HashSet<int> tagsId = new HashSet<int>();
             IEnumerable<int> connections;
             try
             {
-                foreach (var tag in splittedTags)
+                foreach (var tag in tags)
                 {
-                    tagsId.Add(repos.Tags.FirstOrDefault(x => x.Value.Equals(tag)).Id);
+                    tagsId.Add(repos.Tags.FirstOrDefault(x => x.Value.Equals(tag.ToLower())).Id);
                 }
-                connections = repos.FSTags.Where(x => x.TagId == tagsId.FirstOrDefault()).Select(x => x.FSId);
+                connections = repos.FSTags.Where(x => x.TagId == tagsId.First()).Select(x => x.FSId);
 
                 foreach (var tag in tagsId.Skip(1))
                 {
@@ -112,7 +113,7 @@ namespace NodeManager.Web.Controllers
             {
                 model.Symbols = repos.FamilySymbols.ToList();
             }
-            
+
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
 

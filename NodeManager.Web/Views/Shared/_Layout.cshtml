@@ -8,32 +8,27 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css"  rel="stylesheet"/>
 </head>
 <body>
     <main class="main_container">
         <header class="main_header">
             <h5>Узлы предоставлены для обязательной адаптации к проекту</h5>
             <div class="search_tag">
-            @if (@Model.tagList != null)
-            {
-                @*<div class="button_search_tag">
-                <button class="b_search_tag">Поиск по тегу</button>
-                </div>*@
-                <form action="" method="get">
-
-                    <input name="search_text" placeholder="Поиск по тегу" type="search" list="tegi">
-                    @*<input type="submit" formaction="/Search/" value="Найти" >*@
-                    <button class="b_search_tag" onclick="/Search/"><span class="fa fa-search"></span></button>
-                    <datalist id="tegi" multiple="multiple">
+                @if (@Model.tagList != null)
+                {
+                    <form action="~/Node/Search" method="post">
+                        
+                        <select data-placeholder="Поиск по тегу..." class="chosen-select" name="tags" multiple>
                         @foreach(var nameTag in Model.tagList)
                         {
-                            <option>@nameTag</option>
+                            <option value="@nameTag">@nameTag</option>
                         }
-                    </datalist>
-                </form>
-            }
+                        </select>
+                        <button class="b_search_tag" type="submit"><span class="fa fa-search"></span></button>
+                    </form>
+                }
             </div>
-            
 
             <div class="user">
                 <button class="but_user"><span class="fa-solid fa-user"></span></button>
@@ -57,6 +52,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
