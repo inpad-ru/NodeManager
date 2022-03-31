@@ -1,4 +1,4 @@
-@model NodeManager.Web.Models.FamSymbolViewModel
+﻿@model NodeManager.Web.Models.FamSymbolViewModel
 
 @{
     Layout = null;
@@ -16,83 +16,58 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav class="grid_nav_header">
-            <div class="header_nav_left">
-                <div class="nav_back">
-                    <a class="b_back" asp-area="" asp-controller="Home" asp-action="Index">Назад</a>
-
-                </div>
-
-                <div class="button_search">
-                    <button class="b_search">Найти...</button>
-                </div>
-            </div>
-
-            <div class="header_nav_right">
-                <h5>Узлы предоставлены для обязательной адаптации к проекту</h5>
-
-                <div class="button_search_tag">
-                    <button class="b_search_tag">Поиск по тегу</button>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <main class="grid_container">
-        <div class="nav_filters">
-            <div class="button_wall">
-                <button class=" b_wall">АР</button>
-            </div>
-
-            <div class="button_roof">
-                <button class="b_roof" >КР</button>
-            </div>
-
-            <div class="button_window">
-                <button class="b_window" >КЖ</button>
-            </div>
-
-            <div class="button_bridge">
-                <button class="b_bridge" >ОВ</button>
-            </div>
-
-            <div class="button_overlap">
-                <button class="b_overlap" >ВК</button>
-            </div>
-
-            <div class="button_floor">
-                <button class="b_floor" >ЭЛ</button>
-            </div>
-        </div>
-
-        <div class="content_nodes">
-            <div class="nodes">
-                @foreach (var nodI in Model._revitParameters)
+    <main class="containerNode">
+        <div class="headerNode">
+           <p class="title">@Model._familySymbol.Name</p>
+           <div class="but_group">
+                @if (Model.userName == null)
                 {
-                    <div class="node">
-                        <img src="~/nodes/tmp - Чертежный вид - Кровля_Водосточная воронка.jpg">
-                        <button class="btn" onclick="window.location.href='#node1';"><p class="fas fa-search-plus"></p></button>
-                        <div class="node_name">
-                            <p>@nodI.Name</p>
-                        </div>
-                        <div class="lightbox" id="#node1">
-                            <figure>
-                                <button class="close" onclick="window.location.href='#';"><p class="fas fa-times"></p></button>
-                                <button class="dwn"><p class="far fa-save"></p></button>
-                                <figcaption>
-                                    <p>@nodI.Name</p>
-                                    <img src="~/nodes/tmp - Чертежный вид - Кровля_Водосточная воронка.jpg">
-                                </figcaption>
-                            </figure>
-                        </div>
-                    </div>
+                    <button class="b_download" onclick="" title="Ñêà÷àòü"><span class="fa-solid fa-download"></span></button>
                 }
+                else
+                {
+                    <button class="b_download" onclick="" title="Ñêà÷àòü"><span class="fa-solid fa-download"></span></button>
+                    <button class="b_edit" onclick="" title="Ðåäàêòèðîâàòü"><span class="fa-solid fa-pencil"></span></button>
+                    <button class="b_delete" onclick="/Node/Delete/@Model._familySymbol.Id" title="Óäàëèòü"><span class="fa-solid fa-trash"></span></button>
+                }
+           </div>
+           <div class="but_close">
+               <button class="b_close" onclick="" title="Çàêðûòü"><span class="fas fa-times"></span></button>
+           </div>
+        </div>
+        <div class="contentNode">
+            <div class=param_section>
+                <div class="scroll">
+                    <table class="parameters" style="border-radius: 30px;">
+                    <thead class="paramHead">
+                        <tr>
+                            <th class="headTable">Íàçâàíèå</th>
+                            <th class="headTable">Çíà÷åíèå</th>
+                        </tr>
+                    </thead>
+                    <tbody class="paramBody">
+                        @foreach (var parameter in Model._revitParameters)
+                        {
+                            <tr>
+                                <td class="parameter_name">@parameter.Name</td>
+                                <td class="parameter_value">@parameter.Value</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                </div>
+                <div class="plug">
+                    <p>Çàãëóøêà</p>
+                </div>
+            </div>
+            <div class="node_picture">
+                <img class="nodePic" src="data:image/jpg;base64,@FamSymbolViewModel.ImageByteToBase64ImageTag(Model._familySymbol.Image)"/>
             </div>
         </div>
     </main>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    @*await RenderSectionAsync("Scripts", required: false)*@
 </body>
 </html>

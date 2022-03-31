@@ -13,6 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Configuration;
+using System.Security.Claims;
+using NodeManager.Web.Requirements;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace NodeManager.Web
 {
@@ -37,6 +40,18 @@ namespace NodeManager.Web
             services.AddDbContext<NodeManagerDBEntities>(options => options.UseSqlServer(_configString.GetConnectionString("NodeManagerDBEntities")));
             services.AddControllersWithViews();
             services.AddTransient<INodes, NodeRep>();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => //CookieAuthenticationOptions
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("OnlyForInpad", policy =>
+                {
+                    policy.RequireClaim("Company", "Inpad");
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,45 +72,14 @@ namespace NodeManager.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();    // аутентификация
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "Node2",
-                    pattern: "Node/List",
-                    defaults: new { controller = "Node", action = "List", category = (string)null, page = 1 });
-
-                endpoints.MapControllerRoute(
-                    name: "Node1",
-                    pattern: "Node/List/{category}",
-                    defaults: new { controller = "Node", action = "List", category = "category", page = 1 });
-
-                endpoints.MapControllerRoute(
-                    name: "Node",
-                    pattern: "Node/List/{category}/{page}",
-                    defaults: new { controller = "Node", action = "List", category = "category", page = "page" });
-
-                endpoints.MapControllerRoute(
-                    name: "FamSymbol",
-                    pattern: "Node/FamSymbol/{id}",
-                    defaults: new { controller = "Node", action = "FamSymbol", id="id" });
-
-                endpoints.MapControllerRoute(
-                   name: "Nav1",
-                   pattern: "Nav/Menu",
-                   defaults: new { controller = "Nav", action = "Menu", category = (string)null });
-
-                endpoints.MapControllerRoute(
-                   name: "Nav",
-                   pattern: "Nav/Menu/{category}",
-                   defaults: new { controller = "Nav", action = "Menu", category = "category" });
-
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{category?}");
-
-                
+                name: "default",
+                pattern: "{controller=Demo}/{action=List}");
             });
         }
     }

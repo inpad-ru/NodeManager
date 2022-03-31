@@ -1,8 +1,14 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model System.Security.Claims.ClaimsPrincipal
+@{
+    //ViewData["Title"] = "Home Page";
+    Layout = null;
 }
 
 <!-- <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div> -->
+<p>
+    @Model.Identity.Name
+</p>
+<a href="/Account/Logout">Выйти</a>

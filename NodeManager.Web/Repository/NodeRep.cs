@@ -8,17 +8,29 @@ namespace NodeManager.Web.Repository
 {
     public class NodeRep : INodes
     {
-        private readonly NodeManagerDBEntities dbContext;
+        private NodeManagerDBEntities dbContext;
 
         public NodeRep(NodeManagerDBEntities dbContext)
         {
             this.dbContext = dbContext;
         }
 
-        public IEnumerable<Node> Nodes => dbContext.Nodes;
+        //public IEnumerable<Node> Nodes => dbContext.Nodes;
 
         public IEnumerable<FamilySymbol> FamilySymbols => dbContext.FamilySymbols;
 
         public IEnumerable<RevitParameter> RevParameters => dbContext.RevitParameters;
+
+        public IEnumerable<Categories> Categories => dbContext.Categories;
+
+        public IEnumerable<Sections> Sections => dbContext.Sections;
+
+        public IEnumerable<Tags> Tags => dbContext.Tags;
+
+        public IEnumerable<FSTags> FSTags => dbContext.FSTags;
+
+        public IEnumerable<Users> Users => dbContext.Users;
+
+        NodeManagerDBEntities INodes.dbContext => dbContext;
     }
 }
