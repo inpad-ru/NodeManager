@@ -34,7 +34,7 @@ namespace NodeManager.Web.Controllers
         //[Route("List/{section:string}")]
         //[Authorize(Policy = "OnlyForInpad")]
         [Route("List/{section?}/{category?}")]
-        public ViewResult List(string section, string category)
+        public async Task<ViewResult> List(string section, string category)
         {
             //using(NodeManagerDBEntities r = new NodeManagerDBEntities())
             if (!repos.Categories.Any(x => x.Name == category))
@@ -64,7 +64,8 @@ namespace NodeManager.Web.Controllers
             {
                 model.categorySection.SelectedSection = sec.Id;
             }
-            model.userName = HttpContext.User.Identity.Name;
+            model.UserName = HttpContext.User.Identity.Name;
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
             return View(model);
         }
@@ -84,7 +85,7 @@ namespace NodeManager.Web.Controllers
 
         [HttpPost]
         [Route("Search")]
-        public IActionResult Search(string[] tags)
+        public async Task<IActionResult> Search(string[] tags)
         {
             NodesViewModel model = new NodesViewModel();
             //var splittedTags = tags.Split(';');
