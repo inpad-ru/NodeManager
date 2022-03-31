@@ -130,6 +130,20 @@ namespace NodeManager.Web.Controllers
             repos.dbContext.SaveChanges();
             return RedirectToAction("List", "Node");
         }
+
+        [Route("DownloadFile/{id:int}")]
+        public FileResult DownloadFile(int id)
+        {
+            // Путь к файлу
+            string file_path="";
+            //string file_path = Server.MapPath(repos.FamilySymbols.First(x => x.Id == id).ImagePath);
+            //string file_path = Server.MapPath("~/Files/PDFIcon.pdf");
+            // Тип файла - content-type
+            string file_type = "application/pdf";
+            // Имя файла - необязательно
+            string file_name = "PDFIcon.pdf";
+            return File(file_path, file_type, file_name);
+        }
         private CategorySection GetCategorySection()
         {
             CategorySection categorySection = new CategorySection();
