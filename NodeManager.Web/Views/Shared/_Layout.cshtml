@@ -17,37 +17,21 @@
         <header class="main_header">
             <h5>Узлы предоставлены для обязательной адаптации к проекту</h5>
             <div class="search_tag">
-            @if (@Model.tagList != null)
-            {
-                @*<div class="button_search_tag">
-                <button class="b_search_tag">Поиск по тегу</button>
-                </div>*@
-                
-                <form action="" method="get">
-                    @*<input />
-                    <select data-placeholder="Choose a country..." class="chosen-select" multiple tabindex="-1" >*@
-                    <label>Выбор города</label>
-                    <select data-placeholder="Select a Language..." class="chosen-select" multiple>
-                    @*<select data-placeholder="Choose programming language" style="width:200px;" multiple >*@
-                    @*<select id="city" name="city" multiple class="chosen-select">*@
-                        <option value="">не выбрано</option>
-                    @*</select>*@
-                    @foreach(var nameTag in Model.tagList)
-                    {
-                        <option value="@nameTag">@nameTag</option>
-                    }
-                    </select>
-                    <button class="b_search_tag" onclick="/Search/"><span class="fa fa-search"></span></button>
-                    @*<datalist id="tegi" multiple="multiple">
-                    var nameTag in Model.tagList
-                    {
-                    <option>@nameTag</option>
-                    }
-                    </datalist>*@
+                @if (@Model.tagList != null)
+                {
+                    <form action="~/Node/Search" method="post">
+                        
+                        <select data-placeholder="Поиск по тегу..." class="chosen-select" name="splittedTags" multiple>
+                        @foreach(var nameTag in Model.tagList)
+                        {
+                            <option value="@nameTag">@nameTag</option>
+                        }
+                        </select>
+                        @*<button class="b_search_tag" onclick="/Search/"><span class="fa fa-search"></span></button>*@
+                        <input type="submit" value="Отправить" />
                     </form>
-            }
+                }
             </div>
-            
 
             <div class="user">
                 <button class="but_user"><span class="fa-solid fa-user"></span></button>
