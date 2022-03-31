@@ -23,7 +23,7 @@ namespace NodeManager.Web.Controllers
         private INodes repos;
         //private readonly NodeManagerDBEntities dbContext;
         //public int pageSize = 4;
-        
+
         public NodeController(INodes repo)
         {
             repos = repo;
@@ -39,7 +39,7 @@ namespace NodeManager.Web.Controllers
             //using(NodeManagerDBEntities r = new NodeManagerDBEntities())
             if (!repos.Categories.Any(x => x.Name == category))
             {
-                category = (string) null;
+                category = (string)null;
             }
             if (!repos.Sections.Any(x => x.Name == section))
             {
@@ -65,7 +65,7 @@ namespace NodeManager.Web.Controllers
                 model.categorySection.SelectedSection = sec.Id;
             }
             model.userName = HttpContext.User.Identity.Name;
-            
+            model.tagList = repos.Tags.Select(x => x.Value).ToList();
             return View(model);
         }
 
@@ -77,7 +77,7 @@ namespace NodeManager.Web.Controllers
                 _familySymbol = repos.FamilySymbols.FirstOrDefault(x => x.Id == id),
                 _revitParameters = repos.RevParameters
                     .Where(c => c.SymbolId == id)
-                    .OrderBy(c=>c.Id)
+                    .OrderBy(c => c.Id)
             };
             return View(model);
         }
@@ -116,6 +116,7 @@ namespace NodeManager.Web.Controllers
 
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
+            model.tagList = repos.Tags.Select(x => x.Value).ToList();
 
             return View("List", model);
         }
@@ -147,21 +148,5 @@ namespace NodeManager.Web.Controllers
             }
             return categorySection;
         }
-
-        //[Authorize]
-        ////[AcceptVerbs( HttpVerbs.Get )]
-        //public ActionResult DisplayImage( int id )
-        //{
-        //    var symb = dbContext.FamilySymbols.FirstOrDefault(r => r.Id == id);
-            
-        //    return File( symb.Image, "image/jpg" );
-        //}
-        
-        //public Image byteArrayToImage(byte[] byteArrayIn)
-        //{
-        //    MemoryStream ms = new MemoryStream(byteArrayIn);
-        //    Image returnImage = Image.FromStream(ms);
-        //    return returnImage;
-        //}
     }
 }
