@@ -61,6 +61,8 @@ namespace NodeManager.Web.Controllers
             {
                 model.categorySection.SelectedSection = sec.Id;
             }
+
+            model.tagList = repos.Tags.Select(x => x.Value).ToList();
             
             return View(model);
         }
