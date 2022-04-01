@@ -10,6 +10,7 @@ using NodeManager.Web.Repository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -36,6 +37,7 @@ namespace NodeManager.Web.Controllers
         [Route("List/{section?}/{category?}")]
         public async Task<ViewResult> List(string section, string category)
         {
+
             //using(NodeManagerDBEntities r = new NodeManagerDBEntities())
             if (!repos.Categories.Any(x => x.Name == category))
             {
@@ -80,6 +82,8 @@ namespace NodeManager.Web.Controllers
                     .Where(c => c.SymbolId == id)
                     .OrderBy(c => c.Id)
             };
+            model.UserName = HttpContext.User.Identity.Name;
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             return View(model);
         }
 
@@ -113,6 +117,7 @@ namespace NodeManager.Web.Controllers
             catch (Exception ex)
             {
                 model.Symbols = repos.FamilySymbols.ToList();
+                model.IsTagSearchEmpty = true;
             }
 
             model.categorySection = GetCategorySection();
@@ -133,18 +138,31 @@ namespace NodeManager.Web.Controllers
         }
 
         [Route("DownloadFile/{id:int}")]
-        public FileResult DownloadFile(int id)
-        {
-            // Путь к файлу
-            string file_path="";
-            //string file_path = Server.MapPath(repos.FamilySymbols.First(x => x.Id == id).ImagePath);
-            //string file_path = Server.MapPath("~/Files/PDFIcon.pdf");
-            // Тип файла - content-type
-            string file_type = "application/pdf";
-            // Имя файла - необязательно
-            string file_name = "PDFIcon.pdf";
-            return File(file_path, file_type, file_name);
-        }
+        //public FileResult DownloadFile(int id)
+        //{
+        //    //// Путь к файлу
+        //    ////string file_path="";
+        //    ////string file_path = Server.MapPath(repos.FamilySymbols.First(x => x.Id == id).ImagePath);
+        //    //string file_path = Server.MapPath("https://mobimg.b-cdn.net/v3/fetch/4d/4df647582c491a06b151a81959eebd73.jpeg");
+        //    //// Тип файла - content-type
+        //    //string file_type = "application/pdf";
+        //    //// Имя файла - необязательно
+        //    //string file_name = "PDFIcon.pdf";
+        //    //return File(file_path, file_type, file_name);
+        //}
+
+        // Отправка потока
+        //public FileResult GetStream()
+        //{
+        //    //System.Web.HttpContext.Current.Server.MapPath(path);
+        //    string path = System.Web.Hosting.HostingEnvironment.MapPath("https://mobimg.b-cdn.net/v3/fetch/4d/4df647582c491a06b151a81959eebd73.jpeg");
+        //    // Объект Stream
+        //    FileStream fs = new FileStream(path, FileMode.Open);
+        //    string file_type = "application/pdf";
+        //    string file_name = "PDFIcon.pdf";
+        //    return File(fs, file_type, file_name);
+        //}
+
         private CategorySection GetCategorySection()
         {
             CategorySection categorySection = new CategorySection();
