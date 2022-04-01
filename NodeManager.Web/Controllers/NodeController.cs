@@ -36,6 +36,7 @@ namespace NodeManager.Web.Controllers
         [Route("List/{section?}/{category?}")]
         public async Task<ViewResult> List(string section, string category)
         {
+
             //using(NodeManagerDBEntities r = new NodeManagerDBEntities())
             if (!repos.Categories.Any(x => x.Name == category))
             {
@@ -80,6 +81,8 @@ namespace NodeManager.Web.Controllers
                     .Where(c => c.SymbolId == id)
                     .OrderBy(c => c.Id)
             };
+            model.UserName = HttpContext.User.Identity.Name;
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             return View(model);
         }
 
@@ -113,6 +116,7 @@ namespace NodeManager.Web.Controllers
             catch (Exception ex)
             {
                 model.Symbols = repos.FamilySymbols.ToList();
+                model.IsTagSearchEmpty = true;
             }
 
             model.categorySection = GetCategorySection();
