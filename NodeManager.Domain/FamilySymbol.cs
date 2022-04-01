@@ -27,7 +27,7 @@ namespace NodeManager.Domain
         
         public Nullable<int> AuthorId { get; set; }
         public string Name { get; set; }
-        public string ImagePath { get; set; }
+        public Nullable<int> FileId { get; set; }
         public Nullable<int> Scale { get; set; }
         public byte[] Image { get; set; }
         //public string Tags { get; set; }
