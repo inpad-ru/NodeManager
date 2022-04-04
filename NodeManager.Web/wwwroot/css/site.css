@@ -176,17 +176,18 @@ input.chosen-search-input.default {
     height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+}
+
+.nav_filters {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 13%;
+    z-index: 300;
 }
 
 .plug {
     display: none;
-}
-
-.scroll {
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
-    top: 11%;
-    z-index: 300;
 }
 
 /* Container content nodes*/
@@ -399,6 +400,13 @@ ul {
     color: black;
     border-radius: 10px;
     word-break: inherit;
+}
+
+.scroll {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 11%;
+    z-index: 300;
 }
 
 table, th, td {
