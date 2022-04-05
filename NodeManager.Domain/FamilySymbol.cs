@@ -48,6 +48,9 @@ namespace NodeManager.Domain
         [ForeignKey("AuthorId")]
         public virtual Users User { get; set; }
 
+        [ForeignKey("FileId")]
+        public virtual Files Files { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
         public virtual ICollection<RevitParameter> RevitParameters { get; set; }

@@ -11,6 +11,7 @@ using NodeManager.Web.Repository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Data.Entity;
 using System.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -126,6 +127,8 @@ namespace NodeManager.Web.Controllers
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
+            model.UserName = HttpContext.User.Identity.Name;
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
 
             return View("List", model);
         }
@@ -153,7 +156,21 @@ namespace NodeManager.Web.Controllers
             return PhysicalFile(file_path, file_type);
         }
 
-        private CategorySection GetCategorySection()
+        [Route("ProjectSection/{fileId:int}")]
+        public IActionResult ProjectSection(int fileId)
+        {
+            var model = new NodesViewModel();
+            model.Symbols = repos.FamilySymbols.Where(x => x.FileId == fileId).ToList();
+            model.categorySection = GetCategorySection(fileId);
+            model.CurrentSec = null;
+            model.UserName = HttpContext.User.Identity.Name;
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            model.tagList = repos.Tags.Select(x => x.Value).ToList(); 
+        
+            return View("List", model);
+        }
+
+        private CategorySection GetCategorySection(Nullable<int> fileId = null)
         {
             CategorySection categorySection = new CategorySection();
             if (repos.FamilySymbols.Count() != 0)
@@ -162,6 +179,7 @@ namespace NodeManager.Web.Controllers
                 foreach (var item in repos.Sections)
                 {
                     categorySection.Menu.Add(item, list
+                        .Where(x => (fileId == null) || (x.FileId == fileId))
                         .Where(x => x.Section == item)
                         .Select(symb => new Categories() { Id = symb.CategoryId.Value, Name = repos.Categories.FirstOrDefault(x => x.Id == symb.CategoryId).Name })
                         .GroupBy(p => p.Id)

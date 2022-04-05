@@ -44,7 +44,7 @@ namespace NodeManager.Domain
         public virtual DbSet<Tags> Tags { get; set; }
         public virtual DbSet<FSTags> FSTags { get; set; }
         public virtual DbSet<Users> Users { get; set; }
-        public virtual DbSet<Users> Files { get; set; }
+        public virtual DbSet<Files> Files { get; set; }
 
     }
 }
