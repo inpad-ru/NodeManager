@@ -14,6 +14,10 @@
     <main class="main_container">
         <header class="main_header">
             <h5>Узлы предоставлены для обязательной адаптации к проекту</h5>
+            <div class="button_back">
+                <button class="b_back" onclick="window.history.back()" title="Назад"><span class="fa-solid fa-arrow-left"></span></button>
+            </div>
+            
             <div class="search_tag">
                 @if (@Model.tagList != null)
                 {
