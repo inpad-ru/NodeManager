@@ -54,7 +54,7 @@ namespace NodeManager.Web.Controllers
                 if (user == null)
                 {
                     // добавляем пользователя в бд
-                    var u = new Users { Email = model.Email, Password = model.Password, Company = model.Company };
+                    var u = new Users { Email = model.Email, Name = model.Name, Password = model.Password, Company = model.Company };
                     db.Users.Add(u);
                     await db.SaveChangesAsync();
 
