@@ -1,5 +1,6 @@
 ﻿using NodeManager.Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
 using NodeManager.Web.Abstract;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
@@ -22,12 +23,14 @@ namespace NodeManager.Web.Controllers
     public class NodeController : Controller
     {
         private INodes repos;
+        private readonly IWebHostEnvironment _appEnvironment;
         //private readonly NodeManagerDBEntities dbContext;
         //public int pageSize = 4;
 
-        public NodeController(INodes repo)
+        public NodeController(INodes repo, IWebHostEnvironment appEnvironment)
         {
             repos = repo;
+            _appEnvironment = appEnvironment;
         }
 
         [Route("")]
@@ -140,16 +143,27 @@ namespace NodeManager.Web.Controllers
         [Route("DownloadFile/{id:int}")]
         //public FileResult DownloadFile(int id)
         //{
-        //    //// Путь к файлу
-        //    ////string file_path="";
-        //    ////string file_path = Server.MapPath(repos.FamilySymbols.First(x => x.Id == id).ImagePath);
-        //    //string file_path = Server.MapPath("https://mobimg.b-cdn.net/v3/fetch/4d/4df647582c491a06b151a81959eebd73.jpeg");
-        //    //// Тип файла - content-type
-        //    //string file_type = "application/pdf";
-        //    //// Имя файла - необязательно
-        //    //string file_name = "PDFIcon.pdf";
-        //    //return File(file_path, file_type, file_name);
+        //    // Путь к файлу
+        //    //string file_path="";
+        //    //string file_path = Server.MapPath(repos.FamilySymbols.First(x => x.Id == id).ImagePath);
+        //    string file_path = Server.MapPath("https://mobimg.b-cdn.net/v3/fetch/4d/4df647582c491a06b151a81959eebd73.jpeg");
+        //    // Тип файла - content-type
+        //    string file_type = "application/pdf";
+        //    // Имя файла - необязательно
+        //    string file_name = "PDFIcon.pdf";
+        //    return File(file_path, file_type, file_name);
         //}
+        [Route("GetFile")]
+        public IActionResult GetFile()
+        {
+            // Путь к файлу
+            string file_path = Path.Combine(_appEnvironment.ContentRootPath, "//files/BIMcontent/Ресурсы_Revit/Репозитории/Менеджер узлов/База данных узлов_2021.nmdb");
+            // Тип файла - content-type
+            string file_type = "archive/zip";
+            // Имя файла - необязательно
+            string file_name = "База данных узлов_2021.nmdb";
+            return PhysicalFile(file_path, file_type, file_name);
+        }
 
         // Отправка потока
         //public FileResult GetStream()

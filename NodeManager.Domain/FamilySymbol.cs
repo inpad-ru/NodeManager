@@ -37,8 +37,7 @@ namespace NodeManager.Domain
 
 
 
-        //[ForeignKey("FamilyId")]
-        //public virtual Node Node { get; set; }
+        
 
         [ForeignKey("CategoryId")]
         public virtual Categories Category { get; set; }

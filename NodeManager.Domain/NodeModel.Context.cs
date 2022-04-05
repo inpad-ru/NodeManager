@@ -38,12 +38,13 @@ namespace NodeManager.Domain
         //}
 
         public virtual DbSet<FamilySymbol> FamilySymbols { get; set; }
-        //public virtual DbSet<Node> Nodes { get; set; }
         public virtual DbSet<RevitParameter> RevitParameters { get; set; }
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<Sections> Sections { get; set; }
         public virtual DbSet<Tags> Tags { get; set; }
         public virtual DbSet<FSTags> FSTags { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Users> Files { get; set; }
+
     }
 }
