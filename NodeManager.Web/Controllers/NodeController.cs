@@ -140,42 +140,18 @@ namespace NodeManager.Web.Controllers
             return RedirectToAction("List", "Node");
         }
 
-        [Route("DownloadFile/{id:int}")]
-        //public FileResult DownloadFile(int id)
-        //{
-        //    // Путь к файлу
-        //    //string file_path="";
-        //    //string file_path = Server.MapPath(repos.FamilySymbols.First(x => x.Id == id).ImagePath);
-        //    string file_path = Server.MapPath("https://mobimg.b-cdn.net/v3/fetch/4d/4df647582c491a06b151a81959eebd73.jpeg");
-        //    // Тип файла - content-type
-        //    string file_type = "application/pdf";
-        //    // Имя файла - необязательно
-        //    string file_name = "PDFIcon.pdf";
-        //    return File(file_path, file_type, file_name);
-        //}
-        [Route("GetFile")]
-        public IActionResult GetFile()
+        [Route("GetFile/{id:int}")]
+        public IActionResult GetFile(int id)
         {
             // Путь к файлу
-            string file_path = Path.Combine(_appEnvironment.ContentRootPath, "//files/BIMcontent/Ресурсы_Revit/Репозитории/Менеджер узлов/База данных узлов_2021.nmdb");
+            string file_path = Path.Combine(_appEnvironment.ContentRootPath, repos.Files.FirstOrDefault(x => x.Id == id).FilePath);
+            //string file_path = Path.Combine(_appEnvironment.ContentRootPath, "//files/BIMcontent/Ресурсы_Revit/Репозитории/Менеджер узлов/База данных узлов_2021.nmdb");
             // Тип файла - content-type
-            string file_type = "archive/zip";
+            string file_type = "archive/rvt";
             // Имя файла - необязательно
-            string file_name = "База данных узлов_2021.nmdb";
-            return PhysicalFile(file_path, file_type, file_name);
+            //string file_name = "База данных узлов_2021.nmdb";
+            return PhysicalFile(file_path, file_type);
         }
-
-        // Отправка потока
-        //public FileResult GetStream()
-        //{
-        //    //System.Web.HttpContext.Current.Server.MapPath(path);
-        //    string path = System.Web.Hosting.HostingEnvironment.MapPath("https://mobimg.b-cdn.net/v3/fetch/4d/4df647582c491a06b151a81959eebd73.jpeg");
-        //    // Объект Stream
-        //    FileStream fs = new FileStream(path, FileMode.Open);
-        //    string file_type = "application/pdf";
-        //    string file_name = "PDFIcon.pdf";
-        //    return File(fs, file_type, file_name);
-        //}
 
         private CategorySection GetCategorySection()
         {
