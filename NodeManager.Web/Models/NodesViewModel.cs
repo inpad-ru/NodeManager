@@ -21,7 +21,7 @@ namespace NodeManager.Web.Models
 
         public bool IsLogin { get; set; }
 
-        public List<string> tagList = new List<string> { ".tag1", ".tag2", ".tag3", ".tag4", ".tag5" };
+        public List<string> tagList { get; set; }
 
         public bool IsTagSearchEmpty  = false;
 

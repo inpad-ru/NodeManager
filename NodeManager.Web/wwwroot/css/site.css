@@ -49,7 +49,7 @@ h5 {
     width: 100%;
 }
 
-.button_back {
+.button_group_left {
     grid-row: 2;
     grid-column: 1 / 2;
     align-self: center;
@@ -58,7 +58,7 @@ h5 {
 }
 
 
-.b_back, .b_search_tag, .but_user {
+.b_back, .b_download, .b_search_tag, .but_user {
     background-color: white;
     color: black;
     font-size: 20px;
@@ -66,6 +66,11 @@ h5 {
     cursor: pointer;
     border-radius: 10px;
     padding: 5px 10px;
+    margin: auto;
+}
+
+.b_download {
+    margin-left: 5%;
 }
 
 
@@ -187,6 +192,14 @@ input.chosen-search-input.default {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+}
+
+.but_downld {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 8.7%;
+    margin-left: 5%;
+    height: 43px;
 }
 
 .nav_filters {
@@ -367,15 +380,15 @@ ul {
     margin-right: 3%;
 }*/
 
-.button_back {
+/*.button_back {
     grid-row: 2;
     grid-column: 1 / 2;
     align-self: center;
     justify-self: start;
     margin-left: 10%;
-}
+}*/
 
-.b_back, .b_download, .b_edit, .b_delete {
+.b_backFS, .b_GoToProject, .b_edit, .b_delete {
     background-color: white;
     color: black;
     font-size: 20px;
@@ -389,7 +402,7 @@ ul {
     margin: auto;
 }
 
-.b_edit, .b_delete, .b_close {
+.b_edit, .b_delete {
     width: 41px;
 }
 

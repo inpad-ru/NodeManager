@@ -25,7 +25,5 @@ namespace NodeManager.Web.Models
             if (str.Length < 27) return str;
             else return str.Substring(0, 27) + "...";
         }
-
-        public string userName = "dfsf";
     }
 }
