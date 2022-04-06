@@ -21,11 +21,11 @@
            <h5>@Model._familySymbol.Name</h5>
            <div class="but_group">
                <button class="b_back" onclick="window.history.back()" title="Назад"><span class="fa-solid fa-arrow-left"></span></button>
-               <button class="b_download" onclick="/Node/ProjectSection/@Model._familySymbol.FileId" title="Перейти к проекту">Перейти к проекту</button>
+               <button class="b_download" onclick=window.location.href="/Node/ProjectSection/@Model._familySymbol.FileId" title="Перейти к проекту">Перейти к проекту</button>
                 @if (Model.userName != null)
                 {
                     <button class="b_edit" onclick="" title="Редактировать"><span class="fa-solid fa-pencil"></span></button>
-                    <button class="b_delete" onclick="/Node/Delete/@Model._familySymbol.Id" title="Удалить"><span class="fa-solid fa-trash"></span></button>
+                    <button class="b_delete" onclick=window.location.href="/Node/Delete/@Model._familySymbol.Id" title="Удалить"><span class="fa-solid fa-trash"></span></button>
                 }
            </div>
            @*<div class="but_close">

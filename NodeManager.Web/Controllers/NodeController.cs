@@ -51,8 +51,8 @@ namespace NodeManager.Web.Controllers
             {
                 section = (string)null;
             }
-            Categories cat = repos.Categories.FirstOrDefault(x => x.Name == category);
-            Sections sec = repos.Sections.FirstOrDefault(x => x.Name == section);
+            Categories cat = repos.Categories.FirstOrDefault(x => x.Name.Equals(category));
+            Sections sec = repos.Sections.FirstOrDefault(x => x.Name.Equals(section));
             NodesViewModel model = new NodesViewModel()
             {
                 Symbols = repos.FamilySymbols
@@ -138,7 +138,9 @@ namespace NodeManager.Web.Controllers
         public IActionResult Delete(int id)
         {
             var fs = repos.FamilySymbols.FirstOrDefault(x => x.Id == id);
+            var fsTagIds = repos.FSTags.Where(x => x.FSId == id);
             repos.dbContext.Remove(fs);
+            repos.dbContext.RemoveRange(fsTagIds);
             repos.dbContext.SaveChanges();
             return RedirectToAction("List", "Node");
         }
@@ -165,7 +167,8 @@ namespace NodeManager.Web.Controllers
             model.CurrentSec = null;
             model.UserName = HttpContext.User.Identity.Name;
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
-            model.tagList = repos.Tags.Select(x => x.Value).ToList(); 
+            model.tagList = repos.Tags.Select(x => x.Value).ToList();
+            model.IsProjectSection = true;
         
             return View("List", model);
         }

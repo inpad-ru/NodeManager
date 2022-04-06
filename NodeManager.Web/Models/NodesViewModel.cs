@@ -25,5 +25,7 @@ namespace NodeManager.Web.Models
 
         public bool IsTagSearchEmpty  = false;
 
+        public bool IsProjectSection = false;
+
     }
 }
