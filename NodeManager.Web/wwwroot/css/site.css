@@ -19,8 +19,7 @@ body {
 .main_header {
     display: grid;
     grid-template-rows: auto auto;
-    grid-auto-columns: auto auto minmax(30px, 90px);
-    ;
+    grid-auto-columns: 20% auto minmax(30px, 90px);
     background-color: white;
     position: -webkit-sticky; /* Safari */
     position: sticky;
@@ -46,9 +45,34 @@ h5 {
     font-weight: bold;
     word-break: break-all;
     grid-row: 1;
-    grid-column: 1 / 4;
+    grid-column: 1 / 3;
     width: 100%;
 }
+
+.button_group_left {
+    grid-row: 2;
+    grid-column: 1 / 2;
+    align-self: center;
+    justify-self: start;
+    margin-left: 10%;
+}
+
+
+.b_back, .b_download, .b_search_tag, .but_user {
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    border: 1px solid #DAD9D9;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin: auto;
+}
+
+.b_download {
+    margin-left: 5%;
+}
+
 
 
 /* Кнопка поиска по тегу */
@@ -61,29 +85,27 @@ h5 {
 }
 
 .b_search_tag {
-    background-color: white;
-    color: black;
-    font-size: 20px;
-    border: 1px solid #DAD9D9;
-    cursor: pointer;
     align-items: center;
     text-align: center;
-    border-radius: 10px;
-    padding: 5px 10px;
     line-height: normal;
     margin: auto;
     vertical-align: middle;
 }
 
+/* Настройки для поиска по тегу */
+
 .chosen-container-multi,
 .chosen-choices {
-    height: 34px !important;
+    min-height: 34px !important;
     border: none !important;
     border: 1px solid #DAD9D9 !important;
     border-radius: 10px !important;
     margin-top: 0 !important;
     padding-top: 0 !important;
     font-size: 18px !important;
+    box-sizing: content-box;
+    background-image: none !important;
+    background-color: none !important;
 }
 
 input.chosen-search-input.default {
@@ -103,6 +125,10 @@ input.chosen-search-input.default {
     color: black !important;
 }
 
+.chosen-container-multi .chosen-choices {
+    border: none !important;
+}
+
 /* Профиль, кнопки войти, зарегистрироваться и выйти */
 .user {
     grid-row: 2;
@@ -113,10 +139,6 @@ input.chosen-search-input.default {
 }
 
 .but_user {
-    background-color: white;
-    color: black;
-    border: 1px solid #DAD9D9;
-    cursor: pointer;
     align-items: center;
     text-align: center;
     border-radius: 50%;
@@ -133,27 +155,28 @@ input.chosen-search-input.default {
     background-color: white;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 200;
 }
 
-    .user_info p {
-        text-align: center;
-        margin: auto;
-    }
+.user_info p {
+    text-align: left;
+    padding: 12px 16px;
+    margin: auto;
+}
 
-    /* Ссылки внутри выпадающего списка */
-    .user_info a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        font-size: 16px;
-    }
+/* Ссылки внутри выпадающего списка */
+.user_info a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+}
 
-        /* Изменить цвет выпадающих ссылок при наведении */
-        .user_info a:hover {
-            background-color: #F0F0F0;
-        }
+/* Изменить цвет выпадающих ссылок при наведении */
+.user_info a:hover {
+    background-color: #F0F0F0;
+}
 
 /* Показывать выпадающее меню при наведении */
 .user:hover .user_info {
@@ -168,16 +191,26 @@ input.chosen-search-input.default {
     height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+}
+
+.but_downld {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 8.7%;
+    margin-left: 5%;
+    height: 43px;
+}
+
+.nav_filters {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 13%;
+    z-index: 300;
 }
 
 .plug {
     display: none;
-}
-
-.scroll {
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
-    top: 11%;
 }
 
 /* Container content nodes*/
@@ -238,7 +271,6 @@ ul {
     box-sizing: border-box;
     background-color: white;
     color: black;
-    width: 90%;
     border: 1px solid #DAD9D9;
     cursor: pointer;
     text-align: left;
@@ -260,12 +292,9 @@ ul {
     color: black;
 }
 
-.accordion-menu li.open .dropdownlink {
+.accordion-menu li.open .dropdownlink .fa-caret-down {
+    transform: rotate(180deg);
 }
-
-    .accordion-menu li.open .dropdownlink .fa-caret-down {
-        transform: rotate(180deg);
-    }
 
 .accordion-menu li:last-child .dropdownlink {
     border-bottom: 0;
@@ -280,35 +309,32 @@ ul {
     transition: all 0.4s ease-out;
 }
 
-    .dropdownlink span {
-        position: absolute;
-        top: 35%;
-        left: 0;
-    }
+.dropdownlink span {
+    position: absolute;
+    top: 35%;
+    left: 0;
+}
 
-    .dropdownlink .fa-caret-down {
-        right: auto;
-    }
+.dropdownlink .fa-caret-down {
+    right: auto;
+}
 
 .submenu {
     display: block;
     padding-left: 0;
 }
 
-    .submenu li {
-        position: static;
-        left: 0;
-    }
+.submenu li {
+    position: static;
+    left: 0;
+}
 
-    .submenu a {
-        display: block;
-        color: black;
-        padding: 0;
-        transition: all 0.4s ease-out;
-    }
-
-        .submenu a:hover {
-        }
+.submenu a {
+    display: block;
+    color: black;
+    padding-left: 20%;
+    transition: all 0.4s ease-out;
+}
 
 
 /* Страница узлов, файл FamSymbol.cshtml ------------------------------------------------------ */
@@ -322,7 +348,7 @@ ul {
 .headerNode {
     display: grid;
     grid-template-rows: auto auto;
-    grid-auto-columns: 20% 80%;
+    grid-auto-columns: 50% 50%;
     background-color: white;
     position: -webkit-sticky; /* Safari */
     position: sticky;
@@ -338,49 +364,50 @@ ul {
 
 /* Header button */
 
-.title {
-    white-space: normal;
-    text-align: center;
-    font-weight: bold;
-    word-break: break-all;
-    grid-row: 1;
-    grid-column: 1 / 3;
-    width: 100%;
-}
-
 .but_group {
     grid-row: 2;
     grid-column: 1 / 2;
     align-self: center;
     justify-self: start;
-    margin-left: 10%;
+    margin-left: 4%;
 }
 
-.but_close {
+/*.but_close {
     grid-row: 2;
     grid-column: 2 / 3;
     align-self: center;
     justify-self: end;
     margin-right: 3%;
-}
+}*/
 
-.b_download, .b_download1, .b_edit, .b_delete, .b_close {
+/*.button_back {
+    grid-row: 2;
+    grid-column: 1 / 2;
+    align-self: center;
+    justify-self: start;
+    margin-left: 10%;
+}*/
+
+.b_backFS, .b_GoToProject, .b_edit, .b_delete {
     background-color: white;
     color: black;
+    font-size: 20px;
     border: 1px solid #DAD9D9;
     cursor: pointer;
     align-items: center;
     text-align: center;
     border-radius: 10px;
     padding: 5px 10px;
-    line-height: normal;
+    /*line-height: normal;*/
     margin: auto;
+}
+
+.b_edit, .b_delete {
     width: 41px;
 }
 
 
 /* Параметры узлов, файл FamSymbol.cshtml  */
-
 .param_section {
     margin: 5% 5% 5% 10%;
     position: -webkit-sticky; /* Safari */
@@ -396,6 +423,13 @@ ul {
     color: black;
     border-radius: 10px;
     word-break: inherit;
+}
+
+.scroll {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 11%;
+    z-index: 300;
 }
 
 table, th, td {
@@ -435,9 +469,9 @@ td {
     margin: auto;
 }
 
-    .registration h2, .authorization h2 {
-        text-align: center;
-    }
+.registration h2, .authorization h2 {
+    text-align: center;
+}
 
 .formRegistration, .formAuthorization {
     margin: auto;
@@ -450,24 +484,24 @@ td {
     align-items: center;
 }
 
-    .fieldForm label, .form-group label {
-        grid-column: 1 / 2;
-        justify-self: end;
-        margin-right: 5px;
-    }
+.fieldForm label, .form-group label {
+    grid-column: 1 / 2;
+    justify-self: end;
+    margin-right: 5px;
+}
 
-    .fieldForm input, .form-group input {
-        grid-column: 2 / 3;
-    }
+.fieldForm input, .form-group input {
+    grid-column: 2 / 3;
+}
 
 .registration input, .authorization input {
     border-radius: 10px;
     border: 1px solid #DAD9D9;
 }
 
-    .registration input:focus, .authorization input:focus {
-        border: 1px solid black;
-    }
+.registration input:focus, .authorization input:focus {
+    border: 1px solid black;
+}
 
 .but_reg, .but_login {
     margin-left: auto;

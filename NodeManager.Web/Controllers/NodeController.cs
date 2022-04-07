@@ -1,5 +1,6 @@
 ﻿using NodeManager.Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
 using NodeManager.Web.Abstract;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@ using NodeManager.Web.Repository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Data.Entity;
 using System.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -22,12 +24,14 @@ namespace NodeManager.Web.Controllers
     public class NodeController : Controller
     {
         private INodes repos;
+        private readonly IWebHostEnvironment _appEnvironment;
         //private readonly NodeManagerDBEntities dbContext;
         //public int pageSize = 4;
 
-        public NodeController(INodes repo)
+        public NodeController(INodes repo, IWebHostEnvironment appEnvironment)
         {
             repos = repo;
+            _appEnvironment = appEnvironment;
         }
 
         [Route("")]
@@ -47,8 +51,8 @@ namespace NodeManager.Web.Controllers
             {
                 section = (string)null;
             }
-            Categories cat = repos.Categories.FirstOrDefault(x => x.Name == category);
-            Sections sec = repos.Sections.FirstOrDefault(x => x.Name == section);
+            Categories cat = repos.Categories.FirstOrDefault(x => x.Name.Equals(category));
+            Sections sec = repos.Sections.FirstOrDefault(x => x.Name.Equals(section));
             NodesViewModel model = new NodesViewModel()
             {
                 Symbols = repos.FamilySymbols
@@ -123,6 +127,8 @@ namespace NodeManager.Web.Controllers
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
+            model.UserName = HttpContext.User.Identity.Name;
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
 
             return View("List", model);
         }
@@ -132,38 +138,42 @@ namespace NodeManager.Web.Controllers
         public IActionResult Delete(int id)
         {
             var fs = repos.FamilySymbols.FirstOrDefault(x => x.Id == id);
+            var fsTagIds = repos.FSTags.Where(x => x.FSId == id);
             repos.dbContext.Remove(fs);
+            repos.dbContext.RemoveRange(fsTagIds);
             repos.dbContext.SaveChanges();
             return RedirectToAction("List", "Node");
         }
 
-        [Route("DownloadFile/{id:int}")]
-        //public FileResult DownloadFile(int id)
-        //{
-        //    //// Путь к файлу
-        //    ////string file_path="";
-        //    ////string file_path = Server.MapPath(repos.FamilySymbols.First(x => x.Id == id).ImagePath);
-        //    //string file_path = Server.MapPath("https://mobimg.b-cdn.net/v3/fetch/4d/4df647582c491a06b151a81959eebd73.jpeg");
-        //    //// Тип файла - content-type
-        //    //string file_type = "application/pdf";
-        //    //// Имя файла - необязательно
-        //    //string file_name = "PDFIcon.pdf";
-        //    //return File(file_path, file_type, file_name);
-        //}
+        [Route("GetFile/{id:int}")]
+        public IActionResult GetFile(int id)
+        {
+            // Путь к файлу
+            string file_path = Path.Combine(_appEnvironment.ContentRootPath, repos.Files.FirstOrDefault(x => x.Id == id).FilePath);
+            //string file_path = Path.Combine(_appEnvironment.ContentRootPath, "//files/BIMcontent/Ресурсы_Revit/Репозитории/Менеджер узлов/База данных узлов_2021.nmdb");
+            // Тип файла - content-type
+            string file_type = "archive/rvt";
+            // Имя файла - необязательно
+            //string file_name = "База данных узлов_2021.nmdb";
+            return PhysicalFile(file_path, file_type);
+        }
 
-        // Отправка потока
-        //public FileResult GetStream()
-        //{
-        //    //System.Web.HttpContext.Current.Server.MapPath(path);
-        //    string path = System.Web.Hosting.HostingEnvironment.MapPath("https://mobimg.b-cdn.net/v3/fetch/4d/4df647582c491a06b151a81959eebd73.jpeg");
-        //    // Объект Stream
-        //    FileStream fs = new FileStream(path, FileMode.Open);
-        //    string file_type = "application/pdf";
-        //    string file_name = "PDFIcon.pdf";
-        //    return File(fs, file_type, file_name);
-        //}
+        [Route("ProjectSection/{fileId:int}")]
+        public IActionResult ProjectSection(int fileId)
+        {
+            var model = new NodesViewModel();
+            model.Symbols = repos.FamilySymbols.Where(x => x.FileId == fileId).ToList();
+            model.categorySection = GetCategorySection(fileId);
+            model.CurrentSec = null;
+            model.UserName = HttpContext.User.Identity.Name;
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            model.tagList = repos.Tags.Select(x => x.Value).ToList();
+            model.IsProjectSection = true;
+        
+            return View("List", model);
+        }
 
-        private CategorySection GetCategorySection()
+        private CategorySection GetCategorySection(Nullable<int> fileId = null)
         {
             CategorySection categorySection = new CategorySection();
             if (repos.FamilySymbols.Count() != 0)
@@ -172,6 +182,7 @@ namespace NodeManager.Web.Controllers
                 foreach (var item in repos.Sections)
                 {
                     categorySection.Menu.Add(item, list
+                        .Where(x => (fileId == null) || (x.FileId == fileId))
                         .Where(x => x.Section == item)
                         .Select(symb => new Categories() { Id = symb.CategoryId.Value, Name = repos.Categories.FirstOrDefault(x => x.Id == symb.CategoryId).Name })
                         .GroupBy(p => p.Id)

@@ -31,6 +31,8 @@ namespace NodeManager.Web.Repository
 
         public IEnumerable<Users> Users => dbContext.Users;
 
+        public IEnumerable<Files> Files => dbContext.Files;
+
         NodeManagerDBEntities INodes.dbContext => dbContext;
     }
 }

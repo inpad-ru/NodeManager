@@ -14,5 +14,6 @@ namespace NodeManager.Web.Abstract
         IEnumerable<Tags> Tags { get; }
         IEnumerable<FSTags> FSTags { get; }
         IEnumerable<Users> Users { get; }
+        IEnumerable<Files> Files { get; }
     }
 }

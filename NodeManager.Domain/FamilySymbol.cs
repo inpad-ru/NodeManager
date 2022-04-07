@@ -37,8 +37,7 @@ namespace NodeManager.Domain
 
 
 
-        //[ForeignKey("FamilyId")]
-        //public virtual Node Node { get; set; }
+        
 
         [ForeignKey("CategoryId")]
         public virtual Categories Category { get; set; }
@@ -48,6 +47,9 @@ namespace NodeManager.Domain
 
         [ForeignKey("AuthorId")]
         public virtual Users User { get; set; }
+
+        [ForeignKey("FileId")]
+        public virtual Files Files { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
