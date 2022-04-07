@@ -74,8 +74,8 @@ namespace NodeManager.Web.Controllers
             // создаем один claim
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.Name),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
+                new Claim(ClaimTypes.Email, user.Email),
                 new Claim("Company", user.Company)
             };
             // создаем объект ClaimsIdentity
@@ -87,7 +87,7 @@ namespace NodeManager.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("List", "Node");
         }
     }
 }
