@@ -25,8 +25,6 @@ namespace NodeManager.Web.Controllers
     {
         private INodes repos;
         private readonly IWebHostEnvironment _appEnvironment;
-        //private readonly NodeManagerDBEntities dbContext;
-        //public int pageSize = 4;
 
         public NodeController(INodes repo, IWebHostEnvironment appEnvironment)
         {
@@ -35,14 +33,9 @@ namespace NodeManager.Web.Controllers
         }
 
         [Route("")]
-        //[Route("List")]
-        //[Route("List/{section:string}")]
-        //[Authorize(Policy = "OnlyForInpad")]
         [Route("List/{section?}/{category?}")]
-        public async Task<ViewResult> List(string section, string category)
+        public ViewResult List(string section, string category)
         {
-
-            //using(NodeManagerDBEntities r = new NodeManagerDBEntities())
             if (!repos.Categories.Any(x => x.Name == category))
             {
                 category = (string)null;
@@ -93,10 +86,9 @@ namespace NodeManager.Web.Controllers
 
         [HttpPost]
         [Route("Search")]
-        public async Task<IActionResult> Search(string[] tags)
+        public IActionResult Search(string[] tags)
         {
             NodesViewModel model = new NodesViewModel();
-            //var splittedTags = tags.Split(';');
             HashSet<int> tagsId = new HashSet<int>();
             IEnumerable<int> connections;
             try
@@ -148,13 +140,8 @@ namespace NodeManager.Web.Controllers
         [Route("GetFile/{id:int}")]
         public IActionResult GetFile(int id)
         {
-            // Путь к файлу
             string file_path = Path.Combine(_appEnvironment.ContentRootPath, repos.Files.FirstOrDefault(x => x.Id == id).FilePath);
-            //string file_path = Path.Combine(_appEnvironment.ContentRootPath, "//files/BIMcontent/Ресурсы_Revit/Репозитории/Менеджер узлов/База данных узлов_2021.nmdb");
-            // Тип файла - content-type
             string file_type = "archive/rvt";
-            // Имя файла - необязательно
-            //string file_name = "База данных узлов_2021.nmdb";
             return PhysicalFile(file_path, file_type);
         }
 
@@ -176,7 +163,7 @@ namespace NodeManager.Web.Controllers
         private CategorySection GetCategorySection(Nullable<int> fileId = null)
         {
             CategorySection categorySection = new CategorySection();
-            if (repos.FamilySymbols.Count() != 0)
+            if (repos.FamilySymbols.Any())
             {
                 var list = repos.FamilySymbols.ToList();
                 foreach (var item in repos.Sections)

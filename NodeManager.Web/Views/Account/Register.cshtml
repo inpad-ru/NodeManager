@@ -23,28 +23,48 @@
             <div class="formRegistration">
                 <div class="fieldForm">
                     <label asp-for="Name">Введите имя</label>
-                    <input type="text" asp-for="Name" required />
-                    <span asp-validation-for="Name" />
+                    <div class="col-lg-9">
+                         @Html.TextBoxFor(n => n.Name, new { placeholder = "Name", @class = "form-control form-control-custom" })
+                         @Html.ValidationMessageFor(n => n.Name, "", new { @class = "text-danger" })
+                    </div>
+                    @*<input type="text" asp-for="Name" required />
+                    <span asp-validation-for="Name" />*@
                 </div>
                 <div class="fieldForm">
                     <label asp-for="Email">Введите Email</label>
-                    <input type="text" asp-for="Email" required />
-                    <span asp-validation-for="Email" />
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(n => n.Email, new { type = "Email", placeholder = "Email", @class = "form-control form-control-custom" })
+                        @Html.ValidationMessageFor(n => n.Email, "", new { @class = "text-danger" })
+                    </div>
+                    @*<input type="text" asp-for="Email" required />
+                    <span asp-validation-for="Email" />*@
                 </div>
                 <div class="fieldForm">
                     <label asp-for="Password">Введите пароль</label>
-                    <input asp-for="Password" required />
-                    <span asp-validation-for="Password" />
+                     <div class="col-lg-9">
+                         @Html.TextBoxFor(n => n.Password, new { type = "password", placeholder = "New Password", @class = "form-control form-control-custom" })
+                         @Html.ValidationMessageFor(n => n.Password, "", new { @class = "text-danger" })
+                     </div>
+                    @*<input asp-for="Password" required />
+                    <span asp-validation-for="Password" />*@
                 </div>
                 <div class="fieldForm">
                     <label asp-for="ConfirmPassword">Повторите пароль</label>
-                    <input asp-for="ConfirmPassword" required />
-                    <span asp-validation-for="ConfirmPassword" />
+                    <div class="col-lg-9">
+                         @Html.TextBoxFor(n => n.ConfirmPassword, new { type = "password", placeholder = "Confirm New Password", @class = "form-control form-control-custom" })
+                         @Html.ValidationMessageFor(n => n.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+                    @*<input asp-for="ConfirmPassword"/>
+                    <span asp-validation-for="ConfirmPassword" />*@
                 </div>
                 <div class="fieldForm">
                     <label asp-for="Company">Введите название компании</label>
-                    <input type="text" asp-for="Company" required />
-                    <span asp-validation-for="Company" />
+                    <div class="col-lg-9">
+                        @Html.TextBoxFor(n => n.Email, new { type = "Company", placeholder = "Company", @class = "form-control form-control-custom" })
+                        @Html.ValidationMessageFor(n => n.Company, "", new { @class = "text-danger" })
+                    </div>
+                    @*<input type="text" asp-for="Company" required />
+                    <span asp-validation-for="Company" />*@
                 </div>
                 <div class="but_reg">
                     <input type="submit" value="Регистрация" class="button_register" />
@@ -58,3 +78,4 @@
 <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>
+

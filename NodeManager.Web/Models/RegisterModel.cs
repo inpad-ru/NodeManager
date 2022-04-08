@@ -7,6 +7,7 @@ namespace NodeManager.Web.Models
         [Required(ErrorMessage = "Не указано имя")]
         public string Name { get; set; }
 
+        [EmailAddress(ErrorMessage = "Некорректный адрес")]
         [Required(ErrorMessage = "Не указан Email")]
         public string Email { get; set; }
 

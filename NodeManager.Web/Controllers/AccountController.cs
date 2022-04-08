@@ -7,6 +7,7 @@ using NodeManager.Web.Models; // пространство имен моделе�
 using NodeManager.Domain; // пространство имен UserContext и класса User
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Web;
 
 namespace NodeManager.Web.Controllers
 {
@@ -63,8 +64,12 @@ namespace NodeManager.Web.Controllers
                     //return RedirectToAction("Index", "Home");
                     return RedirectToAction("List", "Node");
                 }
-                else
-                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                else { 
+                ModelState.AddModelError("", "Пользователь с таким Email уже зарегистрирован");
+                //string script = "alert(\"Hello!\");";
+                //ScriptManager.RegisterStartupScript(this, GetType(),
+                //                      "ServerControlScript", script, true);
+            }
             }
             return View(model);
         }
