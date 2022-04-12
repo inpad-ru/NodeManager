@@ -457,7 +457,7 @@ td {
 /* Страница авторизации Login.cshtml и регистрации Register.cshtml ------------------------------------------------------------ */
 
 .page_register, .page_login {
-    /* background: yellow;*/
+    /*background: yellow;*/
     position: absolute;
     top: 50%;
     left: 50%;
@@ -481,17 +481,20 @@ td {
     display: grid;
     grid-template-rows: auto;
     grid-auto-columns: 50% 50%;
-    align-items: center;
+    /*align-items: center;*/
+    /*justify-self: stretch;*/
 }
 
 .fieldForm label, .form-group label {
     grid-column: 1 / 2;
     justify-self: end;
+    align-content: start;
     margin-right: 5px;
 }
 
-.fieldForm input, .form-group input {
+.tboxForm {
     grid-column: 2 / 3;
+    justify-self: start;
 }
 
 .registration input, .authorization input {

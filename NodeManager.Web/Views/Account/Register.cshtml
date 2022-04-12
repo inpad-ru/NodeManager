@@ -23,7 +23,7 @@
             <div class="formRegistration">
                 <div class="fieldForm">
                     <label asp-for="Name">Введите имя</label>
-                    <div class="col-lg-9">
+                    <div class="tboxForm">
                          @Html.TextBoxFor(n => n.Name, new { placeholder = "Name", @class = "form-control form-control-custom" })
                          @Html.ValidationMessageFor(n => n.Name, "", new { @class = "text-danger" })
                     </div>
@@ -32,7 +32,7 @@
                 </div>
                 <div class="fieldForm">
                     <label asp-for="Email">Введите Email</label>
-                    <div class="col-lg-9">
+                    <div class="tboxForm">
                         @Html.TextBoxFor(n => n.Email, new { type = "Email", placeholder = "Email", @class = "form-control form-control-custom" })
                         @Html.ValidationMessageFor(n => n.Email, "", new { @class = "text-danger" })
                     </div>
@@ -40,8 +40,8 @@
                     <span asp-validation-for="Email" />*@
                 </div>
                 <div class="fieldForm">
-                    <label asp-for="Password">Введите пароль</label>
-                     <div class="col-lg-9">
+                     <label asp-for="Password">Введите пароль</label>
+                     <div class="tboxForm">
                          @Html.TextBoxFor(n => n.Password, new { type = "password", placeholder = "New Password", @class = "form-control form-control-custom" })
                          @Html.ValidationMessageFor(n => n.Password, "", new { @class = "text-danger" })
                      </div>
@@ -50,7 +50,7 @@
                 </div>
                 <div class="fieldForm">
                     <label asp-for="ConfirmPassword">Повторите пароль</label>
-                    <div class="col-lg-9">
+                    <div class="tboxForm">
                          @Html.TextBoxFor(n => n.ConfirmPassword, new { type = "password", placeholder = "Confirm New Password", @class = "form-control form-control-custom" })
                          @Html.ValidationMessageFor(n => n.ConfirmPassword, "", new { @class = "text-danger" })
                     </div>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="fieldForm">
                     <label asp-for="Company">Введите название компании</label>
-                    <div class="col-lg-9">
+                    <div class="tboxForm">
                         @Html.TextBoxFor(n => n.Email, new { type = "Company", placeholder = "Company", @class = "form-control form-control-custom" })
                         @Html.ValidationMessageFor(n => n.Company, "", new { @class = "text-danger" })
                     </div>
