@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log(`Выбрано ${fileList.length} файлов`)
                 }
             } else {
-                textSelector.textContent = file.name.substring(0, 15) + "...";
+                textSelector.textContent = file.name.substring(0, 19) + "...";
                 console.log(`Выбран ${fileList.length} файл`)
             }
             fileList = [];
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log(`Выбрано ${uploadDragFiles.length} файлов`)
                 }
             } else {
-                dropZoneText.textContent = e.dataTransfer.files[0].name.substring(0, 15) + "...";
+                dropZoneText.textContent = e.dataTransfer.files[0].name.substring(0, 19) + "...";
                 console.log(`Выбран ${uploadDragFiles.length} файл`)
             }
 
