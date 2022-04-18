@@ -1,20 +1,27 @@
-﻿using NodeManager.Domain;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
-using NodeManager.Web.Abstract;
-using System.Linq;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
+
+using NodeManager.Domain;
+using NodeManager.Web.Abstract;
 using NodeManager.Web.Models;
+using NodeManager.Web.Repository;
+
+using System.Linq;
 using System.Drawing;
 using System.IO;
-using NodeManager.Web.Repository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Web;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+
 
 namespace NodeManager.Web.Controllers
 {
@@ -67,6 +74,7 @@ namespace NodeManager.Web.Controllers
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
             return View(model);
+            //return View("AddFile");
         }
 
         [Route("Symbol/{id:int}")]
@@ -159,6 +167,105 @@ namespace NodeManager.Web.Controllers
         
             return View("List", model);
         }
+
+        [Route("db")]
+        public IActionResult DBUploader()
+        {
+            var db = new NodeManager.Domain.DBUploader();
+            db.UploadToDB();
+            var model = new NodesViewModel();
+            model.Symbols = repos.FamilySymbols.ToList();
+            model.categorySection = GetCategorySection();
+            model.CurrentSec = null;
+            model.UserName = HttpContext.User.Identity.Name;
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            model.tagList = repos.Tags.Select(x => x.Value).ToList();
+            model.IsProjectSection = true;
+            return View("List", model);
+        }
+
+        [HttpGet]
+        [Route("AddFile")]
+        public IActionResult AddFile()
+        {
+            return View("AddFile");
+        }
+
+        [HttpPost]
+        [Route("AddFile")]
+        public async Task<IActionResult> AddFile(IFormFile uploadedFile)
+        {
+            if (uploadedFile != null)
+            {
+                // путь к папке Files
+                string path = "/Files/" + uploadedFile.FileName;
+                // сохраняем файл в папку Files в каталоге wwwroot
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    await uploadedFile.CopyToAsync(fileStream);
+                }
+                Files file = new Files { FilePath = path };
+                repos.dbContext.Add(file);
+                repos.dbContext.SaveChanges();
+                var db = new DBUploader();
+                db.UploadToDB(path);
+            }
+            
+            return RedirectToAction("List", "Node");
+        }
+
+        //[HttpPost]
+        //[Route(nameof(UploadLargeFile))]
+        //public async Task<IActionResult> UploadLargeFile()
+        //{
+        //    var request = HttpContext.Request;
+
+        //    // validation of Content-Type
+        //    // 1. first, it must be a form-data request
+        //    // 2. a boundary should be found in the Content-Type
+        //    if (!request.HasFormContentType ||
+        //        !MediaTypeHeaderValue.TryParse(request.ContentType, out var mediaTypeHeader) ||
+        //        string.IsNullOrEmpty(mediaTypeHeader.Boundary.Value))
+        //    {
+        //        return new UnsupportedMediaTypeResult();
+        //    }
+
+        //    var reader = new MultipartReader(mediaTypeHeader.Boundary.Value, request.Body);
+        //    var section = await reader.ReadNextSectionAsync();
+
+        //    // This sample try to get the first file from request and save it
+        //    // Make changes according to your needs in actual use
+        //    while (section != null)
+        //    {
+        //        var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition,
+        //            out var contentDisposition);
+
+        //        if (hasContentDispositionHeader && contentDisposition.DispositionType.Equals("form-data") &&
+        //            !string.IsNullOrEmpty(contentDisposition.FileName.Value))
+        //        {
+        //            // Don't trust any file name, file extension, and file data from the request unless you trust them completely
+        //            // Otherwise, it is very likely to cause problems such as virus uploading, disk filling, etc
+        //            // In short, it is necessary to restrict and verify the upload
+        //            // Here, we just use the temporary folder and a random file name
+
+        //            // Get the temporary folder, and combine a random file name with it
+        //            var fileName = Path.GetRandomFileName();
+        //            var saveToPath = Path.Combine(Path.GetTempPath(), fileName);
+
+        //            using (var targetStream = System.IO.File.Create(saveToPath))
+        //            {
+        //                await section.Body.CopyToAsync(targetStream);
+        //            }
+
+        //            return Ok();
+        //        }
+
+        //        section = await reader.ReadNextSectionAsync();
+        //    }
+
+        //    // If the code runs to this location, it means that no files have been saved
+        //    return BadRequest("No files data in the request.");
+        //}
 
         private CategorySection GetCategorySection(Nullable<int> fileId = null)
         {

@@ -23,4 +23,10 @@ namespace NodeManager.Web.Models
         public string Company { get; set; }
     }
 
+    public class FileModel
+    {
+        public int Id { get; set; }
+        public string FilePath { get; set; }
+    }
+
 }
