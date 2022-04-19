@@ -171,7 +171,10 @@ namespace NodeManager.Web.Controllers
         [Route("db")]
         public IActionResult DBUploader()
         {
-            var db = new NodeManager.Domain.DBUploader();
+            var db = new DBUploader(repos, _appEnvironment);
+            
+            
+            
             db.UploadToDB();
             var model = new NodesViewModel();
             model.Symbols = repos.FamilySymbols.ToList();
@@ -207,7 +210,7 @@ namespace NodeManager.Web.Controllers
                 Files file = new Files { FilePath = path };
                 repos.dbContext.Add(file);
                 repos.dbContext.SaveChanges();
-                var db = new DBUploader();
+                var db = new DBUploader(repos, _appEnvironment);
                 db.UploadToDB(path);
             }
             
