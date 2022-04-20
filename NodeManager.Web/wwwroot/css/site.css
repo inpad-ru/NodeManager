@@ -55,13 +55,22 @@ h5 {
     align-self: center;
     justify-self: start;
     margin-left: 10%;
+    display: inline-flex;
 }
 
+/*.button_upload {
+    grid-row: 2;
+    grid-column: 2 / 3;
+    align-self: center;
+    justify-self: start;
+}*/
 
-.b_back, .b_download, .b_search_tag, .but_user {
+
+.b_back, .b_download, .formLeft, .b_search_tag, .but_user {
     background-color: white;
     color: black;
     font-size: 20px;
+    max-height: 43px;
     border: 1px solid #DAD9D9;
     cursor: pointer;
     border-radius: 10px;
@@ -69,8 +78,58 @@ h5 {
     margin: auto;
 }
 
+.b_back {
+    height: 41px;
+}
+
 .b_download {
     margin-left: 5%;
+}
+
+/* Поле загрузки файлов/проектов */
+
+.formLeft {
+    margin-left: 10px;
+    padding: 0;
+    width: 250px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-file__input {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+    overflow: hidden;
+    width: 0.4px;
+    height: 0.4px;
+}
+
+.upload-file__label {
+    width: 210px;
+    max-height: 43px;
+    border-radius: 6px;
+    cursor: pointer;
+    padding-left: 7px;
+    line-height: 1;
+    align-self: center;
+    text-align: center;
+    padding-top: 3px;
+}
+
+.upload-file__label .upload-file__text {
+    max-height: 43px;
+    line-height: 0;
+}
+
+.subFile {
+    border: none;
+    background-color: transparent;
+    margin: auto;
+    width: 31px;
+    justify-content: flex-end;
 }
 
 
@@ -130,12 +189,14 @@ input.chosen-search-input.default {
 }
 
 /* Профиль, кнопки войти, зарегистрироваться и выйти */
+
 .user {
     grid-row: 2;
     grid-column: 3;
     justify-self: end;
     position: relative;
     display: inline-block;
+    height:43px;
 }
 
 .but_user {
@@ -457,7 +518,7 @@ td {
 /* Страница авторизации Login.cshtml и регистрации Register.cshtml ------------------------------------------------------------ */
 
 .page_register, .page_login {
-    /* background: yellow;*/
+    /*background: yellow;*/
     position: absolute;
     top: 50%;
     left: 50%;
@@ -481,17 +542,20 @@ td {
     display: grid;
     grid-template-rows: auto;
     grid-auto-columns: 50% 50%;
-    align-items: center;
+    /*align-items: center;*/
+    /*justify-self: stretch;*/
 }
 
 .fieldForm label, .form-group label {
     grid-column: 1 / 2;
     justify-self: end;
+    align-content: start;
     margin-right: 5px;
 }
 
-.fieldForm input, .form-group input {
+.tboxForm {
     grid-column: 2 / 3;
+    justify-self: start;
 }
 
 .registration input, .authorization input {
@@ -512,3 +576,6 @@ td {
     margin: 10px auto;
     display: block;
 }
+
+
+
