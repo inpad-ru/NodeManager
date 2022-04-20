@@ -83,7 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
             this.classList.remove('hover');
             this.classList.add('drop');
 
-            uploadDragFiles = e.dataTransfer.files[0]; // один файл 
+            let uploadDragFiles = new Array();
+            uploadDragFiles[0] = e.dataTransfer.files;
+            //for (j = 0; j < 4; j++) {
+            //    uploadDragFiles[j] = e.dataTransfer;
+            //    e.preventDefault();
+            //};
+
+            //uploadDragFiles = e.dataTransfer.files[0]; // один файл 
 
             // Проверка размера файла 
             if (uploadDragFiles.size > maxFileSize) {

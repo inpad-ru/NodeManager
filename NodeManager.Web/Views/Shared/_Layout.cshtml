@@ -18,7 +18,8 @@
                 <button class="b_back" onclick="window.history.back()" title="Назад"><span class="fa-solid fa-arrow-left"></span></button>
                 @if (Model.UserName != null)
                 {
-                   <form class="formLeft upload-file__wrapper">
+                    @*@Html.ActionLink("Загрузить","AddFile","Node")*@
+                   <form asp-action="AddFile" asp-controller="Node" method="post" enctype="multipart/form-data" class="formLeft upload-file__wrapper">
                         <input
                             type="file"
                             name="files[]"

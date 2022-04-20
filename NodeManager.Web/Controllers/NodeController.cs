@@ -210,8 +210,8 @@ namespace NodeManager.Web.Controllers
                 Files file = new Files { FilePath = path };
                 repos.dbContext.Add(file);
                 repos.dbContext.SaveChanges();
-                var db = new DBUploader(repos, _appEnvironment);
-                db.UploadToDB(path);
+                //var db = new DBUploader(repos, _appEnvironment);
+                //db.UploadToDB(path);
             }
             
             return RedirectToAction("List", "Node");
