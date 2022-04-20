@@ -83,15 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
             this.classList.remove('hover');
             this.classList.add('drop');
 
-            let uploadDragFiles = new Array();
-            uploadDragFiles[0] = e.dataTransfer.files;
-            //for (j = 0; j < 4; j++) {
-            //    uploadDragFiles[j] = e.dataTransfer;
-            //    e.preventDefault();
-            //};
-
+            let uploadDragFiles = new Array()/*[e.dataTransfer.files]*/;
             //uploadDragFiles = e.dataTransfer.files[0]; // один файл 
-
+            for (let j = 0; j <= e.length; j++) { // сюда будем помещать drug-&-drop файлы (4)
+                /*window['uploadDragFiles_' + j] = new Object();*/
+                uploadDragFiles[j] = e.dataTransfer.files;
+                event.preventDefault()
+            }
+            
             // Проверка размера файла 
             if (uploadDragFiles.size > maxFileSize) {
                 dropZoneText.textContent = 'Размер превышает допустимое значение!';
@@ -104,20 +103,85 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (uploadDragFiles.length <= 4) {
                     dropZoneText.textContent = `Выбрано ${uploadDragFiles.length} файла`;
                     console.log(`Выбрано ${uploadDragFiles.length} файла`)
+                    console.log(`Выбрано ${dropZoneText.textContent} файла`)
                 } else {
                     dropZoneText.textContent = `Выбрано ${uploadDragFiles.length} файлов`;
                     console.log(`Выбрано ${uploadDragFiles.length} файлов`)
+                    console.log(`Выбрано ${dropZoneText.textContent} файлов`)
                 }
             } else {
                 dropZoneText.textContent = e.dataTransfer.files[0].name.substring(0, 19) + "...";
                 console.log(`Выбран ${uploadDragFiles.length} файл`)
+                console.log(`Выбран ${dropZoneText.textContent} файл`)
             }
-
+            console.log(`Длина ${typeof uploadDragFiles} файл`)
             // добавляем файл в объект "uploadDragFiles_i" 
             window['uploadDragFiles_'+index] = uploadDragFiles;
         });
 
     });
+
+
+    //let dropArea = document.getElementById('.upload - file__label')
+    //    ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    //        dropArea.addEventListener(eventName, preventDefaults, false)
+    //    })
+    //function preventDefaults(e) {
+    //    e.preventDefault()
+    //    e.stopPropagation()
+    //}
+    //;['dragenter', 'dragover'].forEach(eventName => {
+    //    dropArea.addEventListener(eventName, highlight, false)
+    //})
+    //    ;['dragleave', 'drop'].forEach(eventName => {
+    //        dropArea.addEventListener(eventName, unhighlight, false)
+    //    })
+    //function highlight(e) {
+    //    dropArea.classList.add('highlight')
+    //}
+    //function unhighlight(e) {
+    //    dropArea.classList.remove('highlight')
+    //}
+
+    //dropArea.addEventListener('drop', handleDrop, false)
+    //function handleDrop(e) {
+    //    let dt = e.dataTransfer
+    //    let files = dt.files
+    //    handleFiles(files)
+    //}
+    //function handleFiles(files) {
+    //    ([...files]).forEach(uploadFile)
+    //}
+
+    //function uploadFile(file) {
+    //    let url = 'ВАШ URL ДЛЯ ЗАГРУЗКИ ФАЙЛОВ'
+    //    let formData = new FormData()
+    //    formData.append('file', file)
+    //    fetch(url, {
+    //        method: 'POST',
+    //        body: formData
+    //    })
+    //        .then(() => { /* Готово. Информируем пользователя */ })
+    //        .catch(() => { /* Ошибка. Информируем пользователя */ })
+    //}
+
+    //function uploadFile(file) {
+    //    var url = 'ВАШ URL ДЛЯ ЗАГРУЗКИ ФАЙЛОВ'
+    //    var xhr = new XMLHttpRequest()
+    //    var formData = new FormData()
+    //    xhr.open('POST', url, true)
+    //    xhr.addEventListener('readystatechange', function (e) {
+    //        if (xhr.readyState == 4 && xhr.status == 200) {
+    //            // Готово. Информируем пользователя
+    //        }
+    //        else if (xhr.readyState == 4 && xhr.status != 200) {
+    //            // Ошибка. Информируем пользователя
+    //        }
+    //    })
+    //    formData.append('file', file)
+    //    xhr.send(formData)
+    //}
+
 
 
     // Отправка формы на сервер 
