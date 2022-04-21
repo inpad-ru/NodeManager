@@ -14,11 +14,15 @@ Array.prototype.forEach.call(inputs, function (input) {
         else
             fileName = e.target.value.split('\\').pop();
 
-        if (fileName.length > 18) fileName = fileName.substr(0, 11) + '…' + fileName.substr(name.length - 6);
+        if (fileName.length > 18)
+            fileNameCut = fileName.substr(0, 11) + '…' + fileName.substr(name.length - 6);
+        else fileNameCut = fileName;
 
-        if (fileName)
-            label.querySelector('span').innerHTML = fileName;
+        if (fileNameCut)
+            label.querySelector('span').innerHTML = fileNameCut;
         else
             label.innerHTML = labelVal;
+        
+        document.getElementsByClassName("upload-file__text")[0].title = fileName;
     });
 });
