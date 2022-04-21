@@ -65,7 +65,6 @@ h5 {
     justify-self: start;
 }*/
 
-
 .b_back, .b_download, .formLeft, .b_search_tag, .but_user {
     background-color: white;
     color: black;
@@ -130,6 +129,13 @@ h5 {
     margin: auto;
     width: 31px;
     justify-content: flex-end;
+}
+
+input[type=file] {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 210px;
 }
 
 /* Кнопка поиска по тегу */
@@ -241,7 +247,6 @@ input.chosen-search-input.default {
 .user:hover .user_info {
     display: block;
 }
-
 
 
 /* Navigation menu */
@@ -574,6 +579,3 @@ td {
     margin: 10px auto;
     display: block;
 }
-
-
-

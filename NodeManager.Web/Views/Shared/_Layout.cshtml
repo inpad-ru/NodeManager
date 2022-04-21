@@ -18,23 +18,13 @@
                 <button class="b_back" onclick="window.history.back()" title="Назад"><span class="fa-solid fa-arrow-left"></span></button>
                 @if (Model.UserName != null)
                 {
-                    @*@Html.ActionLink("Загрузить","AddFile","Node")*@
-                   <form asp-action="AddFile" asp-controller="Node" method="post" enctype="multipart/form-data" class="formLeft upload-file__wrapper">
-                        <input
-                            type="file"
-                            name="files[]"
-                            id="upload-file__input_1"
-                            class="upload-file__input"
-                            accept=".rvt, .jpg, .jpeg, .png, .gif, .bmp, .doc, .docx, .xls, .xlsx, .txt, .tar, .zip, .7z, .7zip"
-                            value="Загрузить файл/проект"
-                            placeholder="Загрузить файл/проект"
-                            multiple
-                        >
-                        <label class="upload-file__label" for="upload-file__input_1">
+                    <form asp-action="AddFile" asp-controller="Node" method="post" enctype="multipart/form-data" class="formLeft upload-file__wrapper">
+                        <input type="file" name="uploadedFile" id="uploadedFile" class="upload-file__input" />
+                        <label class="upload-file__label" for="uploadedFile">
                             <span class="upload-file__text">Загрузить файл/проект</span>
                         </label>
                         <button class="subFile" type="submit" title="Загрузить файл/проект"><span class="fa-solid fa-upload"></span></button>
-                </form>
+                    </form>
                 }
             </div>
             <div class="search_tag">
