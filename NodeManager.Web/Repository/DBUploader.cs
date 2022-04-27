@@ -25,8 +25,11 @@ namespace NodeManager.Web
             _appEnvironment = appEnvironment;
         }
         //public void UploadToDB(XDocument xmlDoc, string[] allFiles)
-        //X:\Projects\NodeMan\NodeManager.Web\wwwroot\Files\База данных узлов_2019.zip
-        public void UploadToDB(string link = "X:/Projects/NodeMan/NodeManager.Web/wwwroot/Files/База данных узлов_2019.zip")
+
+        //X:/Projects/NodeMan/NodeManager.Web/wwwroot/Files/База данных узлов_2019.zip
+        //C:\Users\user43\source\repos\DimaSaGit\NodeManager\NodeManager.Web\wwwroot\Files\База данных узлов_2019.zip
+
+        public void UploadToDB(string link = "C:/Users/user43/source/repos/DimaSaGit/NodeManager/NodeManager.Web/wwwroot/Files/База данных узлов_2019.zip")
         {
             try
             {
@@ -89,25 +92,28 @@ namespace NodeManager.Web
                 //context.dbContext.Categories.Add(new Categories { Name = "TestCat1" });
                 //context.dbContext.SaveChanges();
 
-                //foreach (var i in cats)
-                //{
-                //    if (context.Categories.Where(x => x.Name.Equals(i.Name)).Any())
-                //    {
-                //        context.dbContext.Categories.Add(
-                //        new Categories { Name = i.Name });
-                //    }
-                //}
-                //foreach (var i in sects)
-                //{
-                //    if (context.Sections.Where(x => x.Name.Equals(i.Name)).Any())
-                //    {
-                //        context.dbContext.Sections.Add(
-                //        new Sections { Name = i.Name });
-                //    }
-                //}
+                foreach (var i in cats)
+                {
+                    if (!context.Categories.Where(x => x.Name.Equals(i.Name)).Any())
+                    {
+                        context.dbContext.Categories.Add(
+                        new Categories { Name = i.Name });
+                    }
+                }
+                foreach (var i in sects)
+                {
+                    if (!context.Sections.Where(x => x.Name.Equals(i.Name)).Any())
+                    {
+                        context.dbContext.Sections.Add(
+                        new Sections { Name = i.Name });
+                    }
+                }
                 //context.SaveChanges();
 
-                context.dbContext.Files.Add(new Files { FilePath = oldDb.FileName });
+                if (!context.Files.Where(x => x.FilePath.Equals(oldDb.FileName)).Any())
+                {
+                    context.dbContext.Files.Add(new Files { FilePath = oldDb.FileName });
+                }
                 context.dbContext.SaveChanges();
 
                 foreach (var j in oldDb.RevViews)
@@ -127,7 +133,7 @@ namespace NodeManager.Web
                         });
                     context.dbContext.SaveChanges();
                     counter++;
-                    if (j.Parameters.Any())
+                    if (j.Parameters != null && j.Parameters.Any())
                     {
                         foreach (var c in j.Parameters)
                         {
@@ -140,7 +146,7 @@ namespace NodeManager.Web
                                 });
                         }
                     }
-                    if (j.Tags.Any())
+                    if (j.Tags != null && j.Tags.Any())
                     {
                         foreach (var p in j.Tags)
                         {
@@ -175,7 +181,10 @@ namespace NodeManager.Web
                 //context.dbContext.SaveChanges();
 
             }
-            catch { }
+            catch (Exception ex) 
+            { 
+                ex.ToString();
+            }
         }
 
         private byte[] ImgToBytes(string filename)

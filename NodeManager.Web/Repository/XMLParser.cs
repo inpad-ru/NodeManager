@@ -98,7 +98,8 @@ namespace NodeManager.Web
             //List<string> result = null;
             try
             {
-                 return view.Element("Tags").Value.Split(';').ToList();
+                if (view.Element("Tags").Value.Equals("")) return null;
+                return view.Element("Tags").Value.Split(';').ToList();
             }
             catch (Exception ex)
             {
