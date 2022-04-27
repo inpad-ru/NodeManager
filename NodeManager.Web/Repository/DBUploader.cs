@@ -25,13 +25,14 @@ namespace NodeManager.Web
             _appEnvironment = appEnvironment;
         }
         //public void UploadToDB(XDocument xmlDoc, string[] allFiles)
-        public async void UploadToDB(string link = "C:/Users/user43/source/repos/DimaSaGit/NodeManager/NodeManager.Web/wwwroot/Files/База данных узлов_2019.zip")
+        //X:\Projects\NodeMan\NodeManager.Web\wwwroot\Files\База данных узлов_2019.zip
+        public void UploadToDB(string link = "X:/Projects/NodeMan/NodeManager.Web/wwwroot/Files/База данных узлов_2019.zip")
         {
             try
             {
-                var path = "wwwroot/Files/"+link.Split('/').Last().Split('.').First();
+                var path = "wwwroot/Files/" + link.Split('/').Last().Split('.').First();
                 //DirectoryInfo di = Directory.CreateDirectory(path);
-                
+
                 //ZipFile.ExtractToDirectory(link, path);
 
                 var filesNames = Directory.GetFiles(path, "*.xml");
@@ -57,75 +58,80 @@ namespace NodeManager.Web
 
                 int counter = 0;
 
-                
-                    var xmlParser = new XMLParser();
-                    var oldDb = xmlParser.XMLToObjects2(xmlDoc);
 
-                    //foreach (var i in oldDb.RevProjects)
-                    //{
-                    //    if (!context.Nodes.Any(r => r.Name == i.Name))
-                    //    {
-                    //        context.Nodes0.Add(
-                    //            new Node0
-                    //            {
-                    //                Name = i.Name,
-                    //                //FilePath = i.FilePath
-                    //            });
-                    //    }
-                    //    context.SaveChanges();
-                    //}
+                var xmlParser = new XMLParser();
+                var oldDb = xmlParser.XMLToObjects2(xmlDoc);
 
-                    IEnumerable<Categories> cats = oldDb.RevViews
-                        .Select(x => new Categories() { Name = x.Category })
-                        .GroupBy(x => x.Name)
-                        .Select(x => x.First());
+                //foreach (var i in oldDb.RevProjects)
+                //{
+                //    if (!context.Nodes.Any(r => r.Name == i.Name))
+                //    {
+                //        context.Nodes0.Add(
+                //            new Node0
+                //            {
+                //                Name = i.Name,
+                //                //FilePath = i.FilePath
+                //            });
+                //    }
+                //    context.SaveChanges();
+                //}
 
-                    IEnumerable<Sections> sects = oldDb.RevViews
-                        .Select(x => new Sections() { Name = x.Section })
-                        .GroupBy(x => x.Name)
-                        .Select(x => x.First());
+                IEnumerable<Categories> cats = oldDb.RevViews
+                    .Select(x => new Categories() { Name = x.Category })
+                    .GroupBy(x => x.Name)
+                    .Select(x => x.First());
 
-                    foreach (var i in cats)
-                    {
-                        if (context.Categories.First(x => x.Name.Equals(i.Name)) == null)
+                IEnumerable<Sections> sects = oldDb.RevViews
+                    .Select(x => new Sections() { Name = x.Section })
+                    .GroupBy(x => x.Name)
+                    .Select(x => x.First());
+
+                //context.dbContext.Categories.Add(new Categories { Name = "TestCat1" });
+                //context.dbContext.SaveChanges();
+
+                //foreach (var i in cats)
+                //{
+                //    if (context.Categories.Where(x => x.Name.Equals(i.Name)).Any())
+                //    {
+                //        context.dbContext.Categories.Add(
+                //        new Categories { Name = i.Name });
+                //    }
+                //}
+                //foreach (var i in sects)
+                //{
+                //    if (context.Sections.Where(x => x.Name.Equals(i.Name)).Any())
+                //    {
+                //        context.dbContext.Sections.Add(
+                //        new Sections { Name = i.Name });
+                //    }
+                //}
+                //context.SaveChanges();
+
+                context.dbContext.Files.Add(new Files { FilePath = oldDb.FileName });
+                context.dbContext.SaveChanges();
+
+                foreach (var j in oldDb.RevViews)
+                {
+                    context.dbContext.FamilySymbols.Add(
+                        new FamilySymbol
                         {
-                            context.dbContext.Categories.AddAsync(
-                            new Categories { Name = i.Name });
-                        }
-                    }
-                    foreach (var i in sects)
-                    {
-                        if (context.Sections.First(x => x.Name.Equals(i.Name)) == null)
-                        {
-                            context.dbContext.Sections.AddAsync(
-                            new Sections { Name = i.Name });
-                        }
-                    }
-                    //context.SaveChanges();
-
-                    context.dbContext.Files.AddAsync(new Files { FilePath = oldDb.FileName });
-                    context.dbContext.SaveChangesAsync().Wait();
-
-                    foreach (var j in oldDb.RevViews)
-                    {
-                        context.dbContext.FamilySymbols.AddAsync(
-                            new FamilySymbol
-                            {
                                 //FamilyId = context.Nodes0.FirstOrDefault(r => r.Name == j.RevProj.Name).Id,
                                 Name = j.Name,
                                 //ImagePath = j.ImagePath,
                                 Scale = j.Scale,
                                 //Image = ImgToBytes(allfiles[counter]),
                                 Image = ImgToBytes(images[j.ID]),
-                                FileId = context.Files.FirstOrDefault(x => x.FilePath.Equals(j.ImagePath)).Id,
-                                CategoryId = context.Categories.FirstOrDefault(x => x.Name.Equals(j.Category)).Id,
-                                SectionId = context.Sections.FirstOrDefault(x => x.Name.Equals(j.Section)).Id
-                            });
-                        context.dbContext.SaveChangesAsync().Wait();
-                        counter++;
+                            FileId = context.Files.FirstOrDefault(x => x.FilePath.Equals(j.ImagePath)).Id,
+                            CategoryId = context.Categories.FirstOrDefault(x => x.Name.Equals(j.Category)).Id,
+                            SectionId = context.Sections.FirstOrDefault(x => x.Name.Equals(j.Section)).Id
+                        });
+                    context.dbContext.SaveChanges();
+                    counter++;
+                    if (j.Parameters.Any())
+                    {
                         foreach (var c in j.Parameters)
                         {
-                            context.dbContext.RevitParameters.AddAsync(
+                            context.dbContext.RevitParameters.Add(
                                 new RevitParameter
                                 {
                                     Name = c.Name,
@@ -133,37 +139,41 @@ namespace NodeManager.Web
                                     SymbolId = context.FamilySymbols.FirstOrDefault(x => x.Name.Equals(j.Name)).Id,
                                 });
                         }
+                    }
+                    if (j.Tags.Any())
+                    {
                         foreach (var p in j.Tags)
                         {
-                            if (context.Tags.First(x => x.Value.Equals(p)) == null)
+                            if (context.Tags.Where(x => x.Value.Equals(p)).Any())
                             {
-                                context.dbContext.Tags.AddAsync(new Tags
+                                context.dbContext.Tags.Add(new Tags
                                 {
                                     Value = p
                                 });
-                                context.dbContext.SaveChangesAsync().Wait();
+                                context.dbContext.SaveChanges();
                             }
-                            context.dbContext.FSTags.AddAsync(new FSTags
+                            context.dbContext.FSTags.Add(new FSTags
                             {
                                 FSId = context.FamilySymbols.FirstOrDefault(x => x.Name.Equals(j.Name)).Id,
                                 TagId = context.Tags.FirstOrDefault(x => x.Value.Equals(p)).Id
                             });
                         }
                     }
-                    context.dbContext.SaveChangesAsync();
-                    //foreach (var z in oldDb.RevParameters)
-                    //{
-                    //    context.dbContext.RevitParameters.AddAsync(
-                    //        new RevitParameter
-                    //        {
-                    //            SymbolId = context.FamilySymbols.FirstOrDefault(r => r.Name == z.RevView.Name).Id,
-                    //            Name = z.Name,
-                    //            Value = z.Value,
-                    //            StorageType = z.StorageType
-                    //        });
-                    //}
-                    //context.dbContext.SaveChanges();
-                
+                }
+                context.dbContext.SaveChanges();
+                //foreach (var z in oldDb.RevParameters)
+                //{
+                //    context.dbContext.RevitParameters.AddAsync(
+                //        new RevitParameter
+                //        {
+                //            SymbolId = context.FamilySymbols.FirstOrDefault(r => r.Name == z.RevView.Name).Id,
+                //            Name = z.Name,
+                //            Value = z.Value,
+                //            StorageType = z.StorageType
+                //        });
+                //}
+                //context.dbContext.SaveChanges();
+
             }
             catch { }
         }

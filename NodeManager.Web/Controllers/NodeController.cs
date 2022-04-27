@@ -172,10 +172,13 @@ namespace NodeManager.Web.Controllers
         public IActionResult DBUploader()
         {
             var db = new DBUploader(repos, _appEnvironment);
-            
-            
-            
             db.UploadToDB();
+
+            //repos.dbContext.Categories.Add(new Categories { Name = "TESTCATEGORY" });
+            //var img = repos.FamilySymbols.FirstOrDefault(x => x.Image != null).Image;
+            //repos.dbContext.FamilySymbols.Add(new FamilySymbol { Name = "TestNode1", Category = new Categories { Name = "Пол"}, Image = img });
+            //repos.dbContext.SaveChanges();
+
             var model = new NodesViewModel();
             model.Symbols = repos.FamilySymbols.ToList();
             model.categorySection = GetCategorySection();

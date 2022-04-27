@@ -16,6 +16,7 @@ namespace NodeManager.Web.Models
 
         public static string ImageByteToBase64ImageTag(byte[] array)
         {
+            if(array == null) return null;
             //string base64 = Convert.ToBase64String(array);
             return Convert.ToBase64String(array);
         }
