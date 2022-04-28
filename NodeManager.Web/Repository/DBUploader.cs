@@ -10,7 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using NodeManager.Web.Abstract;
 using Microsoft.AspNetCore.Hosting;
-using NodeManager.Domain;
+//using NodeManager.Domain;
+using NodeManager.Web.DBInfrastucture;
 
 namespace NodeManager.Web
 {

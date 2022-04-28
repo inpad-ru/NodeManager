@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 
-using NodeManager.Domain;
+//using NodeManager.Domain;
 using NodeManager.Web.Abstract;
 using NodeManager.Web.Models;
 using NodeManager.Web.Repository;
+using NodeManager.Web.DBInfrastucture;
 
 using System.Linq;
 using System.Drawing;

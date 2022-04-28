@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using NodeManager.Web.Models; // пространство имен моделей RegisterModel и LoginModel
-using NodeManager.Domain; // пространство имен UserContext и класса User
+//using NodeManager.Domain; // пространство имен UserContext и класса User
+using NodeManager.Web.DBInfrastucture;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Web;

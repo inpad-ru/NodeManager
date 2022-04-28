@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using NodeManager.Domain;
+//using NodeManager.Domain;
+using NodeManager.Web.DBInfrastucture;
+
 namespace NodeManager.Web.Models
 {
     public class CategorySection

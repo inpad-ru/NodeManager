@@ -5,17 +5,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using NodeManager.Domain;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
+//using NodeManager.Domain;
+using NodeManager.Web.DBInfrastucture;
 using NodeManager.Web.Abstract;
 using NodeManager.Web.Repository;
+using NodeManager.Web.Requirements;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Configuration;
 using System.Security.Claims;
-using NodeManager.Web.Requirements;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace NodeManager.Web
 {

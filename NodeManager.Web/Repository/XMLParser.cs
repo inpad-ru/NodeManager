@@ -4,7 +4,8 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NodeManager.Domain;
+//using NodeManager.Domain;
+using NodeManager.Web.DBInfrastucture;
 
 namespace NodeManager.Web
 {

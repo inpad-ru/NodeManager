@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using NodeManager.Web.Models;
-using NodeManager.Domain;
+//using NodeManager.Domain;
+using NodeManager.Web.DBInfrastucture;
 
 namespace NodeManager.Web.ViewComponents
 {

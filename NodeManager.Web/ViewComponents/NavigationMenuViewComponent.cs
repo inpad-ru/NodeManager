@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NodeManager.Web.Abstract;
-using NodeManager.Domain;
+//using NodeManager.Domain;
+using NodeManager.Web.DBInfrastucture;
 using System.Linq;
 using NodeManager.Web.Models;
 using System.Collections.Generic;

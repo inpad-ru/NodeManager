@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using NodeManager.Domain;
+//using NodeManager.Domain;
+using NodeManager.Web.DBInfrastucture;
 using System.Linq;
 using NodeManager.Web.Abstract;
 using Microsoft.EntityFrameworkCore;

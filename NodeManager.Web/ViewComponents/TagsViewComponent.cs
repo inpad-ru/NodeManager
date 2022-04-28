@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using NodeManager.Web.Models;
 using System.Linq;
-using NodeManager.Domain;
+//using NodeManager.Domain;
+using NodeManager.Web.DBInfrastucture;
 using NodeManager.Web.Abstract;
 
 namespace NodeManager.Web.ViewComponents

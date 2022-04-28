@@ -1,4 +1,5 @@
-﻿using NodeManager.Domain;
+﻿//using NodeManager.Domain;
+using NodeManager.Web.DBInfrastucture;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using NodeManager.Web.Abstract;
