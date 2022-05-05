@@ -24,7 +24,7 @@
                <button class="b_GoToProject" onclick=window.location.href="/Node/ProjectSection/@Model._familySymbol.FileId" title="Перейти к проекту">Перейти к проекту</button>
                @if (Model.UserName != null)
                {
-                   <button class="b_edit" onclick="" title="Редактировать"><span class="fa-solid fa-pencil"></span></button>
+                   @*<button class="b_edit" onclick="" title="Редактировать"><span class="fa-solid fa-pencil"></span></button>*@
                    <button class="b_delete" onclick=window.location.href="/Node/Delete/@Model._familySymbol.Id" title="Удалить"><span class="fa-solid fa-trash"></span></button>
                }
            </div>
@@ -34,24 +34,28 @@
         </div>
         <div class="contentNode">
             <div class=param_section>
-                <div class="scroll">
+                <div class="scroll-table">
                     <table class="parameters">
-                    <thead class="paramHead">
-                        <tr>
-                            <th class="headTable">Название</th>
-                            <th class="headTable">Значение</th>
-                        </tr>
-                    </thead>
-                    <tbody class="paramBody">
-                        @foreach (var parameter in Model._revitParameters)
-                        {
+                        <thead class="paramHead">
                             <tr>
-                                <td class="parameter_name">@parameter.Name</td>
-                                <td class="parameter_value">@parameter.Value</td>
+                                <th class="headTable">Название</th>
+                                <th class="headTable">Значение</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                    </table>
+                    <div class="scroll-table-body">
+                        <table class="parameters">
+                            <tbody class="paramBody">
+                                @foreach (var parameter in Model._revitParameters)
+                                {
+                                    <tr>
+                                        <td class="parameter_name">@parameter.Name</td>
+                                        <td class="parameter_value">@parameter.Value</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="plug">
                     <p>Заглушка</p>
