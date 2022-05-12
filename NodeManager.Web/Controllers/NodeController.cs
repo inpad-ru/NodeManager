@@ -134,6 +134,34 @@ namespace NodeManager.Web.Controllers
             return View("List", model);
         }
 
+        [HttpPost]
+        [Route("SearchName")]
+        public IActionResult SearchName(string name)
+        {
+            NodesViewModel model = new NodesViewModel();
+            //HashSet<int> tagsId = new HashSet<int>();
+            IEnumerable<int> connections;
+            try
+            {
+                model.Symbols = repos.FamilySymbols.Where(x => x.Name.Contains(name)).ToList();
+            }
+            catch (Exception ex)
+            {
+                model.Symbols = repos.FamilySymbols.ToList();
+                model.IsTagSearchEmpty = true;
+            }
+
+            model.categorySection = GetCategorySection();
+            model.categorySection.SelectedSection = null;
+            model.tagList = repos.Tags.Select(x => x.Value).ToList();
+            model.UserName = HttpContext.User.Identity.Name;
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+
+            return View("List", model);
+        }
+
+
+
         [Authorize]
         [Route("Delete/{id:int}")]
         public IActionResult Delete(int id)

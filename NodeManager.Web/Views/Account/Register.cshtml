@@ -60,7 +60,7 @@
                 <div class="fieldForm">
                     <label asp-for="Company">Введите название компании</label>
                     <div class="tboxForm">
-                        @Html.TextBoxFor(n => n.Email, new { type = "Company", placeholder = "Company", @class = "form-control form-control-custom" })
+                        @Html.TextBoxFor(n => n.Company, new { type = "Company", placeholder = "Company", @class = "form-control form-control-custom" })
                         @Html.ValidationMessageFor(n => n.Company, "", new { @class = "text-danger" })
                     </div>
                     @*<input type="text" asp-for="Company" required />
