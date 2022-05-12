@@ -6,11 +6,21 @@
     <title>@ViewData["Title"] Менеджер узлов</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/StyleSheet.scss" />
+
+    @*<link rel="stylesheet" href="css/style.css">*@
+    @*<link rel="stylesheet" href="css/right-nav-style.css">*@
+    <!-- Bootstrap CSS -->
+  <link href="/examples/vendors/bootstrap-4.3/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css"  rel="stylesheet"/>
 </head>
 <body>
+    @*<input type="checkbox" id="nav-toggle" hidden>*@
+    @*<input type="checkbox" id="hmt" class="hidden-menu-ticker">*@
+    @*<input type="checkbox" id="toogle-menu" />*@
+    <input type="checkbox" id="nav-toggle" hidden>
     <main class="main_container">
         <header class="main_header">
             <h5>Узлы предоставлены для обязательной адаптации к проекту</h5>
@@ -27,7 +37,7 @@
                     </form>
                 }
             </div>
-            <div class="search_tag">
+            @*<div class="search_tag">
                 @if (@Model.tagList != null)
                 {
                     <form action="~/Node/Search" method="post">
@@ -41,21 +51,47 @@
                         <button class="b_search_tag" type="submit"><span class="fa fa-search"></span></button>
                     </form>
                 }
+            </div>*@
+
+             <div class="search_name">
+                  <label for="searchbox" class="is-size-5">Search</label>
+                  <input class="searchName" type="search" id="searchbox" placeholder="Live search keyword..">
+
+                  @*<input type="text" class="quicksearch" placeholder="Search" />*@
+             </div>
+
+             <div class="user">
+                 <button class="but_user"><span class="fa-solid fa-user"></span></button>
+                 <div class="user_info">
+                     <p>@Model.UserName</p>
+                     @if (Model.UserName == null)
+                     {
+                         @Html.ActionLink("Войти","Login","Account")
+                         @Html.ActionLink("Зарегистрироваться","Register","Account")
+                     }
+                     else {
+                         @Html.ActionLink("Выйти","Logout","Account")
+                     }
+                 </div>
             </div>
 
-            <div class="user">
-                <button class="but_user"><span class="fa-solid fa-user"></span></button>
-                <div class="user_info">
-                    <p>@Model.UserName</p>
-                    @if (Model.UserName == null)
-                    {
-                        @Html.ActionLink("Войти","Login","Account")
-                        @Html.ActionLink("Зарегистрироваться","Register","Account")
-                    }
-                    else {
-                        @Html.ActionLink("Выйти","Logout","Account")
-                    }
-                </div>
+            <div class="filters_tag">
+                <button>O</button>
+                @*<nav class="nav">
+                    <label for="nav-toggle" class="nav-toggle" onclick></label>
+                    <h2 class="logo"> 
+                    <a href="//dbmast.ru/">DBmast.ru</a> 
+                    </h2>
+                    <ul>
+                        <li><a href="#1">Один</a>
+                        <li><a href="#2">Два</a>
+                        <li><a href="#3">Три</a>
+                        <li><a href="#4">Четыре</a>
+                        <li><a href="#5">Пять</a>
+                        <li><a href="#6">Шесть</a>
+                        <li><a href="#7">Семь</a>
+                    </ul>
+                </nav>*@
             </div>
         </header>
         <div class="main_content">
@@ -67,6 +103,10 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+    <!-- jQuery -->
+  <script src="/examples/vendors/jquery/jquery-3.3.1.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="/examples/vendors/bootstrap-4.3/js/bootstrap.bundle.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
