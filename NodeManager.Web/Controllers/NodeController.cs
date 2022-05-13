@@ -197,27 +197,6 @@ namespace NodeManager.Web.Controllers
             return View("List", model);
         }
 
-        [Route("db")]
-        public IActionResult DBUploader()
-        {
-            var db = new DBUploader(repos, _appEnvironment);
-            db.UploadToDB();
-
-            //repos.dbContext.Categories.Add(new Categories { Name = "TESTCATEGORY" });
-            //var img = repos.FamilySymbols.FirstOrDefault(x => x.Image != null).Image;
-            //repos.dbContext.FamilySymbols.Add(new FamilySymbol { Name = "TestNode1", Category = new Categories { Name = "Пол"}, Image = img });
-            //repos.dbContext.SaveChanges();
-
-            var model = new NodesViewModel();
-            model.Symbols = repos.FamilySymbols.ToList();
-            model.categorySection = GetCategorySection();
-            model.CurrentSec = null;
-            model.UserName = HttpContext.User.Identity.Name;
-            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
-            model.tagList = repos.Tags.Select(x => x.Value).ToList();
-            model.IsProjectSection = true;
-            return View("List", model);
-        }
 
         [HttpGet]
         [Route("AddFile")]
@@ -233,74 +212,21 @@ namespace NodeManager.Web.Controllers
             if (uploadedFile != null)
             {
                 // путь к папке Files
-                string path = "/Files/" + uploadedFile.FileName;
+                string path = _appEnvironment.WebRootPath + "/Files/" + uploadedFile.FileName;
                 // сохраняем файл в папку Files в каталоге wwwroot
-                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                using (var fileStream = new FileStream(path, FileMode.Create))
                 {
                     await uploadedFile.CopyToAsync(fileStream);
                 }
                 Files file = new Files { FilePath = path };
                 repos.dbContext.Add(file);
                 repos.dbContext.SaveChanges();
-                //var db = new DBUploader(repos, _appEnvironment);
-                //db.UploadToDB(path);
+                var db = new DBUploader(repos, _appEnvironment);
+                db.UploadToDB(_appEnvironment.WebRootPath, path);
             }
             
             return RedirectToAction("List", "Node");
         }
-
-        //[HttpPost]
-        //[Route(nameof(UploadLargeFile))]
-        //public async Task<IActionResult> UploadLargeFile()
-        //{
-        //    var request = HttpContext.Request;
-
-        //    // validation of Content-Type
-        //    // 1. first, it must be a form-data request
-        //    // 2. a boundary should be found in the Content-Type
-        //    if (!request.HasFormContentType ||
-        //        !MediaTypeHeaderValue.TryParse(request.ContentType, out var mediaTypeHeader) ||
-        //        string.IsNullOrEmpty(mediaTypeHeader.Boundary.Value))
-        //    {
-        //        return new UnsupportedMediaTypeResult();
-        //    }
-
-        //    var reader = new MultipartReader(mediaTypeHeader.Boundary.Value, request.Body);
-        //    var section = await reader.ReadNextSectionAsync();
-
-        //    // This sample try to get the first file from request and save it
-        //    // Make changes according to your needs in actual use
-        //    while (section != null)
-        //    {
-        //        var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition,
-        //            out var contentDisposition);
-
-        //        if (hasContentDispositionHeader && contentDisposition.DispositionType.Equals("form-data") &&
-        //            !string.IsNullOrEmpty(contentDisposition.FileName.Value))
-        //        {
-        //            // Don't trust any file name, file extension, and file data from the request unless you trust them completely
-        //            // Otherwise, it is very likely to cause problems such as virus uploading, disk filling, etc
-        //            // In short, it is necessary to restrict and verify the upload
-        //            // Here, we just use the temporary folder and a random file name
-
-        //            // Get the temporary folder, and combine a random file name with it
-        //            var fileName = Path.GetRandomFileName();
-        //            var saveToPath = Path.Combine(Path.GetTempPath(), fileName);
-
-        //            using (var targetStream = System.IO.File.Create(saveToPath))
-        //            {
-        //                await section.Body.CopyToAsync(targetStream);
-        //            }
-
-        //            return Ok();
-        //        }
-
-        //        section = await reader.ReadNextSectionAsync();
-        //    }
-
-        //    // If the code runs to this location, it means that no files have been saved
-        //    return BadRequest("No files data in the request.");
-        //}
 
         private CategorySection GetCategorySection(Nullable<int> fileId = null)
         {
