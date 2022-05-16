@@ -41,9 +41,12 @@ namespace NodeManager.Web.Controllers
         }
 
         [Route("")]
-        [Route("List/{section?}/{category?}")]
-        public ViewResult List(string section, string category)
+        [Route("List/{page:int}/{section?}/{category?}")]
+        public ViewResult List(string section, string category, int page = 1)
         {
+            var pagInfo = new PagingInfo();
+            pagInfo.ItemsPerPage = 12;
+            pagInfo.CurrentPage = page;
             if (!repos.Categories.Any(x => x.Name == category))
             {
                 category = (string)null;
@@ -54,11 +57,17 @@ namespace NodeManager.Web.Controllers
             }
             Categories cat = repos.Categories.FirstOrDefault(x => x.Name.Equals(category));
             Sections sec = repos.Sections.FirstOrDefault(x => x.Name.Equals(section));
+            pagInfo.TotalItems = repos.FamilySymbols
+                    .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
+                    .Count();
             NodesViewModel model = new NodesViewModel()
             {
                 Symbols = repos.FamilySymbols
                     .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
-                    .OrderBy(x => x.Id).ToList(),
+                    .Skip(pagInfo.ItemsPerPage*(pagInfo.CurrentPage-1))
+                    .Take(pagInfo.ItemsPerPage)
+                    .OrderBy(x => x.Id)
+                    .ToList(),
                 CurrentSec = sec
             };
             model.categorySection = GetCategorySection();
@@ -74,6 +83,7 @@ namespace NodeManager.Web.Controllers
             model.UserName = HttpContext.User.Identity.Name;
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
+            model.PagingInfo = pagInfo;
             return View(model);
             //return View("AddFile");
         }

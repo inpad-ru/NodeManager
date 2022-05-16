@@ -28,5 +28,7 @@ namespace NodeManager.Web.Models
 
         public bool IsProjectSection = false;
 
+        public PagingInfo PagingInfo { get; set; }
+
     }
 }
