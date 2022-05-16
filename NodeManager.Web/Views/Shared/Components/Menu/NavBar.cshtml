@@ -11,7 +11,7 @@
         {
         <li>
             <div class="dropdownlink">
-                <a class="but_category" href="/Node/List/@category.Key.Name">@category.Key.Name<span class="fa-solid fa-caret-down fa-xs"></span></a>
+                <a class="but_category" href="/Node/List/1/@category.Key.Name">@category.Key.Name<span class="fa-solid fa-caret-down fa-xs"></span></a>
             </div>
         
             <ul class="submenu">
@@ -20,7 +20,7 @@
                     @foreach (var subcategory in category.Value)
                     {
                         <li>
-                            <a class="but_subcategory" href="/Node/List/@category.Key.Name/@subcategory.Name">@subcategory.Name</a>
+                            <a class="but_subcategory" href="/Node/List/1/@category.Key.Name/@subcategory.Name">@subcategory.Name</a>
                         </li>
                     }
                 }
