@@ -148,12 +148,13 @@ namespace NodeManager.Web.Controllers
         [Route("SearchName")]
         public IActionResult SearchName(string name)
         {
+            name = name.ToLower();
             NodesViewModel model = new NodesViewModel();
             //HashSet<int> tagsId = new HashSet<int>();
             IEnumerable<int> connections;
             try
             {
-                model.Symbols = repos.FamilySymbols.Where(x => x.Name.Contains(name)).ToList();
+                model.Symbols = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name)).ToList();
             }
             catch (Exception ex)
             {
