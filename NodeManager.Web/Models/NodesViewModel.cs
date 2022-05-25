@@ -21,7 +21,7 @@ namespace NodeManager.Web.Models
         public List<string> tagList { get; set; }
 
         public bool IsTagSearchEmpty  = false;
-        public List<string> PrjList { get; set; }
+        public Dictionary<int, string> PrjList { get; set; }
 
         public bool IsProjectSection = false;
         public PagingInfo PagingInfo { get; set; }
