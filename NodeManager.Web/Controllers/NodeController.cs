@@ -33,6 +33,7 @@ namespace NodeManager.Web.Controllers
     {
         private INodes repos;
         private readonly IWebHostEnvironment _appEnvironment;
+        private IHostingEnvironment Environment;
 
         public NodeController(INodes repo, IWebHostEnvironment appEnvironment)
         {
@@ -64,7 +65,7 @@ namespace NodeManager.Web.Controllers
             {
                 Symbols = repos.FamilySymbols
                     .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
-                    .Skip(pagInfo.ItemsPerPage*(pagInfo.CurrentPage-1))
+                    .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
                     .Take(pagInfo.ItemsPerPage)
                     .OrderBy(x => x.Id)
                     .ToList(),
@@ -81,6 +82,7 @@ namespace NodeManager.Web.Controllers
                 model.categorySection.SelectedSection = sec.Id;
             }
             model.UserName = HttpContext.User.Identity.Name;
+            model.PrjList = repos.Files.Select(x => x.FilePath).ToList();
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
             model.PagingInfo = pagInfo;
@@ -104,11 +106,15 @@ namespace NodeManager.Web.Controllers
         }
 
         [HttpPost]
-        [Route("Search")]
-        public IActionResult Search(string[] tags)
+        [Route("{id:int}/Search")]
+        public IActionResult Search(int page, string[] tags)
         {
+            var pagInfo = new PagingInfo();
+            pagInfo.ItemsPerPage = 12;
+            pagInfo.CurrentPage = page;
             NodesViewModel model = new NodesViewModel();
             HashSet<int> tagsId = new HashSet<int>();
+            List<FamilySymbol> resList = new List<FamilySymbol>();
             IEnumerable<int> connections;
             try
             {
@@ -126,15 +132,21 @@ namespace NodeManager.Web.Controllers
                 var symbols = repos.FamilySymbols.ToList();
                 foreach (var fs in connections)
                 {
-                    model.Symbols.Add(symbols.FirstOrDefault(x => x.Id == fs));
+                    resList.Add(symbols.FirstOrDefault(x => x.Id == fs));
                 }
             }
             catch (Exception ex)
             {
-                model.Symbols = repos.FamilySymbols.ToList();
+                resList = new List<FamilySymbol>();
                 model.IsTagSearchEmpty = true;
             }
+            pagInfo.TotalItems = resList.Count();
 
+            model.Symbols = resList.Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
+                                   .Take(pagInfo.ItemsPerPage)
+                                   .ToList();
+            model.PrjList = repos.Files.Select(x => x.FilePath).ToList();
+            model.PagingInfo = pagInfo;
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
@@ -145,23 +157,32 @@ namespace NodeManager.Web.Controllers
         }
 
         [HttpPost]
-        [Route("SearchName")]
-        public IActionResult SearchName(string name)
+        [Route("{id:int}/SearchName")]
+        public IActionResult SearchName(int page, string name)
         {
+            var pagInfo = new PagingInfo();
+            pagInfo.ItemsPerPage = 12;
+            pagInfo.CurrentPage = page;
+
             name = name.ToLower();
             NodesViewModel model = new NodesViewModel();
             //HashSet<int> tagsId = new HashSet<int>();
             IEnumerable<int> connections;
             try
             {
-                model.Symbols = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name)).ToList();
+                model.Symbols = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name))
+                                                   .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
+                                                   .Take(pagInfo.ItemsPerPage)
+                                                   .ToList();
             }
             catch (Exception ex)
             {
-                model.Symbols = repos.FamilySymbols.ToList();
+                model.Symbols = new List<FamilySymbol>();
                 model.IsTagSearchEmpty = true;
             }
-
+            pagInfo.TotalItems = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name)).Count();
+            model.PagingInfo = pagInfo;
+            model.PrjList = repos.Files.Select(x => x.FilePath).ToList();
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
@@ -193,18 +214,28 @@ namespace NodeManager.Web.Controllers
             return PhysicalFile(file_path, file_type);
         }
 
-        [Route("ProjectSection/{fileId:int}")]
-        public IActionResult ProjectSection(int fileId)
+        [Route("{id:int}/ProjectSection/{fileId:int}")]
+        public IActionResult ProjectSection(int page, int fileId)
         {
+            var pagInfo = new PagingInfo();
+            pagInfo.ItemsPerPage = 12;
+            pagInfo.CurrentPage = page;
+
             var model = new NodesViewModel();
-            model.Symbols = repos.FamilySymbols.Where(x => x.FileId == fileId).ToList();
+
+            pagInfo.TotalItems = repos.FamilySymbols.Where(x => x.FileId == fileId).Count();
+            model.PagingInfo = pagInfo;
+            model.Symbols = repos.FamilySymbols.Where(x => x.FileId == fileId)
+                                               .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
+                                               .Take(pagInfo.ItemsPerPage)
+                                               .ToList();
             model.categorySection = GetCategorySection(fileId);
             model.CurrentSec = null;
             model.UserName = HttpContext.User.Identity.Name;
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
             model.IsProjectSection = true;
-        
+
             return View("List", model);
         }
 
@@ -218,6 +249,7 @@ namespace NodeManager.Web.Controllers
 
         [HttpPost]
         [Route("AddFile")]
+        [RequestFormLimits(MultipartBodyLengthLimit = Int64.MaxValue)]
         public async Task<IActionResult> AddFile(IFormFile uploadedFile)
         {
             if (uploadedFile != null)
@@ -235,8 +267,57 @@ namespace NodeManager.Web.Controllers
                 var db = new DBUploader(repos, _appEnvironment);
                 db.UploadToDB(_appEnvironment.WebRootPath, path);
             }
-            
+
             return RedirectToAction("List", "Node");
+        }
+
+
+        [Route("dbClean")]
+        public IActionResult DBClean()
+        {
+            var fs = repos.FamilySymbols.Where(x => x.Id != null);
+            var fsTagIds = repos.FSTags.Where(x => x.Id != null);
+            var cat = repos.Categories.Where(x => x.Id != null);
+            var sec = repos.Sections.Where(x => x.Id != null);
+            var fi = repos.Files.Where(x => x.Id != null);
+            var tags = repos.Tags.Where(x => x.Id != null);
+            var revP = repos.RevParameters.Where(x => x.Id != null);
+
+            repos.dbContext.RemoveRange(revP);
+            repos.dbContext.RemoveRange(fs);
+            repos.dbContext.RemoveRange(fsTagIds);
+            repos.dbContext.RemoveRange(tags);
+            repos.dbContext.RemoveRange(cat);
+            repos.dbContext.RemoveRange(sec);
+            repos.dbContext.RemoveRange(fi);
+            repos.dbContext.SaveChanges();
+            return RedirectToAction("List", "Node");
+        }
+
+        [HttpGet]
+        [Route("db")]
+        public IActionResult DBLargeFile()
+        {
+            return View("LargeFile");
+        }
+
+        [HttpPost]
+        [Route("db")]
+        [RequestFormLimits(MultipartBodyLengthLimit = 104857600)]
+        public IActionResult Upload(IFormFile file, [FromServices] IHostingEnvironment env)
+        {
+
+            string fileName = $"{env.WebRootPath}\\{file.FileName}";
+
+            using (FileStream fs = System.IO.File.Create(fileName))
+            {
+                file.CopyTo(fs);
+                fs.Flush();
+            }
+
+            ViewData["message"] = $"{file.Length} bytes uploaded successfully!";
+
+            return View("List");
         }
 
         private CategorySection GetCategorySection(Nullable<int> fileId = null)
