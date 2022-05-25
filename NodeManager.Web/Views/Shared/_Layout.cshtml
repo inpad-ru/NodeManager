@@ -17,6 +17,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css"  rel="stylesheet"/>
 </head>
 <body>
+    
     @*<input type="checkbox" id="nav-toggle" hidden>*@
     @*<input type="checkbox" id="hmt" class="hidden-menu-ticker">*@
     @*<input type="checkbox" id="toogle-menu" />*@
@@ -84,23 +85,38 @@
                  </div>
             </div>
 
-            <div class="filters_tag">
-                <button>O</button>
-                @*<nav class="nav">
-                    <label for="nav-toggle" class="nav-toggle" onclick></label>
-                    <h2 class="logo"> 
-                    <a href="//dbmast.ru/">DBmast.ru</a> 
-                    </h2>
-                    <ul>
-                        <li><a href="#1">Один</a>
-                        <li><a href="#2">Два</a>
-                        <li><a href="#3">Три</a>
-                        <li><a href="#4">Четыре</a>
-                        <li><a href="#5">Пять</a>
-                        <li><a href="#6">Шесть</a>
-                        <li><a href="#7">Семь</a>
-                    </ul>
-                </nav>*@
+            <div class="filters_panel">
+                <!-- input нужен для того, что бы в дальнейшем задать стили иконке ☰ по событию checked, то есть когда меню будем открыать и закрыать -->
+                <input type="checkbox" id="hmt" class="hidden-menu-ticker">
+                <!-- Далее вёрстка самой иконки. Разделена на спаны, что бы красиво превращать в крестик при открытии (почти как в Телеграме :) -->
+                <label class="btn-menu" for="hmt" title="Панель фильтров">
+                    <span class="first"></span>
+                    <span class="second"></span>
+                    <span class="third"></span>
+                </label>
+                <!-- Менюшка раскрывающаяся и скрывающаяся -->
+                <ul class="hidden-menu">
+                    <li class="first_point">
+                        <div class="search_tag">
+                            <p>Отфильтровать узлы по тегу</p>
+                            @if (@Model.tagList != null)
+                            {
+                                <form action="~/Node/Search" method="post">
+                        
+                                    <select data-placeholder="Выберите тег" class="chosen-select" name="tags" multiple>
+                                    @foreach(var nameTag in Model.tagList)
+                                    {
+                                        <option value="@nameTag">@nameTag</option>
+                                    }
+                                    </select>
+                                    <button class="b_search_tag" type="submit"><span class="fa fa-search"></span></button>
+                                </form>
+                            }
+                        </div>
+                    </li>  
+                    @*<li><a href="">ABOUT</a></li>
+                    <li><a href="">CONTACTS</a></li>  *@
+                </ul>
             </div>
         </header>
         <div class="main_content">
