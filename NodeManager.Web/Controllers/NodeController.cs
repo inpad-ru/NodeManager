@@ -82,6 +82,7 @@ namespace NodeManager.Web.Controllers
                 model.categorySection.SelectedSection = sec.Id;
             }
             model.UserName = HttpContext.User.Identity.Name;
+            model.PrjList = repos.Files.Select(x => x.FilePath).ToList();
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
             model.PagingInfo = pagInfo;
@@ -144,6 +145,7 @@ namespace NodeManager.Web.Controllers
             model.Symbols = resList.Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
                                    .Take(pagInfo.ItemsPerPage)
                                    .ToList();
+            model.PrjList = repos.Files.Select(x => x.FilePath).ToList();
             model.PagingInfo = pagInfo;
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
@@ -180,6 +182,7 @@ namespace NodeManager.Web.Controllers
             }
             pagInfo.TotalItems = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name)).Count();
             model.PagingInfo = pagInfo;
+            model.PrjList = repos.Files.Select(x => x.FilePath).ToList();
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
