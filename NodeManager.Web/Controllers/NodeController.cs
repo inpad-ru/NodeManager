@@ -92,6 +92,64 @@ namespace NodeManager.Web.Controllers
             //return View("AddFile");
         }
 
+        [HttpGet]
+        [Route("List")]
+        public IActionResult List1()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("List")]
+        public ViewResult List1(NodeSearchModel inputData)
+        {
+            var pagInfo = new PagingInfo();
+            pagInfo.ItemsPerPage = 12;
+            pagInfo.CurrentPage = inputData.Page;
+            if (!repos.Categories.Any(x => x.Name == inputData.Category))
+            {
+                inputData.Category = (string)null;
+            }
+            if (!repos.Sections.Any(x => x.Name == inputData.Section))
+            {
+                inputData.Section = (string)null;
+            }
+            Categories cat = repos.Categories.FirstOrDefault(x => x.Name.Equals(inputData.Category));
+            Sections sec = repos.Sections.FirstOrDefault(x => x.Name.Equals(inputData.Section));
+            pagInfo.TotalItems = repos.FamilySymbols
+                    .Where(x => (inputData.Category == null || x.CategoryId == cat.Id) && (inputData.Section == null || x.SectionId == sec.Id))
+                    .Count();
+            NodesViewModel model = new NodesViewModel()
+            {
+                Symbols = repos.FamilySymbols
+                    .Where(x => (inputData.Category == null || x.CategoryId == cat.Id) && (inputData.Section == null || x.SectionId == sec.Id))
+                    .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
+                    .Take(pagInfo.ItemsPerPage)
+                    .OrderBy(x => x.Id)
+                    .ToList(),
+                CurrentSec = sec
+            };
+            model.categorySection = GetCategorySection();
+
+            if (sec == null)
+            {
+                model.categorySection.SelectedSection = null;
+            }
+            else
+            {
+                model.categorySection.SelectedSection = sec.Id;
+            }
+            model.UserName = HttpContext.User.Identity.Name;
+            Dictionary<int, string> data = new Dictionary<int, string>();
+            foreach (var file in repos.Files) data.Add(file.Id, file.FilePath);
+            model.PrjList = data;
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            model.tagList = repos.Tags.Select(x => x.Value).ToList();
+            model.PagingInfo = pagInfo;
+            return View(model);
+            //return View("AddFile");
+        }
+
         [Route("Symbol/{id:int}")]
         public ViewResult FamSymbol(int id)
         {
