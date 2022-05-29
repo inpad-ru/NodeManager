@@ -32,20 +32,11 @@
                     </form>
                 }
             </div>
-            <div class="search_tag">
-                @if (@Model.tagList != null)
-                {
-                    <form action="~/Node/1/Search" method="post">
-                        
-                        <select data-placeholder="Поиск по тегу..." class="chosen-select" name="tags" multiple>
-                        @foreach(var nameTag in Model.tagList)
-                        {
-                            <option value="@nameTag">@nameTag</option>
-                        }
-                        </select>
-                        <button class="b_search_tag" type="submit"><span class="fa fa-search"></span></button>
-                    </form>
-                }
+
+            <div class="search_name">
+                <label for="searchbox" class="is-size-5">Search</label>
+                <input class="searchName" type="search" id="searchbox" placeholder="Live search keyword..">
+
             </div>
 
              <div class="user">
