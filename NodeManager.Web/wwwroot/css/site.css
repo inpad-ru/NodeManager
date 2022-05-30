@@ -65,7 +65,7 @@ h5 {
     justify-self: start;
 }*/
 
-.b_back, .b_download, .formLeft, .b_search_tag, .but_user {
+.b_back, .b_download, .formLeft, .b_search_name, .b_search_tag, .but_user {
     background-color: white;
     color: black;
     font-size: 20px;
@@ -147,6 +147,29 @@ input[type=file] {
     align-self: center;
     justify-self: end;
     margin: 0;
+    height: 43px;
+    vertical-align: middle !important;
+}
+
+.search_by_name {
+    min-height: 34px;
+    max-height: 43px;
+    border: 1px solid #DAD9D9;
+    border-radius: 10px;
+    /*margin-top: 0;*/
+    margin: auto;
+    /*padding-top: 0;*/
+    padding: 3px 10px;
+    font-size: 18px;
+    max-width: 250px;
+    box-sizing: content-box;
+    background-image: none;
+    background-color: none;
+    font-size: 18px;
+}
+
+.b_search_name {
+
 }
 
 

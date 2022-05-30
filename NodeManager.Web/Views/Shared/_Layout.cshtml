@@ -34,9 +34,12 @@
             </div>
 
             <div class="search_name">
-                <label for="searchbox" class="is-size-5">Search</label>
-                <input class="searchName" type="search" id="searchbox" placeholder="Live search keyword..">
-
+                @*<label for="searchbox" class="is-size-5">Search</label>
+                <input class="searchName" type="search" id="searchbox" placeholder="Live search keyword..">*@
+                <form action="~/Node/1/SearchName" method="post"> @*asp-controller="Node" asp-action="SearchName"*@ @*action="~/Node/1/SearchName" method="post"*@
+                    <input type="text" placeholder="Поиск по названию" class="search_by_name" name="name">
+                    <button class="b_search_name" type="submit"><span class="fa fa-search"></span></button>
+                </form>
             </div>
 
              <div class="user">
@@ -70,7 +73,7 @@
                             <p>Отфильтровать узлы по тегу</p>
                             @if (@Model.tagList != null)
                             {
-                                <form action="~/Node/Search" method="post">
+                                <form action="~/Node/1/Search" method="post">
                         
                                     <select data-placeholder="Выберите тег" class="chosen-select" name="tags" multiple>
                                     @foreach(var nameTag in Model.tagList)

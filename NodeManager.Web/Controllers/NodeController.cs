@@ -399,6 +399,7 @@ namespace NodeManager.Web.Controllers
                         .GroupBy(p => p.Id)
                         .Select(g => g.First())
                         .OrderBy(x => x.Id));
+                    categorySection.SelectedNodeSearch = new NodeSearchModel();
                 }
             }
             return categorySection;

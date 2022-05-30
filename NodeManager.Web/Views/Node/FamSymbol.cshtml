@@ -24,7 +24,7 @@
                <button class="b_GoToProject" onclick=window.location.href="/Node/1/ProjectSection/@Model._familySymbol.FileId" title="Перейти к проекту">Перейти к проекту</button>
                @if (Model.UserName != null)
                {
-                   <button class="b_edit" onclick="" title="Редактировать"><span class="fa-solid fa-pencil"></span></button>
+                   @*<button class="b_edit" onclick="" title="Редактировать"><span class="fa-solid fa-pencil"></span></button>*@
                    <button class="b_delete" onclick=window.location.href="/Node/Delete/@Model._familySymbol.Id" title="Удалить"><span class="fa-solid fa-trash"></span></button>
                }
            </div>
