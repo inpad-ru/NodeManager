@@ -1,5 +1,14 @@
 @model NodeManager.Web.Models.NodesViewModel
 
+@{
+    var firstPage = 1;
+    var prevPage = @Model.PagingInfo.CurrentPage-1;
+    var curPage = @Model.PagingInfo.CurrentPage;
+    var nextPage = @Model.PagingInfo.CurrentPage+1;
+    var punultPage =@Model.PagingInfo.TotalPages-1;
+    var lastPage = @Model.PagingInfo.TotalPages;
+}
+
 <div class="nav_menu">
     @if (@Model.IsProjectSection)
     {
@@ -22,5 +31,24 @@
                 </div>
             </div>
         }
+    </div>
+    <div class="pages">
+
+        <p>Всего элементов: @Model.PagingInfo.TotalItems.</p>
+        <p>Элементов на странице: @Model.PagingInfo.ItemsPerPage.</p>
+        <p>Текущая страница: @Model.PagingInfo.CurrentPage.</p>
+        <p>Всего страниц: @Model.PagingInfo.TotalPages.</p>
+
+
+        <p>Тек.стр. @curPage</p>
+
+        <button class="btn" onclick="redirectPage(@curPage);">Нажми</button>
+
+
+        @*<input asp-for="PagingInfo.TotalItems"  id="hdnTotalItems" value="@Model.PagingInfo.TotalItems" />
+        <input asp-for="PagingInfo.ItemsPerPage"  id="hdnTotalItems" value="@Model.PagingInfo.ItemsPerPage" />
+        <input asp-for="PagingInfo.CurrentPage" id="hdnTotalItems" value="@Model.PagingInfo.CurrentPage" />
+        <input asp-for="PagingInfo.TotalPages"  id="hdnTotalItems" value="@Model.PagingInfo.TotalPages" />*@
+        
     </div>
 </div>
