@@ -35,18 +35,103 @@
     </div>
     <div class="pages">
 
-        <p>Всего элементов: @Model.PagingInfo.TotalItems.</p>
+        @*<p>Всего элементов: @Model.PagingInfo.TotalItems.</p>
         <p>Элементов на странице: @Model.PagingInfo.ItemsPerPage.</p>
         <p>Текущая страница: @Model.PagingInfo.CurrentPage.</p>
-        <p>Всего страниц: @Model.PagingInfo.TotalPages.</p>
+        <p>Всего страниц: @Model.PagingInfo.TotalPages.</p>*@
 
 
-        <p>Тек.стр. @curPage</p>
+        <p>Текущая страница @curPage</p>
+        <button class="btn" onclick="window.location.href=redirectPage();">Нажми</button>
 
-        <button class="btn" onclick="window.location.href='redirectPage(@curPage);'">Нажми</button>
+        @*<button class="btn" onclick="window.location.href='redirectPage(@curPage);'">Нажми</button>
         <button class="btn" onclick="window.location.href='redirectPage(@nextPage);'">След.стр</button>
         <button class="btn" onclick="window.location.href=redirectPage(@punultPage);">Предпосл.стр</button>
-        <button class="btn" onclick="window.location.assign(redirectPage(@lastPage))">Посл.стр</button>
+        <button class="btn" onclick="window.location.assign(redirectPage(@lastPage))">Посл.стр</button>*@
+
+
+        @if (lastPage > 1)
+        {
+            <ul class="pagination">
+                
+                @if (lastPage < 5)
+                {   
+                    @if (lastPage < 4)
+                    {
+                        @if (lastPage < 3)
+                        {
+                            <li>
+                                <button class="btn" onclick="window.location.href=redirectPage(1);">1</button>
+                            </li>
+                            <li>
+                                <button class="btn" onclick="window.location.assign(redirectPage(2))">2</button>
+                            </li>
+                        }
+                        <li>
+                            <button class="btn" onclick="window.location.assign(redirectPage(3))">3</button>
+                        </li>
+                    }
+                    <li>
+                        <button class="btn" onclick="window.location.assign(redirectPage(4))">4</button>
+                    </li>   
+                }
+
+                @*@if (@curPage != 1)
+                {
+                    <li>
+                        <button class="btn" onclick="window.location.href=redirectPage(@firstPage);">@firstPage</button>
+                    </li>
+                }*@
+                <li>
+                    <button class="btn" onclick="window.location.href=redirectPage(@firstPage);">@firstPage</button>
+                </li>
+                
+                @if (@curPage != 1 && @curPage != 2)
+                {
+                    <li>
+                        <button class="btn" onclick="window.location.assign(redirectPage(@prevPage))">@prevPage</button>
+                    </li>
+                }
+
+                @if (@curPage != 1 &&  @curPage != lastPage)
+                {
+                    <li>
+                        <button class="btn" onclick="window.location.assign(redirectPage(@curPage))">@curPage</button>
+                    </li>
+                }
+
+                @if (@curPage != punultPage && @curPage != lastPage)
+                {
+                    <li>
+                        <button class="btn" onclick="window.location.assign(redirectPage(@nextPage))">@nextPage</button>
+                    </li>
+                }
+
+                @*@if ((@curPage != 1 && @curPage != 2) && (@curPage != punultPage || @curPage != lastPage))
+                {
+                    <li>
+                        <button class="btn" onclick="window.location.assign(redirectPage(@prevPage))">@prevPage</button>
+                    </li>
+                    <li>
+                        <button class="btn" onclick="window.location.assign(redirectPage(@curPage))">@curPage</button>
+                    </li>
+                    <li>
+                        <button class="btn" onclick="window.location.assign(redirectPage(@nextPage))">@nextPage</button>
+                    </li>
+                }*@
+
+                <li>
+                    <button class="btn" onclick="window.location.href=redirectPage(@lastPage);">@lastPage</button>
+                </li>
+
+                @*@if (@curPage != lastPage)
+                {
+                    <li>
+                        <button class="btn" onclick="window.location.href=redirectPage(@lastPage);">@lastPage</button>
+                    </li>
+                }*@
+            </ul>
+        }
 
 
         @*<input asp-for="PagingInfo.TotalItems"  id="hdnTotalItems" value="@Model.PagingInfo.TotalItems" />
