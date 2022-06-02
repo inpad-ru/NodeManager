@@ -7,6 +7,7 @@
     var nextPage = @Model.PagingInfo.CurrentPage+1;
     var punultPage =@Model.PagingInfo.TotalPages-1;
     var lastPage = @Model.PagingInfo.TotalPages;
+    //string urlLastPage = redirectPage(@lastPage);
 }
 
 <div class="nav_menu">
@@ -42,7 +43,10 @@
 
         <p>Тек.стр. @curPage</p>
 
-        <button class="btn" onclick="redirectPage(@curPage);">Нажми</button>
+        <button class="btn" onclick="window.location.href='redirectPage(@curPage);'">Нажми</button>
+        <button class="btn" onclick="window.location.href='redirectPage(@nextPage);'">След.стр</button>
+        <button class="btn" onclick="window.location.href=redirectPage(@punultPage);">Предпосл.стр</button>
+        <button class="btn" onclick="window.location.assign(redirectPage(@lastPage))">Посл.стр</button>
 
 
         @*<input asp-for="PagingInfo.TotalItems"  id="hdnTotalItems" value="@Model.PagingInfo.TotalItems" />
