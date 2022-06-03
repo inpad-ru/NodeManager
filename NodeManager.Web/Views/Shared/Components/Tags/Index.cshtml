@@ -1,3 +1,18 @@
 ﻿@model NodeManager.Web.Models.TagsModel
 
-@*Надо дописать*@
+<div class="search_tag">
+    <p>Отфильтровать узлы по тегу</p>
+    @if (@Model.Tags != null)
+    {
+        <form action="~/Node/1/Search" method="post">
+                        
+            <select data-placeholder="Выберите тег" class="chosen-select" name="tags" multiple>
+            @foreach(var nameTag in Model.Tags)
+            {
+                <option value="@nameTag">@nameTag</option>
+            }
+            </select>
+            <button class="b_search_tag" type="submit"><span class="fa fa-search"></span></button>
+        </form>
+    }
+</div>

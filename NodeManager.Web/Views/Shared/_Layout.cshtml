@@ -70,20 +70,7 @@
                 <ul class="hidden-menu">
                     <li class="first_point">
                         <div class="search_tag">
-                            <p>Отфильтровать узлы по тегу</p>
-                            @if (@Model.tagList != null)
-                            {
-                                <form action="~/Node/1/Search" method="post">
-                        
-                                    <select data-placeholder="Выберите тег" class="chosen-select" name="tags" multiple>
-                                    @foreach(var nameTag in Model.tagList)
-                                    {
-                                        <option value="@nameTag">@nameTag</option>
-                                    }
-                                    </select>
-                                    <button class="b_search_tag" type="submit"><span class="fa fa-search"></span></button>
-                                </form>
-                            }
+                            @await Component.InvokeAsync("Tags")
                         </div>
                     </li>  
                     @*<li><a href="">ABOUT</a></li>
