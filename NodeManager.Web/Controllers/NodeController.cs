@@ -202,9 +202,13 @@ namespace NodeManager.Web.Controllers
             }
             pagInfo.TotalItems = resList.Count();
 
-            model.Symbols = resList.Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
+
+            model.Symbols = resList.GroupBy(x => x.Id)
+                                   .Select(x => x.First())
+                                   .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
                                    .Take(pagInfo.ItemsPerPage)
                                    .ToList();
+
             Dictionary<int, string> data = new Dictionary<int, string>();
             foreach (var file in repos.Files) data.Add(file.Id, file.FilePath);
             model.PrjList = data;
