@@ -236,7 +236,7 @@ namespace NodeManager.Web.Controllers
             IEnumerable<int> connections;
             try
             {
-                model.Symbols = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name))
+                model.Symbols = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name.ToLower()))
                                                    .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
                                                    .Take(pagInfo.ItemsPerPage)
                                                    .ToList();
