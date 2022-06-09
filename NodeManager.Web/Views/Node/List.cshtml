@@ -42,6 +42,7 @@
 
 
         <p>Текущая страница @curPage</p>
+        <p>Всего страниц @lastPage</p>
         <button class="btn" onclick="window.location.href=redirectPage();">Нажми</button>
 
         @*<button class="btn" onclick="window.location.href='redirectPage(@curPage);'">Нажми</button>
@@ -56,25 +57,35 @@
                 
                 @if (lastPage < 5)
                 {   
+                    <li>
+                        <button class="btn" onclick="window.location.assign(redirectPage(1))">1</button>
+                    </li>
+                    <li>
+                        <button class="btn" onclick="window.location.assign(redirectPage(2))">2</button>
+                    </li>
                     @if (lastPage < 4)
                     {
-                        @if (lastPage < 3)
-                        {
-                            <li>
-                                <button class="btn" onclick="window.location.href=redirectPage(1);">1</button>
-                            </li>
-                            <li>
-                                <button class="btn" onclick="window.location.assign(redirectPage(2))">2</button>
-                            </li>
-                        }
                         <li>
                             <button class="btn" onclick="window.location.assign(redirectPage(3))">3</button>
                         </li>
+                        @if (lastPage > 3 && lastPage < 5)
+                        {
+                            @*<li>
+                                <button class="btn" onclick="window.location.href=redirectPage(3);">3</button>
+                            </li>*@
+                            <li>
+                                <button class="btn" onclick="window.location.assign(redirectPage(4))">4</button>
+                            </li>
+                        }
+                        
                     }
-                    <li>
-                        <button class="btn" onclick="window.location.assign(redirectPage(4))">4</button>
-                    </li>   
+                    
                 }
+                else
+                {
+                    
+                
+                
 
                 @*@if (@curPage != 1)
                 {
@@ -123,7 +134,7 @@
                 <li>
                     <button class="btn" onclick="window.location.href=redirectPage(@lastPage);">@lastPage</button>
                 </li>
-
+                }
                 @*@if (@curPage != lastPage)
                 {
                     <li>
