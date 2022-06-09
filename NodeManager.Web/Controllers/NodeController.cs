@@ -202,9 +202,13 @@ namespace NodeManager.Web.Controllers
             }
             pagInfo.TotalItems = resList.Count();
 
-            model.Symbols = resList.Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
+
+            model.Symbols = resList.GroupBy(x => x.Id)
+                                   .Select(x => x.First())
+                                   .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
                                    .Take(pagInfo.ItemsPerPage)
                                    .ToList();
+
             Dictionary<int, string> data = new Dictionary<int, string>();
             foreach (var file in repos.Files) data.Add(file.Id, file.FilePath);
             model.PrjList = data;
@@ -232,7 +236,7 @@ namespace NodeManager.Web.Controllers
             IEnumerable<int> connections;
             try
             {
-                model.Symbols = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name))
+                model.Symbols = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name.ToLower()))
                                                    .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
                                                    .Take(pagInfo.ItemsPerPage)
                                                    .ToList();
@@ -399,6 +403,7 @@ namespace NodeManager.Web.Controllers
                         .GroupBy(p => p.Id)
                         .Select(g => g.First())
                         .OrderBy(x => x.Id));
+                    categorySection.SelectedNodeSearch = new NodeSearchModel();
                 }
             }
             return categorySection;

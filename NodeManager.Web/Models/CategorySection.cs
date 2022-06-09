@@ -14,5 +14,7 @@ namespace NodeManager.Web.Models
         public Dictionary<Sections, IEnumerable<Categories>> Menu { get; set; }
 
         public Nullable<int> SelectedSection { get; set; }
+
+        public NodeSearchModel SelectedNodeSearch { get; set; }
     }
 }
