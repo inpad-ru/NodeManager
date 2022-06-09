@@ -219,7 +219,7 @@ namespace NodeManager.Web.Controllers
         }
 
         [HttpPost]
-        [Route("{id:int}/SearchName")]
+        [Route("{page:int}/SearchName")]
         public IActionResult SearchName(int page, string name)
         {
             var pagInfo = new PagingInfo();
@@ -278,7 +278,7 @@ namespace NodeManager.Web.Controllers
             return PhysicalFile(file_path, file_type);
         }
 
-        [Route("{id:int}/ProjectSection/{fileId:int}")]
+        [Route("{page:int}/ProjectSection/{fileId:int}")]
         public IActionResult ProjectSection(int page, int fileId)
         {
             var pagInfo = new PagingInfo();

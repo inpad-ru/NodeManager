@@ -39,28 +39,22 @@
 function redirectPage(numPage) {
     var urlPage = window.location.href;
     var decodedURLPage = decodeURI(urlPage);
-    //console.log(urlPage);
-    //console.log(decodedURLPage);
     var arrURLPage = decodedURLPage.split('/');
-    //console.log(arrURLPage.length);
-    //console.log(arrURLPage);
-    //console.log(decodedURLPage);
-    if (arrURLPage.length == 4) {
+    if (arrURLPage.length == 4) { //для главной страницы, лист 1
         arrURLPage[3] = "Node";
         arrURLPage[4] = "List";
         arrURLPage[5] = numPage;
-        //var newMinURLPage = newArrURLPage.join('/');
-        /*return encodeURI(newMinURLPage);*/
-        //console.log(newArrURLPage);
-        //console.log(encodeURI(newMinURLPage));
     }
-    else if (arrURLPage.length == 6 && arrURLPage[4] == "List")
-    {
+    else if (arrURLPage.length == 6 && arrURLPage[4] == "List") { //для остальных листов главной страницы
         arrURLPage[5] = numPage;
     }
-    //arrURLPage[5] = numPage;
+    else if ((arrURLPage.length == 7 || arrURLPage.length == 8)  && arrURLPage[4] == "List") { //для страниц разделов и категорий
+        arrURLPage[5] = numPage;
+    }
+    else if (arrURLPage.length == 6 && arrURLPage[5] == "SearchName") { //для страницы поиска по названию
+        arrURLPage[4] = numPage;
+    }
     var newURLPage = arrURLPage.join('/');
     var encodedURLPage = encodeURI(newURLPage);
-    //console.log(encodedURLPage);
     return encodedURLPage;
 }

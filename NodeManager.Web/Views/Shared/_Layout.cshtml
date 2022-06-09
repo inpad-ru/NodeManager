@@ -42,19 +42,19 @@
                 </form>
             </div>
 
-             <div class="user">
-                 <button class="but_user"><span class="fa-solid fa-user"></span></button>
-                 <div class="user_info">
-                     <p>@Model.UserName</p>
-                     @if (Model.UserName == null)
-                     {
-                         @Html.ActionLink("Войти","Login","Account")
-                         @Html.ActionLink("Зарегистрироваться","Register","Account")
-                     }
-                     else {
-                         @Html.ActionLink("Выйти","Logout","Account")
-                     }
-                 </div>
+            <div class="user">
+                <button class="but_user"><span class="fa-solid fa-user"></span></button>
+                <div class="user_info">
+                    <p>@Model.UserName</p>
+                    @if (Model.UserName == null)
+                    {
+                        @Html.ActionLink("Войти","Login","Account")
+                        @Html.ActionLink("Зарегистрироваться","Register","Account")
+                    }
+                    else {
+                        @Html.ActionLink("Выйти","Logout","Account")
+                    }
+                </div>
             </div>
 
             <div class="filters_panel">
