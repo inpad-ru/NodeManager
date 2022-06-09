@@ -166,7 +166,7 @@ namespace NodeManager.Web.Controllers
         }
 
         [HttpPost]
-        [Route("{id:int}/Search")]
+        [Route("{page:int}/Search")]
         public IActionResult Search(int page, string[] tags)
         {
             var pagInfo = new PagingInfo();

@@ -51,7 +51,10 @@ function redirectPage(numPage) {
     else if ((arrURLPage.length == 7 || arrURLPage.length == 8)  && arrURLPage[4] == "List") { //для страниц разделов и категорий
         arrURLPage[5] = numPage;
     }
-    else if (arrURLPage.length == 6 && arrURLPage[5] == "SearchName") { //для страницы поиска по названию
+    else if (arrURLPage.length == 6 && (arrURLPage[5] == "SearchName" || arrURLPage[5] == "Search")) { //для страницы поиска по названию или по тегу
+        arrURLPage[4] = numPage;
+    }
+    else if (arrURLPage.length == 7 &&  arrURLPage[5] == "ProjectSection") { //для страницы проекта
         arrURLPage[4] = numPage;
     }
     var newURLPage = arrURLPage.join('/');
