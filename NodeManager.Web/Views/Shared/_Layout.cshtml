@@ -9,7 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css"  rel="stylesheet"/>
-</head>
+    <!-- Bootstrap CSS (Cloudflare CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css" integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- jQuery (Cloudflare CDN) -->
+    @*<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>*@
+    <!-- Bootstrap Bundle JS (Cloudflare CDN) -->
+    @*<script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js" integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>*@
+    </head>
 <body>
     
     @*<input type="checkbox" id="nav-toggle" hidden>*@
@@ -32,6 +38,21 @@
                     </form>
                 }
             </div>
+
+            <button type="button" class="btn btn-primary" data-toggle="popover" title="Сообщение" data-content="Ура, Bootstrap 4 работает">Поднеси ко мне курсор</button>
+
+            <!-- jQuery -->
+            <script src="/examples/vendors/jquery/jquery-3.3.1.min.js"></script>
+            <!-- Popper -->
+            <script src="/examples/vendors/popper.js/popper.min.js"></script>
+            <!-- Bootstrap JS -->
+            <script src="/examples/vendors/bootstrap-4/js/bootstrap.min.js"></script>
+
+            <script>
+                $(function () {
+                    $('[data-toggle="popover"]').popover({trigger:'hover'});
+                });
+            </script>
 
             <div class="search_name">
                 @*<label for="searchbox" class="is-size-5">Search</label>
