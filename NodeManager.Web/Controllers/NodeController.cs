@@ -43,7 +43,7 @@ namespace NodeManager.Web.Controllers
 
         [Route("")]
         [Route("List/{page:int}/{section?}/{category?}")]
-        public ViewResult List(string section, string category, int page = 1)
+        public async Task<ViewResult> List(string section, string category, int page = 1)
         {
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
@@ -63,12 +63,12 @@ namespace NodeManager.Web.Controllers
                     .Count();
             NodesViewModel model = new NodesViewModel()
             {
-                Symbols = repos.FamilySymbols
+                 Symbols = repos.FamilySymbols
                     .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
-                    .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
-                    .Take(pagInfo.ItemsPerPage)
+                    //.Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
+                    //.Take(pagInfo.ItemsPerPage)
                     .OrderBy(x => x.Id)
-                    .ToList(),
+                    .ToListAsync().Result,
                 CurrentSec = sec
             };
             model.categorySection = GetCategorySection();
@@ -224,7 +224,7 @@ namespace NodeManager.Web.Controllers
 
         [HttpPost]
         [Route("{id:int}/SearchName")]
-        public IActionResult SearchName(int page, string name)
+        public async Task<IActionResult> SearchName(int page, string name)
         {
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
