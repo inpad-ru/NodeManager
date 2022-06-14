@@ -6,6 +6,13 @@ var div = document.querySelectorAll('div.node'); // Получаем списо�
 var cnt = div.length;                            // Считаем количество блок 
 alert(cnt);                                      // Выводи на экран результат
 
+function getValue() {
+    var strURL = "/Node/1/SearchName/";
+    var textInput = document.getElementById("nameSearch");
+    return (strURL + textInput);
+    //alert(text);
+}
+
 function redirectPage(numPage) {
     var urlPage = window.location.href;
     var decodedURLPage = decodeURI(urlPage);
@@ -21,7 +28,7 @@ function redirectPage(numPage) {
     else if ((arrURLPage.length == 7 || arrURLPage.length == 8)  && arrURLPage[4] == "List") { //для страниц разделов и категорий
         arrURLPage[5] = numPage;
     }
-    else if (arrURLPage.length == 6 && (arrURLPage[5] == "SearchName" || arrURLPage[5] == "Search")) { //для страницы поиска по названию или по тегу
+    else if (arrURLPage.length == 7 && (arrURLPage[5] == "SearchName" || arrURLPage[5] == "Search")) { //для страницы поиска по названию или по тегу
         arrURLPage[4] = numPage;
     }
     else if (arrURLPage.length == 7 &&  arrURLPage[5] == "ProjectSection") { //для страницы проекта
