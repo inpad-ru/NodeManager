@@ -219,7 +219,7 @@ namespace NodeManager.Web.Controllers
         }
 
         [HttpPost]
-        [Route("{page:int}/SearchName")]
+        [Route("{page:int}/SearchName/{name}")]
         public IActionResult SearchName(int page, string name)
         {
             var pagInfo = new PagingInfo();
