@@ -56,8 +56,10 @@ namespace NodeManager.Web.Controllers
             {
                 section = (string)null;
             }
-            Categories cat = repos.Categories.FirstOrDefault(x => x.Name.Equals(category));
-            Sections sec = repos.Sections.FirstOrDefault(x => x.Name.Equals(section));
+            //Task<Categories> cat = repos.Categories.FirstOrDefaultAsync(x => x.Name.Equals(category));
+            //Task<Sections> sec = repos.Sections.FirstOrDefaultAsync(x => x.Name.Equals(section));
+            Categories cat =  await repos.Categories.FirstOrDefaultAsync(x => x.Name.Equals(category));
+            Sections sec = await repos.Sections.FirstOrDefaultAsync(x => x.Name.Equals(section));
             pagInfo.TotalItems = repos.FamilySymbols
                     .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
                     .Count();
@@ -100,7 +102,7 @@ namespace NodeManager.Web.Controllers
         }
 
         [HttpPost]
-        [Route("List")]
+        [Route("List1")]
         public ViewResult List1(NodeSearchModel inputData)
         {
             var pagInfo = new PagingInfo();
@@ -151,11 +153,11 @@ namespace NodeManager.Web.Controllers
         }
 
         [Route("Symbol/{id:int}")]
-        public ViewResult FamSymbol(int id)
+        public async Task<ViewResult> FamSymbol(int id)
         {
             FamSymbolViewModel model = new FamSymbolViewModel()
             {
-                _familySymbol = repos.FamilySymbols.FirstOrDefault(x => x.Id == id),
+                _familySymbol = await repos.FamilySymbols.FirstOrDefaultAsync(x => x.Id == id),
                 _revitParameters = repos.RevParameters
                     .Where(c => c.SymbolId == id)
                     .OrderBy(c => c.Id)
@@ -167,7 +169,7 @@ namespace NodeManager.Web.Controllers
 
         [HttpPost]
         [Route("{id:int}/Search")]
-        public IActionResult Search(int page, string[] tags)
+        public async Task<IActionResult> Search(int page, string[] tags)
         {
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
@@ -180,7 +182,7 @@ namespace NodeManager.Web.Controllers
             {
                 foreach (var tag in tags)
                 {
-                    tagsId.Add(repos.Tags.FirstOrDefault(x => x.Value.Equals(tag.ToLower())).Id);
+                    tagsId.Add((await repos.Tags.FirstOrDefaultAsync(x => x.Value.Equals(tag.ToLower()))).Id);
                 }
                 connections = repos.FSTags.Where(x => x.TagId == tagsId.First()).Select(x => x.FSId);
 
@@ -215,7 +217,7 @@ namespace NodeManager.Web.Controllers
             model.PagingInfo = pagInfo;
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
-            model.tagList = repos.Tags.Select(x => x.Value).ToList();
+            model.tagList = await repos.Tags.Select(x => x.Value).ToListAsync();
             model.UserName = HttpContext.User.Identity.Name;
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
 
@@ -236,24 +238,24 @@ namespace NodeManager.Web.Controllers
             IEnumerable<int> connections;
             try
             {
-                model.Symbols = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name.ToLower()))
+                model.Symbols = await repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name.ToLower()))
                                                    .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
                                                    .Take(pagInfo.ItemsPerPage)
-                                                   .ToList();
+                                                   .ToListAsync();
             }
             catch (Exception ex)
             {
                 model.Symbols = new List<FamilySymbol>();
                 model.IsTagSearchEmpty = true;
             }
-            pagInfo.TotalItems = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name)).Count();
+            pagInfo.TotalItems = await repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name)).CountAsync();
             model.PagingInfo = pagInfo;
             Dictionary<int, string> data = new Dictionary<int, string>();
             foreach (var file in repos.Files) data.Add(file.Id, file.FilePath);
             model.PrjList = data;
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
-            model.tagList = repos.Tags.Select(x => x.Value).ToList();
+            model.tagList = await repos.Tags.Select(x => x.Value).ToListAsync();
             model.UserName = HttpContext.User.Identity.Name;
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
 
@@ -264,9 +266,9 @@ namespace NodeManager.Web.Controllers
 
         [Authorize]
         [Route("Delete/{id:int}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var fs = repos.FamilySymbols.FirstOrDefault(x => x.Id == id);
+            var fs = await repos.FamilySymbols.FirstOrDefaultAsync(x => x.Id == id);
             var fsTagIds = repos.FSTags.Where(x => x.FSId == id);
             repos.dbContext.Remove(fs);
             repos.dbContext.RemoveRange(fsTagIds);
@@ -275,9 +277,9 @@ namespace NodeManager.Web.Controllers
         }
 
         [Route("GetFile/{id:int}")]
-        public IActionResult GetFile(int id)
+        public async Task<IActionResult> GetFile(int id)
         {
-            string file_path = Path.Combine(_appEnvironment.ContentRootPath, repos.Files.FirstOrDefault(x => x.Id == id).FilePath);
+            string file_path = Path.Combine(_appEnvironment.ContentRootPath, (await repos.Files.FirstOrDefaultAsync(x => x.Id == id)).FilePath);
             string file_type = "archive/rvt";
             return PhysicalFile(file_path, file_type);
         }
