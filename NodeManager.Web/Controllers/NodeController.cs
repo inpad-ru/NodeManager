@@ -65,12 +65,12 @@ namespace NodeManager.Web.Controllers
                     .Count();
             NodesViewModel model = new NodesViewModel()
             {
-                 Symbols = repos.FamilySymbols
+                 Symbols = await repos.FamilySymbols
                     .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
                     //.Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
                     //.Take(pagInfo.ItemsPerPage)
                     .OrderBy(x => x.Id)
-                    .ToListAsync().Result,
+                    .ToListAsync(),
                 CurrentSec = sec
             };
             model.categorySection = GetCategorySection();
@@ -272,7 +272,7 @@ namespace NodeManager.Web.Controllers
             var fsTagIds = repos.FSTags.Where(x => x.FSId == id);
             repos.dbContext.Remove(fs);
             repos.dbContext.RemoveRange(fsTagIds);
-            repos.dbContext.SaveChanges();
+            await repos.dbContext.SaveChangesAsync();
             return RedirectToAction("List", "Node");
         }
 
@@ -333,7 +333,7 @@ namespace NodeManager.Web.Controllers
                 }
                 Files file = new Files { FilePath = path };
                 repos.dbContext.Add(file);
-                repos.dbContext.SaveChanges();
+                await repos.dbContext.SaveChangesAsync();
                 var db = new DBUploader(repos, _appEnvironment);
                 db.UploadToDB(_appEnvironment.WebRootPath, path);
             }
