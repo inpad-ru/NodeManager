@@ -4,18 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] Менеджер узлов</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="~/css/site.css" />
+    @*<script src="~/js/site.js" asp-append-version="true"></script>*@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css"  rel="stylesheet"/>
-    <!-- Bootstrap CSS (Cloudflare CDN) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css" integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <!-- jQuery (Cloudflare CDN) -->
-    @*<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>*@
-    <!-- Bootstrap Bundle JS (Cloudflare CDN) -->
-    @*<script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js" integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>*@
-    </head>
+</head>
 <body>
     
     @*<input type="checkbox" id="nav-toggle" hidden>*@
@@ -24,7 +23,7 @@
     <input type="checkbox" id="nav-toggle" hidden>
     <main class="main_container">
         <header class="main_header">
-            <h5>Узлы предоставлены для обязательной адаптации к проекту</h5>
+            <h5 class="nameForMain">Узлы предоставлены для обязательной адаптации к проекту</h5>
             <div class="button_group_left">
                 <button class="b_back" onclick="window.history.back()" title="Назад"><span class="fa-solid fa-arrow-left"></span></button>
                 @if (Model.UserName != null)
@@ -39,22 +38,6 @@
                 }
             </div>
 
-            <button type="button" class="btn btn-primary" data-toggle="popover" title="Сообщение" data-content="Ура, Bootstrap 4 работает">Поднеси ко мне курсор</button>
-
-            <<!-- Bootstrap CSS (Cloudflare CDN) -->
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css" integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g==" crossorigin="anonymous" referrerpolicy="no-referrer">
-            <!-- jQuery (Cloudflare CDN) -->
-            <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-            <!-- Bootstrap Bundle JS (Cloudflare CDN) -->
-            <script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js" integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
-            <script>
-                $(function () {
-                    $('[data-toggle="popover"]').popover({trigger:'hover'});
-                });
-            </script>
-
             <div class="search_name">
                 @*<label for="searchbox" class="is-size-5">Search</label>
                 <input class="searchName" type="search" id="searchbox" placeholder="Live search keyword..">*@
@@ -63,8 +46,7 @@
                     @*<button class="b_search_name" type='submit'><span class="fa fa-search"></span></button>*@
                 @*</form>*@
                 
-
-                <input type="text" placeholder="Поиск по названию" class="search_by_name" id="nameSearch" name="name">
+                <input type="text" placeholder="Введите название" class="search_by_name" id="nameSearch" name="name">
                     <button class="b_search_name" onclick="window.location.href='getValue();" type='submit'><span class="fa fa-search"></span></button>
                 
                 @*<a class="b_search_name" formaction="nameSearch" href="getValue()"><span class="fa fa-search"></a>*@
@@ -122,6 +104,11 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+     <!-- Bootstrap CSS (Cloudflare CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css" integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- Bootstrap Bundle JS (Cloudflare CDN) -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js" integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @*<link rel="stylesheet" href="~/css/site.css" />*@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

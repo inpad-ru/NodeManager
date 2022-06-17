@@ -38,8 +38,8 @@ body {
 
 /* Header buttons */
 
-h5 {
-    font-size: 16px;
+.nameForMain, .nameForNode {
+    font-size: 16px !important;
     white-space: normal;
     text-align: center;
     font-weight: bold;
@@ -450,6 +450,7 @@ input.chosen-search-input.default {
 }
 
 .node_name {
+    font-size: 20px !important;
     width: 100%;
     border-top: 1px solid black;
     text-align: center;
@@ -503,6 +504,7 @@ ul {
     list-style-type: none;
     width: 90%;
     color: black;
+    font-size: 20px !important;
 }
 
 .but_subcategory {
@@ -510,6 +512,7 @@ ul {
     text-decoration: none;
     width: 100%;
     color: black;
+    font-size: 20px !important;
 }
 
 .accordion-menu li.open .dropdownlink .fa-caret-down {
@@ -568,11 +571,13 @@ ul {
 .headerNode {
     display: grid;
     grid-template-rows: auto auto;
-    grid-auto-columns: 50% 50%;
+    /*grid-auto-columns: 40% 60%;*/
+    /*width: 100%;*/
     background-color: white;
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 0;
+    /*max-width: 1200px;*/
 }
 
 /* Content */
@@ -583,6 +588,13 @@ ul {
 }
 
 /* Header button */
+/*.nameForNode {
+    text-align: center;
+    font-weight: bold;
+    word-break: break-all;
+    grid-row: 1;
+    grid-column: 1 / 5;
+}*/
 
 .but_group {
     grid-row: 2;
