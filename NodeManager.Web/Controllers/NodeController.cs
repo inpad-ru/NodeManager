@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
+using Microsoft.EntityFrameworkCore;
 
 //using NodeManager.Domain;
 using NodeManager.Web.Abstract;
@@ -20,7 +21,7 @@ using System.IO;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Data.Entity;
+//using System.Data.Entity;
 using System.Web;
 
 
@@ -48,6 +49,8 @@ namespace NodeManager.Web.Controllers
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
             pagInfo.CurrentPage = page;
+            //var tagList = repos.Tags.Select(x => x.Value).ToListAsync();
+
             if (!repos.Categories.Any(x => x.Name == category))
             {
                 category = (string)null;
@@ -58,23 +61,29 @@ namespace NodeManager.Web.Controllers
             }
             //Task<Categories> cat = repos.Categories.FirstOrDefaultAsync(x => x.Name.Equals(category));
             //Task<Sections> sec = repos.Sections.FirstOrDefaultAsync(x => x.Name.Equals(section));
-            Categories cat =  await repos.Categories.FirstOrDefaultAsync(x => x.Name.Equals(category));
-            Sections sec = await repos.Sections.FirstOrDefaultAsync(x => x.Name.Equals(section));
+            Categories cat = repos.Categories.FirstOrDefault(x => x.Name.Equals(category));
+            Sections sec = repos.Sections.FirstOrDefault(x => x.Name.Equals(section));
+            
             pagInfo.TotalItems = repos.FamilySymbols
                     .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
                     .Count();
-            NodesViewModel model = new NodesViewModel()
-            {
-                 Symbols = await repos.FamilySymbols
+            var nodes = repos.FamilySymbols
                     .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
                     //.Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
                     //.Take(pagInfo.ItemsPerPage)
                     .OrderBy(x => x.Id)
-                    .ToListAsync(),
-                CurrentSec = sec
-            };
-            model.categorySection = GetCategorySection();
+                    .ToListAsync();
 
+            NodesViewModel model = new NodesViewModel(){ CurrentSec = sec };
+            model.UserName = HttpContext.User.Identity.Name;
+            Dictionary<int, string> data = new Dictionary<int, string>();
+            model.Symbols = await nodes;
+            foreach (var file in repos.Files) data.Add(file.Id, file.FilePath);
+            model.PrjList = data;
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            model.tagList = await repos.Tags.Select(x => x.Value).ToListAsync();
+            model.PagingInfo = pagInfo;
+            model.categorySection = GetCategorySection();
             if (sec == null)
             {
                 model.categorySection.SelectedSection = null;
@@ -83,13 +92,6 @@ namespace NodeManager.Web.Controllers
             {
                 model.categorySection.SelectedSection = sec.Id;
             }
-            model.UserName = HttpContext.User.Identity.Name;
-            Dictionary<int, string> data = new Dictionary<int, string>();
-            foreach (var file in repos.Files) data.Add(file.Id, file.FilePath);
-            model.PrjList = data;
-            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
-            model.tagList = repos.Tags.Select(x => x.Value).ToList();
-            model.PagingInfo = pagInfo;
             return View(model);
             //return View("AddFile");
         }
@@ -236,21 +238,26 @@ namespace NodeManager.Web.Controllers
             NodesViewModel model = new NodesViewModel();
             //HashSet<int> tagsId = new HashSet<int>();
             IEnumerable<int> connections;
+            Task<List<FamilySymbol>> nodes = null;
             try
             {
-                model.Symbols = await repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name.ToLower()))
-                                                   .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
-                                                   .Take(pagInfo.ItemsPerPage)
-                                                   .ToListAsync();
+                model.Symbols = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name.ToLower()))
+                                                   //.Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
+                                                   //.Take(pagInfo.ItemsPerPage)
+                                                   .ToList();
+                //await nodes;
+                //model.Symbols = nodes.Result;
             }
             catch (Exception ex)
             {
                 model.Symbols = new List<FamilySymbol>();
                 model.IsTagSearchEmpty = true;
             }
-            pagInfo.TotalItems = await repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name)).CountAsync();
+
+            
             model.PagingInfo = pagInfo;
             Dictionary<int, string> data = new Dictionary<int, string>();
+            //model.Symbols = await nodes;
             foreach (var file in repos.Files) data.Add(file.Id, file.FilePath);
             model.PrjList = data;
             model.categorySection = GetCategorySection();
@@ -258,6 +265,7 @@ namespace NodeManager.Web.Controllers
             model.tagList = await repos.Tags.Select(x => x.Value).ToListAsync();
             model.UserName = HttpContext.User.Identity.Name;
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            pagInfo.TotalItems = await repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name)).CountAsync();
 
             return View("List", model);
         }
