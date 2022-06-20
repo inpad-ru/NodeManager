@@ -45,20 +45,56 @@
                     {
                         @if (lastPage >= 2)
                         {
-                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(1);">1</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(2);">2</a></li>
+                            @if (curPage == 1)
+                            {
+                                <li class="page-item active"><a class="page-link" href="javascript:redirectPage(1);">1</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="javascript:redirectPage(1);">1</a></li>
+                            }
+
+                            @if (curPage == 2)
+                            {
+                                <li class="page-item active"><a class="page-link" href="javascript:redirectPage(2);">2</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="javascript:redirectPage(2);">2</a></li>
+                            }
                         }
                         @if (lastPage >= 3)
                         {
-                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(3);">3</a></li>
+                            @if (curPage == 3)
+                            {
+                                <li class="page-item active"><a class="page-link" href="javascript:redirectPage(3);">3</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="javascript:redirectPage(3);">3</a></li>
+                            }
                         }
                         @if (lastPage >= 4)
                         {
-                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(4);">4</a></li>
+                            @if (curPage == 4)
+                            {
+                                <li class="page-item active"><a class="page-link" href="javascript:redirectPage(4);">4</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="javascript:redirectPage(4);">4</a></li>
+                            }
                         }
                         @if (lastPage == 5)
                         {
-                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(5);">5</a></li>
+                            @if (curPage == 5)
+                            {
+                                <li class="page-item active"><a class="page-link" href="javascript:redirectPage(5);">5</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="javascript:redirectPage(5);">5</a></li>
+                            }
                         }
                     }
                     else
