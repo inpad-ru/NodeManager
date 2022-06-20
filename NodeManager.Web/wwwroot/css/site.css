@@ -439,7 +439,7 @@ input.chosen-search-input.default {
     display: inline-block;
     width: 360px;
     height: 350px;
-    margin: 5% 0 0 5%;
+    margin: 5% 0 0 4%;
     border: 1px solid black;
     text-align: center;
 }
@@ -474,7 +474,15 @@ p, span {
 
 /* Нумерация страниц - Pagination */
 
-
+.pages {
+    margin-left: 30px;
+}
+.pagination {
+    /*padding-top: 15px;*/
+    /*padding-bottom: 15px;*/
+    
+    margin: 5% 0 5% 2%;
+}
 
 
 /* Иерархическое меню, файл NavBar.cshtml ----------------------------------------------------------------- */

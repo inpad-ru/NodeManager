@@ -7,7 +7,6 @@
     var nextPage = @Model.PagingInfo.CurrentPage+1;
     var punultPage =@Model.PagingInfo.TotalPages-1;
     var lastPage = @Model.PagingInfo.TotalPages;
-    //string urlLastPage = redirectPage(@lastPage);
 }
 
 <div class="nav_menu">
@@ -34,141 +33,105 @@
         }
     </div>
     <div class="pages">
-
-        <p>Всего элементов: @Model.PagingInfo.TotalItems.</p>
+        @*<p>Всего элементов: @Model.PagingInfo.TotalItems.</p>
         <p>Элементов на странице: @Model.PagingInfo.ItemsPerPage.</p>
         <p>Текущая страница: @Model.PagingInfo.CurrentPage.</p>
-        <p>Всего страниц: @Model.PagingInfo.TotalPages.</p>
-
-
-        @*<p>Текущая страница @curPage</p>
-        <p>Всего страниц @lastPage</p>
-        <button class="btn" onclick="window.location.href=redirectPage();">Нажми</button>*@
-
-        @*<button class="btn" onclick="window.location.href='redirectPage(@curPage);'">Нажми</button>
-        <button class="btn" onclick="window.location.href='redirectPage(@nextPage);'">След.стр</button>
-        <button class="btn" onclick="window.location.href=redirectPage(@punultPage);">Предпосл.стр</button>
-        <button class="btn" onclick="window.location.assign(redirectPage(@lastPage))">Посл.стр</button>*@
-
+        <p>Всего страниц: @Model.PagingInfo.TotalPages.</p>*@
         <nav aria-label="Page navigation example">
             <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link" href="javascript:redirectPage(1);">1</a></li>
-                <li class="page-item"><a class="page-link" href="javascript:redirectPage(2);">2</a></li>
-                <li class="page-item"><a class="page-link" href="#" onclick="window.location.assign(redirectPage(3))">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-
-        @if (lastPage > 1)
-        {
-            <ul class="pagination">
-                
-                @if (lastPage < 5)
-                {   
-                    <li>
-                        <button class="btn" onclick="window.location.assign(redirectPage(1))">1</button>
-                    </li>
-                    <li>
-                        <button class="btn" onclick="window.location.assign(redirectPage(2))">2</button>
-                    </li>
-                    @if (lastPage < 4)
+                @if (lastPage > 1)
+                {
+                    @if (lastPage < 6)
                     {
-                        <li>
-                            <button class="btn" onclick="window.location.assign(redirectPage(3))">3</button>
-                        </li>
-                        @if (lastPage > 3 && lastPage < 5)
+                        @if (lastPage >= 2)
                         {
-                            @*<li>
-                                <button class="btn" onclick="window.location.href=redirectPage(3);">3</button>
-                            </li>*@
-                            <li>
-                                <button class="btn" onclick="window.location.assign(redirectPage(4))">4</button>
+                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(1);">1</a></li>
+                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(2);">2</a></li>
+                        }
+                        @if (lastPage >= 3)
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(3);">3</a></li>
+                        }
+                        @if (lastPage >= 4)
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(4);">4</a></li>
+                        }
+                        @if (lastPage == 5)
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(5);">5</a></li>
+                        }
+                    }
+                    else
+                    {
+                        @if (@curPage == 1)
+                        {
+                            <li class="page-item disabled">
+                                <a class="page-link" href="javascript:redirectPage(@prevPage);" tabindex="-1" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="javascript:redirectPage(@firstPage);">@firstPage</a></li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:redirectPage(@prevPage);" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(@firstPage);">@firstPage</a></li>
+                        }
+
+                        @if (@curPage > 3)
+                        {
+                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">...</a></li>
+                        }
+
+                        @if (@curPage != 1 && @curPage != 2)
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(@prevPage);">@prevPage</a></li>
+                        }
+
+                        @if (@curPage != 1 &&  @curPage != lastPage)
+                        {
+                            <li class="page-item active"><a class="page-link" href="javascript:redirectPage(@curPage);">@curPage</a></li>
+                        }
+
+                        @if (@curPage != punultPage && @curPage != lastPage)
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(@nextPage);">@nextPage</a></li>
+                        }
+
+                        @if (@curPage < lastPage-3)
+                        {
+                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">...</a></li>
+                        }
+
+                        @if (@curPage == lastPage)
+                        {
+                            <li class="page-item active"><a class="page-link" href="javascript:redirectPage(@lastPage);">@lastPage</a></li>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="javascript:redirectPage(@nextPage);" tabindex="-1" aria-label="Previous">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
                             </li>
                         }
-                        
+                        else
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(@lastPage);">@lastPage</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:redirectPage(@nextPage);" aria-label="Previous">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                        }
                     }
-                    
                 }
-                else
-                {
-                    
-                
-                
-
-                @*@if (@curPage != 1)
-                {
-                    <li>
-                        <button class="btn" onclick="window.location.href=redirectPage(@firstPage);">@firstPage</button>
-                    </li>
-                }*@
-                <li>
-                    <button class="btn" onclick="window.location.href=redirectPage(@firstPage);">@firstPage</button>
-                </li>
-                
-                @if (@curPage != 1 && @curPage != 2)
-                {
-                    <li>
-                        <button class="btn" onclick="window.location.assign(redirectPage(@prevPage))">@prevPage</button>
-                    </li>
-                }
-
-                @if (@curPage != 1 &&  @curPage != lastPage)
-                {
-                    <li>
-                        <button class="btn" onclick="window.location.assign(redirectPage(@curPage))">@curPage</button>
-                    </li>
-                }
-
-                @if (@curPage != punultPage && @curPage != lastPage)
-                {
-                    <li>
-                        <button class="btn" onclick="window.location.assign(redirectPage(@nextPage))">@nextPage</button>
-                    </li>
-                }
-
-                @*@if ((@curPage != 1 && @curPage != 2) && (@curPage != punultPage || @curPage != lastPage))
-                {
-                    <li>
-                        <button class="btn" onclick="window.location.assign(redirectPage(@prevPage))">@prevPage</button>
-                    </li>
-                    <li>
-                        <button class="btn" onclick="window.location.assign(redirectPage(@curPage))">@curPage</button>
-                    </li>
-                    <li>
-                        <button class="btn" onclick="window.location.assign(redirectPage(@nextPage))">@nextPage</button>
-                    </li>
-                }*@
-
-                <li>
-                    <button class="btn" onclick="window.location.href=redirectPage(@lastPage);">@lastPage</button>
-                </li>
-                }
-                @*@if (@curPage != lastPage)
-                {
-                    <li>
-                        <button class="btn" onclick="window.location.href=redirectPage(@lastPage);">@lastPage</button>
-                    </li>
-                }*@
             </ul>
-        }
-
-
-        @*<input asp-for="PagingInfo.TotalItems"  id="hdnTotalItems" value="@Model.PagingInfo.TotalItems" />
-        <input asp-for="PagingInfo.ItemsPerPage"  id="hdnTotalItems" value="@Model.PagingInfo.ItemsPerPage" />
-        <input asp-for="PagingInfo.CurrentPage" id="hdnTotalItems" value="@Model.PagingInfo.CurrentPage" />
-        <input asp-for="PagingInfo.TotalPages"  id="hdnTotalItems" value="@Model.PagingInfo.TotalPages" />*@
-        
+        </nav>
     </div>
 </div>

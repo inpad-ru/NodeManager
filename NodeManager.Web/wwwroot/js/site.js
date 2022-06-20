@@ -36,5 +36,6 @@ function redirectPage(numPage) {
     }
     var newURLPage = arrURLPage.join('/');
     var encodedURLPage = encodeURI(newURLPage);
-    return encodedURLPage;
+    window.location.assign(encodedURLPage);
+    //return encodedURLPage;
 }
