@@ -32,35 +32,10 @@
             </div>
 
             <div class="search_name">
-                @*<label for="searchbox" class="is-size-5">Search</label>
-                <input class="searchName" type="search" id="searchbox" placeholder="Live search keyword..">*@
-                <form  method="post" class="subscription"> @*asp-controller="Node" asp-action="SearchName"*@ @*action="~/Node/1/SearchName" method="post"*@
-                    <input type="text" placeholder="Введите название" class="search_by_name" > @*name="name"*@
+                <form  method="post" class="subscription">
+                    <input type="text" placeholder="Введите название" class="search_by_name">
                     <button class="b_search_name" type="submit"><span class="fa fa-search"></span></button>
                 </form>
-                
-                @*<input type="text" placeholder="Введите название ПОИСК" class="search_by_name" id="nameSearch" name="name">*@
-                @*<button class="b_search_name" onclick="window.location.href='getValue();" type='submit'><span class="fa fa-search"></span></button>*@
-                
-                @*<p class="subscription-message">Обещаем присылать вам новости не чаще одного раза в день, причём только самые интересные и важные.</p>*@
-
-                <form method="post" class="subscription"> @*action="https://echo.htmlacademy.ru/courses"*@
-                @*<div class="subscription-inner">
-                    <label class="subscription-label" for="subscription-email">email</label>
-                    <input type="text" class="subscription-email" placeholder="keks@flashnews.ru" value="keks@flashnews.ru" required id="subscription-email">
-                </div>
-
-                <button class="button subscription-button" type="submit">Подписаться</button>*@
-                </form>
-
-                @*<a class="b_search_name" formaction="nameSearch" href="getValue()"><span class="fa fa-search"></a>*@
-                @*<button class="b_search_name" href="/Node/List/1/@cat"><span class="fa fa-search"></span></button>*@
-                @*<script type="text/javascript">
-                    function getValue(){
-                        var text = document.getElementById("nameSearch").value;
-                        alert(text);
-                    }
-                </script>*@
             </div>
 
             <div class="user">
@@ -93,9 +68,7 @@
                         <div class="search_tag">
                             @await Component.InvokeAsync("Tags")
                         </div>
-                    </li>  
-                    @*<li><a href="">ABOUT</a></li>
-                    <li><a href="">CONTACTS</a></li>  *@
+                    </li>
                 </ul>
             </div>
         </header>
