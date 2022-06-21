@@ -218,7 +218,7 @@ namespace NodeManager.Web.Controllers
             return View("List", model);
         }
 
-        [HttpPost]
+        //[HttpPost]
         [Route("{page:int}/SearchName/{name}")]
         public IActionResult SearchName(int page, string name)
         {
