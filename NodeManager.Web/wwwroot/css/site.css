@@ -609,7 +609,7 @@ ul {
     grid-column: 1 / 2;
     align-self: center;
     justify-self: start;
-    margin-left: 4%;
+    margin-left: 5%;
 }
 
 /*.but_close {
@@ -689,8 +689,8 @@ ul {
 .scroll-table {
     position: -webkit-sticky;
     position: sticky;
-    top: 11%;
-    z-index: 300;
+    /*top: 11%;
+    z-index: 300;*/
     top: 15%;
     z-index: 100;
 }
@@ -733,7 +733,6 @@ td {
 /* Страница авторизации Login.cshtml и регистрации Register.cshtml ------------------------------------------------------------ */
 
 .page_register, .page_login {
-    /*background: yellow;*/
     position: absolute;
     top: 50%;
     left: 50%;

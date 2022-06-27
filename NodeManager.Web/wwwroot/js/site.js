@@ -2,16 +2,12 @@
     $('.chosen-select').chosen({ width: "250px" });
 });
 
-//var div = document.querySelectorAll('div.node'); // Получаем список все блоков документа
-//var cnt = div.length;                            // Считаем количество блок 
-//alert(cnt);                                      // Выводи на экран результат
-
 let form = document.querySelector('.subscription');
-let email = document.querySelector('.search_by_name');
+let enteredText = document.querySelector('.search_by_name');
 
 form.onsubmit = function (evt) {
     evt.preventDefault();
-    var inputText = email.value;
+    var inputText = enteredText.value;
     var strURL = "/Node/1/SearchName/";
     window.location.assign(strURL + inputText);
 };

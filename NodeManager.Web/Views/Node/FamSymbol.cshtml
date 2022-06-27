@@ -36,22 +36,26 @@
             <div class=param_section>
                 <div class="scroll">
                     <table class="parameters">
-                    <thead class="paramHead">
-                        <tr>
-                            <th class="headTable">Название</th>
-                            <th class="headTable">Значение</th>
-                        </tr>
-                    </thead>
-                    <tbody class="paramBody">
-                        @foreach (var parameter in Model._revitParameters)
-                        {
+                        <thead class="paramHead">
                             <tr>
-                                <td class="parameter_name">@parameter.Name</td>
-                                <td class="parameter_value">@parameter.Value</td>
+                                <th class="headTable">Название</th>
+                                <th class="headTable">Значение</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                    </table>
+                    <div class="scroll-table-body">
+		                <table>
+                            <tbody class="paramBody">
+                                @foreach (var parameter in Model._revitParameters)
+                                {
+                                    <tr>
+                                        <td class="parameter_name">@parameter.Name</td>
+                                        <td class="parameter_value">@parameter.Value</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+	                </div>
                 </div>
                 <div class="plug">
                     <p>Заглушка</p>
