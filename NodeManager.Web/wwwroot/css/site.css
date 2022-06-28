@@ -65,7 +65,7 @@ body {
     justify-self: start;
 }*/
 
-.b_back, .b_download, .formLeft, .b_search_name, .b_search_tag, .but_user {
+.b_back, .b_homePage, .b_homeP, .b_download, .formLeft, .b_search_name, .b_search_tag, .but_user {
     background-color: white;
     color: black;
     font-size: 20px;
@@ -82,6 +82,10 @@ body {
 }
 
 .b_download {
+    margin-left: 5px;
+}
+
+.b_homePage {
     margin-left: 5%;
 }
 
@@ -410,7 +414,7 @@ input.chosen-search-input.default {
     justify-content: flex-start;
 }
 
-.but_downld {
+.but_downldAndHome {
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 8.7%;
@@ -632,6 +636,7 @@ ul {
     background-color: white;
     color: black;
     font-size: 20px;
+    max-height: 43px;
     border: 1px solid #DAD9D9;
     cursor: pointer;
     align-items: center;
@@ -646,13 +651,21 @@ ul {
     width: 41px;
 }
 
+.but_home {
+    margin-bottom: 10px;
+}
+
+.b_GoToProject {
+    font-size: 20px !important;
+}
+
 
 /* Параметры узлов, файл FamSymbol.cshtml  */
 .param_section {
-    margin: 5% 5% 5% 10%;
+    margin: 3% 5% 5% 9%;
     position: -webkit-sticky; /* Safari */
     position: sticky;
-    top: 11%;
+    top: 15%;
 }
 
 .parameters {
@@ -668,7 +681,7 @@ ul {
 .scroll {
     position: -webkit-sticky;
     position: sticky;
-    top: 11%;
+    top: 15%;
     z-index: 300;
 }
 
