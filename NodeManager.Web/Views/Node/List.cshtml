@@ -10,23 +10,20 @@
 }
 
 <div class="nav_menu">
-    <div class="but_downldAndHome">
+    @*<div class="but_home">
         <button class="b_homePage" onclick="window.location.href='/Node/List/1'" title="На главную страницу"><span class="fa fa-home"></span></button>
     </div>
+    <div class="plug">
+        <p>Заглушка</p>
+    </div>*@
     @if (@Model.IsProjectSection)
     {
         ViewData["Title"] = "Узлы проекта.";
-        <div class="but_downldAndHome">
-            <button class="b_homePage" onclick="window.location.href='/Node/List/1'" title="На главную страницу"><span class="fa fa-home"></span></button>
+        <div class="but_downld">
+            @*<button class="b_homePage" onclick="window.location.href='/Node/List/1'" title="На главную страницу"><span class="fa fa-home"></span></button>*@
             <button class="b_download" onclick="window.location.href='/Node/GetFile/@Model.Symbols.First().FileId'" title="Скачать проект"><span class="fa-solid fa-download"></span></button>
         </div>
     }
-    @*@if (Model.)
-    {
-        <div class="but_downldAndHome">
-            <button class="b_homePage" onclick="window.location.href='/Node/List/1'" title="На главную страницу"><span class="fa fa-home"></span></button>
-        </div>
-    }*@
     @await Component.InvokeAsync("Menu", Model.categorySection)
 </div>
 <div class="content_nodes">

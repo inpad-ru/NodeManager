@@ -412,21 +412,37 @@ input.chosen-search-input.default {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
 }
 
-.but_downldAndHome {
+.but_downld {
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 8.7%;
-    margin-left: 5%;
+    margin-left: 10%;
     height: 43px;
 }
 
 .nav_filters {
     position: -webkit-sticky; /* Safari */
     position: sticky;
-    top: 13%;
+    top: 8.7%;
     z-index: 300;
+}
+
+.scroll { /* для левого меню */
+    position: -webkit-sticky;
+    position: sticky;
+    top: 8.7%;
+    z-index: 300;
+}/* для левого меню */
+
+.but_home {
+    /*margin-bottom: 10px;*/
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    margin-left: 5%;
 }
 
 .plug {
@@ -651,7 +667,10 @@ ul {
     width: 41px;
 }
 
-.but_home {
+.but_homeP {
+    /*margin-bottom: 10px;*/
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
     margin-bottom: 10px;
 }
 
@@ -665,7 +684,7 @@ ul {
     margin: 3% 5% 5% 9%;
     position: -webkit-sticky; /* Safari */
     position: sticky;
-    top: 15%;
+    top: 11%;
 }
 
 .parameters {
@@ -676,13 +695,6 @@ ul {
     color: black;
     border-radius: 10px;
     word-break: inherit;
-}
-
-.scroll {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 15%;
-    z-index: 300;
 }
 
 .scroll-table table {
@@ -704,7 +716,7 @@ ul {
     position: sticky;
     /*top: 11%;
     z-index: 300;*/
-    top: 15%;
+    top: 11%;
     z-index: 100;
 }
 
