@@ -65,7 +65,7 @@ body {
     justify-self: start;
 }*/
 
-.b_back, .b_homePage, .b_homeP, .b_download, .formLeft, .b_search_name, .b_search_tag, .but_user {
+.b_back, .b_homePage, .b_homeP, .b_download, .formLeft, .b_search_name, .search_by_name, .b_search_tag, .but_user {
     background-color: white;
     color: black;
     font-size: 20px;
@@ -153,6 +153,12 @@ input[type=file] {
     margin: 0;
     height: 43px;
     vertical-align: middle !important;
+    display: inline-flex;
+    /*display: inline-block;*/
+}
+
+.subscription {
+    display: inline-flex;
 }
 
 .search_by_name {
@@ -173,7 +179,7 @@ input[type=file] {
 }
 
 .b_search_name {
-
+    margin-left: 5px;
 }
 
 
