@@ -200,6 +200,10 @@ input[type=file] {
     vertical-align: middle;
 }
 
+.pTag {
+    font-size: 20px !important;
+}
+
 /* Настройки для поиска по тегу */
 
 .chosen-container-multi,
@@ -667,6 +671,7 @@ ul {
     padding: 5px 10px;
     /*line-height: normal;*/
     margin: auto;
+    z-index: 500;
 }
 
 .b_edit, .b_delete {
@@ -710,7 +715,8 @@ ul {
 }
 
 .scroll-table-body {
-    max-height: 750px;
+    max-height: 600px;
+    min-height: 500px;
     overflow-x: auto;
     margin-top: 0px;
     /*margin-bottom: 20px;*/
@@ -720,8 +726,6 @@ ul {
 .scroll-table {
     position: -webkit-sticky;
     position: sticky;
-    /*top: 11%;
-    z-index: 300;*/
     top: 11%;
     z-index: 100;
 }
