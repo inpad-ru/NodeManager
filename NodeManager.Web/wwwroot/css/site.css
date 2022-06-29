@@ -86,7 +86,7 @@ body {
 }
 
 .b_homePage {
-    margin-left: 5%;
+    margin-left: 10%;
 }
 
 /* Поле загрузки файлов/проектов */
@@ -420,21 +420,21 @@ input.chosen-search-input.default {
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 8.7%;
-    margin-left: 10%;
+    /*margin-left: 5%;*/
     height: 43px;
 }
 
 .nav_filters {
     position: -webkit-sticky; /* Safari */
     position: sticky;
-    top: 8.7%;
+    top: 11%;
     z-index: 300;
 }
 
 .scroll { /* для левого меню */
     position: -webkit-sticky;
     position: sticky;
-    top: 8.7%;
+    top: 11%;
     z-index: 300;
 }/* для левого меню */
 
