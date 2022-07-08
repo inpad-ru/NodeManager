@@ -32,7 +32,7 @@ namespace NodeManager.Web
                 XDocument xmlDoc = null;
                 Dictionary<int, Stream> streamDic = new Dictionary<int, Stream>();
 
-                var path = root + "/Files/" + link.Split('/').Last().Split('.').First();
+                //var path = root + "/Files/" + link.Split('/').Last().Split('.').First();
 
                 var temp = ZipFile.OpenRead(link).Entries;
                 foreach (var entry in temp)
@@ -154,7 +154,7 @@ namespace NodeManager.Web
                     context.dbContext.SaveChanges();
                 }
 
-                File.Delete(link);
+                //File.Delete(link);
             }
             catch (Exception ex) 
             { 

@@ -52,13 +52,11 @@ namespace NodeManager.Web.Controllers
             //var tagList = repos.Tags.Select(x => x.Value).ToListAsync();
 
             if (!repos.Categories.Any(x => x.Name == category))
-            {
                 category = (string)null;
-            }
+
             if (!repos.Sections.Any(x => x.Name == section))
-            {
                 section = (string)null;
-            }
+
             //Task<Categories> cat = repos.Categories.FirstOrDefaultAsync(x => x.Name.Equals(category));
             //Task<Sections> sec = repos.Sections.FirstOrDefaultAsync(x => x.Name.Equals(section));
             Categories cat = repos.Categories.FirstOrDefault(x => x.Name.Equals(category));
@@ -288,7 +286,7 @@ namespace NodeManager.Web.Controllers
         public async Task<IActionResult> GetFile(int id)
         {
             string file_path = Path.Combine(_appEnvironment.ContentRootPath, (await repos.Files.FirstOrDefaultAsync(x => x.Id == id)).FilePath);
-            string file_type = "archive/rvt";
+            string file_type = "archive/.nmdb";
             return PhysicalFile(file_path, file_type);
         }
 
@@ -333,19 +331,23 @@ namespace NodeManager.Web.Controllers
             if (uploadedFile != null)
             {
                 // путь к папке Files
-                string path = _appEnvironment.WebRootPath + "/Files/" + uploadedFile.FileName;
+                string guid = Guid.NewGuid().ToString();
+                string path = _appEnvironment.WebRootPath + "/Files/" + guid + uploadedFile.FileName;
                 // сохраняем файл в папку Files в каталоге wwwroot
                 using (var fileStream = new FileStream(path, FileMode.Create))
                 {
                     await uploadedFile.CopyToAsync(fileStream);
                 }
-                Files file = new Files { FilePath = path };
-                repos.dbContext.Add(file);
-                await repos.dbContext.SaveChangesAsync();
+                if (!repos.Files.Where(x => x.FilePath == path).Any())
+                {
+                    Files file = new Files { FilePath = path };
+                    repos.dbContext.Add(file);
+                    await repos.dbContext.SaveChangesAsync();
+                }
+               
                 var db = new DBUploader(repos, _appEnvironment);
                 db.UploadToDB(_appEnvironment.WebRootPath, path);
             }
-
             return RedirectToAction("List", "Node");
         }
 
