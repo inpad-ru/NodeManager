@@ -285,12 +285,12 @@ namespace NodeManager.Web.Controllers
         [Route("GetFile/{id:int}")]
         public async Task<IActionResult> GetFile(int id)
         {
-            string file_path = Path.Combine(_appEnvironment.ContentRootPath, (await repos.Files.FirstOrDefaultAsync(x => x.Id == id)).FilePath);
+            string file_path = _appEnvironment.WebRootPath + (await repos.Files.FirstOrDefaultAsync(x => x.Id == id)).FilePath;
             string file_type = "archive/.nmdb";
             return PhysicalFile(file_path, file_type);
         }
 
-        [Route("{id:int}/ProjectSection/{fileId:int}")]
+        [Route("{page:int}/ProjectSection/{fileId:int}")]
         public IActionResult ProjectSection(int page, int fileId)
         {
             var pagInfo = new PagingInfo();
@@ -332,9 +332,10 @@ namespace NodeManager.Web.Controllers
             {
                 // путь к папке Files
                 string guid = Guid.NewGuid().ToString();
-                string path = _appEnvironment.WebRootPath + "/Files/" + guid + uploadedFile.FileName;
+                string fullPath = _appEnvironment.WebRootPath + "/Files/" + guid + uploadedFile.FileName;
+                string path = "/Files/" + guid + uploadedFile.FileName;
                 // сохраняем файл в папку Files в каталоге wwwroot
-                using (var fileStream = new FileStream(path, FileMode.Create))
+                using (var fileStream = new FileStream(fullPath, FileMode.Create))
                 {
                     await uploadedFile.CopyToAsync(fileStream);
                 }
@@ -346,33 +347,33 @@ namespace NodeManager.Web.Controllers
                 }
                
                 var db = new DBUploader(repos, _appEnvironment);
-                db.UploadToDB(_appEnvironment.WebRootPath, path);
+                db.UploadToDB(fullPath, path);
             }
             return RedirectToAction("List", "Node");
         }
 
 
-        [Route("dbClean")]
-        public IActionResult DBClean()
-        {
-            var fs = repos.FamilySymbols.Where(x => x.Id != null);
-            var fsTagIds = repos.FSTags.Where(x => x.Id != null);
-            var cat = repos.Categories.Where(x => x.Id != null);
-            var sec = repos.Sections.Where(x => x.Id != null);
-            var fi = repos.Files.Where(x => x.Id != null);
-            var tags = repos.Tags.Where(x => x.Id != null);
-            var revP = repos.RevParameters.Where(x => x.Id != null);
+        //[Route("dbClean")]
+        //public IActionResult DBClean()
+        //{
+        //    var fs = repos.FamilySymbols.Where(x => x.Id != null);
+        //    var fsTagIds = repos.FSTags.Where(x => x.Id != null);
+        //    var cat = repos.Categories.Where(x => x.Id != null);
+        //    var sec = repos.Sections.Where(x => x.Id != null);
+        //    var fi = repos.Files.Where(x => x.Id != null);
+        //    var tags = repos.Tags.Where(x => x.Id != null);
+        //    var revP = repos.RevParameters.Where(x => x.Id != null);
 
-            repos.dbContext.RemoveRange(revP);
-            repos.dbContext.RemoveRange(fs);
-            repos.dbContext.RemoveRange(fsTagIds);
-            repos.dbContext.RemoveRange(tags);
-            repos.dbContext.RemoveRange(cat);
-            repos.dbContext.RemoveRange(sec);
-            repos.dbContext.RemoveRange(fi);
-            repos.dbContext.SaveChanges();
-            return RedirectToAction("List", "Node");
-        }
+        //    repos.dbContext.RemoveRange(revP);
+        //    repos.dbContext.RemoveRange(fs);
+        //    repos.dbContext.RemoveRange(fsTagIds);
+        //    repos.dbContext.RemoveRange(tags);
+        //    repos.dbContext.RemoveRange(cat);
+        //    repos.dbContext.RemoveRange(sec);
+        //    repos.dbContext.RemoveRange(fi);
+        //    repos.dbContext.SaveChanges();
+        //    return RedirectToAction("List", "Node");
+        //}
 
         [HttpGet]
         [Route("db")]

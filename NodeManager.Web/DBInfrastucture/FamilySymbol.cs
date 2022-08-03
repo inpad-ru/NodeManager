@@ -37,7 +37,7 @@ namespace NodeManager.Web.DBInfrastucture
 
 
 
-        
+
 
         [ForeignKey("CategoryId")]
         public virtual Categories Category { get; set; }

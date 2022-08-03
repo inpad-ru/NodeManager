@@ -25,7 +25,7 @@ namespace NodeManager.Web
             context = repo;
             _appEnvironment = appEnvironment;
         }
-        public void UploadToDB(string root, string link)
+        public void UploadToDB(string root, string path)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace NodeManager.Web
 
                 //var path = root + "/Files/" + link.Split('/').Last().Split('.').First();
 
-                var temp = ZipFile.OpenRead(link).Entries;
+                var temp = ZipFile.OpenRead(root).Entries;
                 foreach (var entry in temp)
                 {
                     if (entry.FullName.EndsWith(".xml"))
@@ -81,10 +81,10 @@ namespace NodeManager.Web
                     }
                 }
 
-                if (!context.Files.Where(x => x.FilePath.Equals(oldDb.FileName)).Any())
-                {
-                    context.dbContext.Files.Add(new Files { FilePath = oldDb.FileName });
-                }
+                //if (!context.Files.Where(x => x.FilePath.Equals(oldDb.FileName)).Any())
+                //{
+                //    context.dbContext.Files.Add(new Files { FilePath = oldDb.FileName });
+                //}
                 context.dbContext.SaveChanges();
 
                 foreach (var j in oldDb.RevViews)
@@ -97,7 +97,7 @@ namespace NodeManager.Web
                             //ImagePath = j.ImagePath,
                             Scale = j.Scale,
                             Image = streamDic.ContainsKey(j.ID) ? ReadFully(streamDic[j.ID]) : null,
-                            FileId = context.Files.FirstOrDefault(x => x.FilePath.Equals(j.ImagePath)).Id,
+                            FileId = context.Files.FirstOrDefault(x => x.FilePath.Equals(path)).Id,
                             CategoryId = context.Categories.FirstOrDefault(x => x.Name.Equals(j.Category)).Id,
                             SectionId = context.Sections.FirstOrDefault(x => x.Name.Equals(j.Section)).Id
                         });
