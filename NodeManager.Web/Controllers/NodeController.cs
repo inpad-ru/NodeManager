@@ -169,7 +169,7 @@ namespace NodeManager.Web.Controllers
 
         [HttpPost]
         [Route("{page:int}/Search")]
-        public IActionResult Search(int page, string[] tags)
+        public async Task<IActionResult> Search(int page, string[] tags)
         {
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
@@ -226,7 +226,7 @@ namespace NodeManager.Web.Controllers
 
         //[HttpPost]
         [Route("{page:int}/SearchName/{name}")]
-        public IActionResult SearchName(int page, string name)
+        public async Task<IActionResult> SearchName(int page, string name)
         {
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
