@@ -67,8 +67,8 @@ namespace NodeManager.Web.Controllers
                     .Count();
             var nodes = repos.FamilySymbols
                     .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
-                    //.Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
-                    //.Take(pagInfo.ItemsPerPage)
+                    .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
+                    .Take(pagInfo.ItemsPerPage)
                     .OrderBy(x => x.Id)
                     .ToListAsync();
 
@@ -240,8 +240,8 @@ namespace NodeManager.Web.Controllers
             try
             {
                 model.Symbols = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name.ToLower()))
-                                                   //.Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
-                                                   //.Take(pagInfo.ItemsPerPage)
+                                                   .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
+                                                   .Take(pagInfo.ItemsPerPage)
                                                    .ToList();
                 //await nodes;
                 //model.Symbols = nodes.Result;
