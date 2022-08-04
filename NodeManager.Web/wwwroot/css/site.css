@@ -704,23 +704,26 @@ ul {
     box-sizing: border-box;
     background-color: white;
     color: black;
-    border-radius: 10px;
-    word-break: inherit;
+   /* border-radius: 10px;*/
+    /*border-bottom: none;*/
+    /*word-break: inherit;*/
 }
 
-.scroll-table table {
+.scroll-table-body table {
     width: 100%;
     table-layout: fixed;
     border: none;
 }
 
 .scroll-table-body {
+    width: 100%;
     max-height: 600px;
     min-height: 500px;
     overflow-x: auto;
     margin-top: 0px;
+    word-break: break-word;
     /*margin-bottom: 20px;*/
-    border-bottom: 1px solid #eee;
+    /*border-bottom: 1px solid #eee;*/
 }
 
 .scroll-table {
@@ -733,21 +736,79 @@ ul {
 table, th, td {
     border: 1px solid #DAD9D9;
     border-radius: 10px;
-    font-size: 18px;
+    /*font-size: 18px;*/
 }
 
 th {
+    width: 50%;
     text-align: center;
+    font-size: 18px;
 }
 
 td {
+    /*border-top: none;*/
     width: 50%;
+    font-size: 16px;
 }
 
+
+/*.parameters {
+    width: 100%;
+    border: none;
+    margin-bottom: 20px;
+    border-collapse: separate;
+}
+.parameters thead th {
+	font-weight: bold;
+	text-align: left;
+	border: none;
+	padding: 10px 15px;
+	background: #EDEDED;
+	font-size: 14px;
+	border-top: 1px solid #ddd;
+}
+.parameters tr th:first-child, .parameters tr td:first-child {
+    border-left: 1px solid #ddd;
+}
+.parameters tr th:last-child, .parameters tr td:last-child {
+    border-right: 1px solid #ddd;
+}
+.parameters thead tr th:first-child {
+	border-radius: 10px 0 0 0;
+}
+.parameters thead tr th:last-child {
+	border-radius: 0 10px 0 0;
+}
+.scroll-table-body tbody td {
+    text-align: left;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    vertical-align: top;
+}*/
+/*.scroll-table-body tbody tr:nth-child(even) {
+    background: #F8F8F8;
+}*/
+/*.scroll-table-body tbody tr:last-child td {
+    border-bottom: 1px solid #ddd;
+}
+.scroll-table-body tbody tr:last-child td:first-child {
+	border-radius: 0 0 0 10px;
+}
+.scroll-table-body tbody tr:last-child td:last-child {
+	border-radius: 0 0 10px 0;
+}*/
+
 /* Стили для скролла */
+
+/*Убрать полосу прокрутки у элемента*/
+.scroll-table-body::-webkit-scrollbar {
+    width: 0;
+}
+
 ::-webkit-scrollbar {
     /*width: 6px;*/
-    display: none;
+    /*display: none;*/
 }
 
 /*::-webkit-scrollbar-track {
