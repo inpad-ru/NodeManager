@@ -168,8 +168,8 @@ namespace NodeManager.Web.Controllers
         }
 
         [HttpPost]
-        [Route("{id:int}/Search")]
-        public async Task<IActionResult> Search(int page, string[] tags)
+        [Route("{page:int}/Search")]
+        public IActionResult Search(int page, string[] tags)
         {
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
@@ -224,9 +224,9 @@ namespace NodeManager.Web.Controllers
             return View("List", model);
         }
 
-        [HttpPost]
-        [Route("{id:int}/SearchName")]
-        public async Task<IActionResult> SearchName(int page, string name)
+        //[HttpPost]
+        [Route("{page:int}/SearchName/{name}")]
+        public IActionResult SearchName(int page, string name)
         {
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;

@@ -1,14 +1,26 @@
 @model NodeManager.Web.Models.NodesViewModel
 
+@{
+    var firstPage = 1;
+    var prevPage = @Model.PagingInfo.CurrentPage-1;
+    var curPage = @Model.PagingInfo.CurrentPage;
+    var nextPage = @Model.PagingInfo.CurrentPage+1;
+    var punultPage =@Model.PagingInfo.TotalPages-1;
+    var lastPage = @Model.PagingInfo.TotalPages;
+}
+
 <div class="nav_menu">
-    @if (@Model.IsProjectSection)
-    {
-        ViewData["Title"] = "Узлы проекта.";
-        <div class="but_downld">
+    <div class="but_downld">
+        <button class="b_homePage" onclick="window.location.href='/Node/List/1'" title="На главную страницу"><span class="fa fa-home"></span></button>
+        
+        @if (@Model.IsProjectSection)
+        {
+            ViewData["Title"] = "Узлы проекта.";
             <button class="b_download" onclick="window.location.href='/Node/GetFile/@Model.Symbols.First().FileId'" title="Скачать проект"><span class="fa-solid fa-download"></span></button>
-        </div>
-    }
-    @await Component.InvokeAsync("Menu", Model.categorySection)
+        }
+
+        @await Component.InvokeAsync("Menu", Model.categorySection)
+    </div>
 </div>
 <div class="content_nodes">
     <div class="nodes">
@@ -22,5 +34,143 @@
                 </div>
             </div>
         }
+    </div>
+    <div class="pages">
+        @*<p>Всего элементов: @Model.PagingInfo.TotalItems.</p>
+        <p>Элементов на странице: @Model.PagingInfo.ItemsPerPage.</p>
+        <p>Текущая страница: @Model.PagingInfo.CurrentPage.</p>
+        <p>Всего страниц: @Model.PagingInfo.TotalPages.</p>*@
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                @if (lastPage > 1)
+                {
+                    @if (lastPage < 6)
+                    {
+                        @if (lastPage >= 2)
+                        {
+                            @if (curPage == 1)
+                            {
+                                <li class="page-item active"><a class="page-link" href="javascript:redirectPage(1);">1</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="javascript:redirectPage(1);">1</a></li>
+                            }
+
+                            @if (curPage == 2)
+                            {
+                                <li class="page-item active"><a class="page-link" href="javascript:redirectPage(2);">2</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="javascript:redirectPage(2);">2</a></li>
+                            }
+                        }
+                        @if (lastPage >= 3)
+                        {
+                            @if (curPage == 3)
+                            {
+                                <li class="page-item active"><a class="page-link" href="javascript:redirectPage(3);">3</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="javascript:redirectPage(3);">3</a></li>
+                            }
+                        }
+                        @if (lastPage >= 4)
+                        {
+                            @if (curPage == 4)
+                            {
+                                <li class="page-item active"><a class="page-link" href="javascript:redirectPage(4);">4</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="javascript:redirectPage(4);">4</a></li>
+                            }
+                        }
+                        @if (lastPage == 5)
+                        {
+                            @if (curPage == 5)
+                            {
+                                <li class="page-item active"><a class="page-link" href="javascript:redirectPage(5);">5</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="javascript:redirectPage(5);">5</a></li>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        @if (@curPage == 1)
+                        {
+                            <li class="page-item disabled">
+                                <a class="page-link" href="javascript:redirectPage(@prevPage);" tabindex="-1" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="javascript:redirectPage(@firstPage);">@firstPage</a></li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:redirectPage(@prevPage);" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(@firstPage);">@firstPage</a></li>
+                        }
+
+                        @if (@curPage > 3)
+                        {
+                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">...</a></li>
+                        }
+
+                        @if (@curPage != 1 && @curPage != 2)
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(@prevPage);">@prevPage</a></li>
+                        }
+
+                        @if (@curPage != 1 &&  @curPage != lastPage)
+                        {
+                            <li class="page-item active"><a class="page-link" href="javascript:redirectPage(@curPage);">@curPage</a></li>
+                        }
+
+                        @if (@curPage != punultPage && @curPage != lastPage)
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(@nextPage);">@nextPage</a></li>
+                        }
+
+                        @if (@curPage < lastPage-3)
+                        {
+                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">...</a></li>
+                        }
+
+                        @if (@curPage == lastPage)
+                        {
+                            <li class="page-item active"><a class="page-link" href="javascript:redirectPage(@lastPage);">@lastPage</a></li>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="javascript:redirectPage(@nextPage);" tabindex="-1" aria-label="Previous">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:redirectPage(@lastPage);">@lastPage</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:redirectPage(@nextPage);" aria-label="Previous">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                        }
+                    }
+                }
+            </ul>
+        </nav>
     </div>
 </div>
