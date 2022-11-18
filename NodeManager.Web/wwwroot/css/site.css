@@ -475,8 +475,13 @@ input.chosen-search-input.default {
 }
 
 .img-responsive {
-    width: 100%;
+    object-fit: contain;
+    width: 358px;
     height: 275px;
+    /*height: auto;
+    width: auto;
+    max-height: 275px;
+    max-width: 358px;*/
 }
 
 .node_name {
