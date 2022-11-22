@@ -287,7 +287,8 @@ namespace NodeManager.Web.Controllers
         {
             string file_path = _appEnvironment.WebRootPath + (await repos.Files.FirstOrDefaultAsync(x => x.Id == id)).FilePath;
             string file_type = "archive/.nmdb";
-            return PhysicalFile(file_path, file_type);
+            string file_name = file_path.Split('/').Last();
+            return PhysicalFile(file_path, file_type, file_name);
         }
 
         [Route("{page:int}/ProjectSection/{fileId:int}")]
