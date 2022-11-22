@@ -30,16 +30,18 @@ namespace NodeManager.Web
             try
             {
                 XDocument xmlDoc = null;
+                Stream stream = null;
                 Dictionary<int, Stream> streamDic = new Dictionary<int, Stream>();
 
                 //var path = root + "/Files/" + link.Split('/').Last().Split('.').First();
-
+                string pathToXML = root;
                 var temp = ZipFile.OpenRead(root).Entries;
                 foreach (var entry in temp)
                 {
                     if (entry.FullName.EndsWith(".xml"))
                     {
                         xmlDoc = XDocument.Load(entry.Open());
+                        stream = entry.Open();
                     }
                     if (entry.FullName.EndsWith(".jpg"))
                     {
@@ -52,7 +54,8 @@ namespace NodeManager.Web
 
 
                 var xmlParser = new XMLParser();
-                var oldDb = xmlParser.XMLToObjects2(xmlDoc);
+                var oldDb = new OldDB(xmlParser.XMLToObjects3(stream));
+                //var oldDb2 = xmlParser.XMLToObjects2(xmlDoc);
 
                 IEnumerable<Categories> cats = oldDb.RevViews
                     .Select(x => new Categories() { Name = x.Category })
@@ -148,7 +151,7 @@ namespace NodeManager.Web
                                 SymbolId = context.FamilySymbols.FirstOrDefault(r => r.Name == z.RevView.Name).Id,
                                 Name = z.Name,
                                 Value = z.Value,
-                                StorageType = z.StorageType
+                                StorageType = (int)z.StorageType
                             });
                     }
                     context.dbContext.SaveChanges();

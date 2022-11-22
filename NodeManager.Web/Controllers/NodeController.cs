@@ -356,13 +356,13 @@ namespace NodeManager.Web.Controllers
         //[Route("dbClean")]
         //public IActionResult DBClean()
         //{
-        //    var fs = repos.FamilySymbols.Where(x => x.Id != null);
-        //    var fsTagIds = repos.FSTags.Where(x => x.Id != null);
-        //    var cat = repos.Categories.Where(x => x.Id != null);
-        //    var sec = repos.Sections.Where(x => x.Id != null);
-        //    var fi = repos.Files.Where(x => x.Id != null);
-        //    var tags = repos.Tags.Where(x => x.Id != null);
-        //    var revP = repos.RevParameters.Where(x => x.Id != null);
+        //    var fs = repos.FamilySymbols.Where(x => true);
+        //    var fsTagIds = repos.FSTags.Where(x => true);
+        //    var cat = repos.Categories.Where(x => true);
+        //    var sec = repos.Sections.Where(x => true);
+        //    var fi = repos.Files.Where(x => true);
+        //    var tags = repos.Tags.Where(x => true);
+        //    var revP = repos.RevParameters.Where(x => true);
 
         //    repos.dbContext.RemoveRange(revP);
         //    repos.dbContext.RemoveRange(fs);
