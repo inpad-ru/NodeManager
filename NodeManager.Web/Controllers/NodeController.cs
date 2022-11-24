@@ -35,17 +35,20 @@ namespace NodeManager.Web.Controllers
         private INodes repos;
         private readonly IWebHostEnvironment _appEnvironment;
         private IHostingEnvironment Environment;
+        private string logPath;
 
         public NodeController(INodes repo, IWebHostEnvironment appEnvironment)
         {
             repos = repo;
             _appEnvironment = appEnvironment;
+            logPath = _appEnvironment.WebRootPath + "/Files/log.txt"; 
         }
 
         [Route("")]
         [Route("List/{page:int}/{section?}/{category?}")]
         public async Task<ViewResult> List(string section, string category, int page = 1)
         {
+            //throw new NotImplementedException("dgeg");
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
             pagInfo.CurrentPage = page;
@@ -105,6 +108,7 @@ namespace NodeManager.Web.Controllers
         [Route("List1")]
         public ViewResult List1(NodeSearchModel inputData)
         {
+            
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
             pagInfo.CurrentPage = inputData.Page;
@@ -285,14 +289,26 @@ namespace NodeManager.Web.Controllers
         [Route("GetFile/{id:int}")]
         public async Task<IActionResult> GetFile(int id)
         {
+            List<string> logs = new List<string>();
+            logs.Add(System.DateTime.Now.ToString() + " GetFile - {");
+            logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
+
             string file_path = _appEnvironment.WebRootPath + (await repos.Files.FirstOrDefaultAsync(x => x.Id == id)).FilePath;
             string file_type = "archive/.nmdb";
+
+            logs.Add("After work");
+            logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
+            logs.Add("} - GetFile");
+            logs.Add("");
+            System.IO.File.AppendAllLines(logPath, logs);
+
             return PhysicalFile(file_path, file_type);
         }
 
         [Route("{page:int}/ProjectSection/{fileId:int}")]
         public IActionResult ProjectSection(int page, int fileId)
         {
+
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
             pagInfo.CurrentPage = page;
@@ -325,9 +341,15 @@ namespace NodeManager.Web.Controllers
 
         [HttpPost]
         [Route("AddFile")]
-        [RequestFormLimits(MultipartBodyLengthLimit = Int64.MaxValue)]
+        //[RequestFormLimits(MultipartBodyLengthLimit = 262144000)]
+        //[RequestFormLimits(MultipartBodyLengthLimit = Int64.MaxValue)]
         public async Task<IActionResult> AddFile(IFormFile uploadedFile)
         {
+            List<string> logs = new List<string>();
+            logs.Add(System.DateTime.Now.ToString() + " AddFile - {Length:" + uploadedFile.Length);
+            logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
+            logs.Add("FamSymbols.Count(" + repos.FamilySymbols.Count().ToString() + ")");
+
             if (uploadedFile != null)
             {
                 // путь к папке Files
@@ -349,31 +371,38 @@ namespace NodeManager.Web.Controllers
                 var db = new DBUploader(repos, _appEnvironment);
                 db.UploadToDB(fullPath, path);
             }
+            logs.Add("After work");
+            logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
+            logs.Add("FamSymbols.Count(" + repos.FamilySymbols.Count().ToString() + ")");
+            logs.Add("} - AddFile");
+            logs.Add("");
+            System.IO.File.AppendAllLines(logPath, logs);
+
             return RedirectToAction("List", "Node");
         }
 
 
-        //[Route("dbClean")]
-        //public IActionResult DBClean()
-        //{
-        //    var fs = repos.FamilySymbols.Where(x => true);
-        //    var fsTagIds = repos.FSTags.Where(x => true);
-        //    var cat = repos.Categories.Where(x => true);
-        //    var sec = repos.Sections.Where(x => true);
-        //    var fi = repos.Files.Where(x => true);
-        //    var tags = repos.Tags.Where(x => true);
-        //    var revP = repos.RevParameters.Where(x => true);
+        [Route("dbClean")]
+        public IActionResult DBClean()
+        {
+            var fs = repos.FamilySymbols.Where(x => true);
+            var fsTagIds = repos.FSTags.Where(x => true);
+            var cat = repos.Categories.Where(x => true);
+            var sec = repos.Sections.Where(x => true);
+            var fi = repos.Files.Where(x => true);
+            var tags = repos.Tags.Where(x => true);
+            var revP = repos.RevParameters.Where(x => true);
 
-        //    repos.dbContext.RemoveRange(revP);
-        //    repos.dbContext.RemoveRange(fs);
-        //    repos.dbContext.RemoveRange(fsTagIds);
-        //    repos.dbContext.RemoveRange(tags);
-        //    repos.dbContext.RemoveRange(cat);
-        //    repos.dbContext.RemoveRange(sec);
-        //    repos.dbContext.RemoveRange(fi);
-        //    repos.dbContext.SaveChanges();
-        //    return RedirectToAction("List", "Node");
-        //}
+            repos.dbContext.RemoveRange(revP);
+            repos.dbContext.RemoveRange(fs);
+            repos.dbContext.RemoveRange(fsTagIds);
+            repos.dbContext.RemoveRange(tags);
+            repos.dbContext.RemoveRange(cat);
+            repos.dbContext.RemoveRange(sec);
+            repos.dbContext.RemoveRange(fi);
+            repos.dbContext.SaveChanges();
+            return RedirectToAction("List", "Node");
+        }
 
         [HttpGet]
         [Route("db")]
