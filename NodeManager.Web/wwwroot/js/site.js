@@ -62,5 +62,42 @@ Array.prototype.forEach.call(inputs, function (input) {
             label.innerHTML = labelVal;
 
         document.getElementsByClassName("upload-file__text")[0].title = fileName;
+        console.log(document.getElementsByClassName("upload-file__text")[0].title);
+        console.log('This file size is: ' + this.files[0].size / 1024 / 1024 + "MiB");
+        //alert('This file size is: ' + this.files[0].size / 1024 / 1024 + "MiB");
+        console.log(this.files[0]);
+
+        var fileee = this.files[0];
+        console.log(fileee);
+
+        $('.subFile').click(function (e) {
+            const upload = { uploadedFile: fileee };
+            console.log(upload.uploadedFile);
+            $.ajax({
+                type: "POST",
+                url: "/Node/AddFile",
+                data: upload,
+                dataType: "html",
+                async: true,
+                success: function (result) {
+                    $("body").html(result);
+                }
+            });
+        });
     });
 });
+
+
+var submitForm = document.getElementsByClassName("subFile")[0];
+var form1 = document.getElementsByClassName("formLeft")[0];
+submitForm.addEventListener('click', (e) => {
+    alert("пытаюсь отправить");
+    e.preventDefault();
+    form1.submit(function (e) {
+        e.preventDefault();
+        console.log("я тут");
+        console.log(e);
+        alert(e);
+    });
+});
+

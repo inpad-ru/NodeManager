@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 
 //using NodeManager.Domain;
 using NodeManager.Web.Abstract;
@@ -41,7 +42,7 @@ namespace NodeManager.Web.Controllers
         {
             repos = repo;
             _appEnvironment = appEnvironment;
-            logPath = _appEnvironment.WebRootPath + "/Files/log.txt"; 
+            logPath = _appEnvironment.WebRootPath + "/Files/log.txt";
         }
 
         [Route("")]
@@ -289,20 +290,21 @@ namespace NodeManager.Web.Controllers
         [Route("GetFile/{id:int}")]
         public async Task<IActionResult> GetFile(int id)
         {
-            List<string> logs = new List<string>();
-            logs.Add(System.DateTime.Now.ToString() + " GetFile - {");
-            logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
+            //List<string> logs = new List<string>();
+            //logs.Add(System.DateTime.Now.ToString() + " GetFile - {");
+            //logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
 
             string file_path = _appEnvironment.WebRootPath + (await repos.Files.FirstOrDefaultAsync(x => x.Id == id)).FilePath;
             string file_type = "archive/.nmdb";
+            string file_name = file_path.Split('/').Last();
 
-            logs.Add("After work");
-            logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
-            logs.Add("} - GetFile");
-            logs.Add("");
-            System.IO.File.AppendAllLines(logPath, logs);
+            //logs.Add("After work");
+            //logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
+            //logs.Add("} - GetFile");
+            //logs.Add("");
+            //System.IO.File.AppendAllLines(logPath, logs);
 
-            return PhysicalFile(file_path, file_type);
+            return PhysicalFile(file_path, file_type, file_name);
         }
 
         [Route("{page:int}/ProjectSection/{fileId:int}")]
@@ -346,39 +348,53 @@ namespace NodeManager.Web.Controllers
         public async Task<IActionResult> AddFile(IFormFile uploadedFile)
         {
             List<string> logs = new List<string>();
-            logs.Add(System.DateTime.Now.ToString() + " AddFile - {Length:" + uploadedFile.Length);
-            logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
-            logs.Add("FamSymbols.Count(" + repos.FamilySymbols.Count().ToString() + ")");
-
-            if (uploadedFile != null)
+            //System.IO.File.AppendAllText(logPath, "i'm here");
+            //throw new NotImplementedException(uploadedFile.Length.ToString());
+            try
             {
-                // путь к папке Files
-                string guid = Guid.NewGuid().ToString();
-                string fullPath = _appEnvironment.WebRootPath + "/Files/" + guid + uploadedFile.FileName;
-                string path = "/Files/" + guid + uploadedFile.FileName;
-                // сохраняем файл в папку Files в каталоге wwwroot
-                using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                if (uploadedFile == null) logs.Add(System.DateTime.Now.ToString() + " uploadedFile = null");
+                else
                 {
-                    await uploadedFile.CopyToAsync(fileStream);
-                }
-                if (!repos.Files.Where(x => x.FilePath == path).Any())
-                {
-                    Files file = new Files { FilePath = path };
-                    repos.dbContext.Add(file);
-                    await repos.dbContext.SaveChangesAsync();
-                }
-               
-                var db = new DBUploader(repos, _appEnvironment);
-                db.UploadToDB(fullPath, path);
-            }
-            logs.Add("After work");
-            logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
-            logs.Add("FamSymbols.Count(" + repos.FamilySymbols.Count().ToString() + ")");
-            logs.Add("} - AddFile");
-            logs.Add("");
-            System.IO.File.AppendAllLines(logPath, logs);
 
-            return RedirectToAction("List", "Node");
+                    logs.Add(System.DateTime.Now.ToString() + " AddFile - {Length:" + uploadedFile.Length);
+                    logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
+                    logs.Add("FamSymbols.Count(" + repos.FamilySymbols.Count().ToString() + ")");
+
+                    // путь к папке Files
+                    string guid = Guid.NewGuid().ToString();
+                    string fullPath = _appEnvironment.WebRootPath + "/Files/" + guid + uploadedFile.FileName;
+                    string path = "/Files/" + guid + uploadedFile.FileName;
+                    // сохраняем файл в папку Files в каталоге wwwroot
+                    using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        await uploadedFile.CopyToAsync(fileStream);
+                    }
+                    if (!repos.Files.Where(x => x.FilePath == path).Any())
+                    {
+                        Files file = new Files { FilePath = path };
+                        repos.dbContext.Add(file);
+                        await repos.dbContext.SaveChangesAsync();
+                    }
+
+                    var db = new DBUploader(repos, _appEnvironment);
+                    db.UploadToDB(fullPath, path);
+
+                    logs.Add("After work");
+                    logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
+                    logs.Add("FamSymbols.Count(" + repos.FamilySymbols.Count().ToString() + ")");
+                    logs.Add("} - AddFile");
+                    logs.Add("");
+                    
+                }
+                System.IO.File.AppendAllLines(logPath, logs);
+                return RedirectToAction("List", "Node");
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.AppendAllText(logPath, uploadedFile.ToString());
+                System.IO.File.AppendAllText(logPath, ex.Message);
+                return RedirectToAction("List", "Node");
+            }
         }
 
 
@@ -449,6 +465,95 @@ namespace NodeManager.Web.Controllers
                 }
             }
             return categorySection;
+        }
+
+        [HttpPost]
+        [DisableFormValueModelBinding]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadPhysical()
+        {
+            if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
+            {
+                ModelState.AddModelError("File",
+                    $"The request couldn't be processed (Error 1).");
+                // Log error
+
+                return BadRequest(ModelState);
+            }
+
+            var boundary = MultipartRequestHelper.GetBoundary(
+                MediaTypeHeaderValue.Parse(Request.ContentType),
+                _defaultFormOptions.MultipartBoundaryLengthLimit);
+            var reader = new MultipartReader(boundary, HttpContext.Request.Body);
+            var section = await reader.ReadNextSectionAsync();
+
+            while (section != null)
+            {
+                var hasContentDispositionHeader =
+                    ContentDispositionHeaderValue.TryParse(
+                        section.ContentDisposition, out var contentDisposition);
+
+                if (hasContentDispositionHeader)
+                {
+                    // This check assumes that there's a file
+                    // present without form data. If form data
+                    // is present, this method immediately fails
+                    // and returns the model error.
+                    if (!MultipartRequestHelper
+                        .HasFileContentDisposition(contentDisposition))
+                    {
+                        ModelState.AddModelError("File",
+                            $"The request couldn't be processed (Error 2).");
+                        // Log error
+
+                        return BadRequest(ModelState);
+                    }
+                    else
+                    {
+                        // Don't trust the file name sent by the client. To display
+                        // the file name, HTML-encode the value.
+                        var trustedFileNameForDisplay = WebUtility.HtmlEncode(
+                                contentDisposition.FileName.Value);
+                        var trustedFileNameForFileStorage = Path.GetRandomFileName();
+
+                        // **WARNING!**
+                        // In the following example, the file is saved without
+                        // scanning the file's contents. In most production
+                        // scenarios, an anti-virus/anti-malware scanner API
+                        // is used on the file before making the file available
+                        // for download or for use by other systems. 
+                        // For more information, see the topic that accompanies 
+                        // this sample.
+
+                        var streamedFileContent = await FileHelpers.ProcessStreamedFile(
+                            section, contentDisposition, ModelState,
+                            _permittedExtensions, _fileSizeLimit);
+
+                        if (!ModelState.IsValid)
+                        {
+                            return BadRequest(ModelState);
+                        }
+
+                        using (var targetStream = System.IO.File.Create(
+                            Path.Combine(_targetFilePath, trustedFileNameForFileStorage)))
+                        {
+                            await targetStream.WriteAsync(streamedFileContent);
+
+                            _logger.LogInformation(
+                                "Uploaded file '{TrustedFileNameForDisplay}' saved to " +
+                                "'{TargetFilePath}' as {TrustedFileNameForFileStorage}",
+                                trustedFileNameForDisplay, _targetFilePath,
+                                trustedFileNameForFileStorage);
+                        }
+                    }
+                }
+
+                // Drain any remaining section body that hasn't been consumed and
+                // read the headers for the next section.
+                section = await reader.ReadNextSectionAsync();
+            }
+
+            return Created(nameof(StreamingController), null);
         }
     }
 }
