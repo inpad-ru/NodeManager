@@ -28,7 +28,7 @@
         {
             <div class="node">
                 <button class="btn" onclick="window.location.href='/Symbol/@nodI.Id';"><span class="fas fa-search-plus"></span></button>
-                <img class="img-responsive center-block" src="data:image/jpg;base64,@FamSymbolViewModel.ImageByteToBase64ImageTag(nodI.Image)"/>
+                <img class="img-responsive center-block" src="@nodI.Image"/>
                 <div class="node_name">
                     <p title="@nodI.Name">@FamSymbolViewModel.GetCutString(nodI.Name)</p>
                 </div>

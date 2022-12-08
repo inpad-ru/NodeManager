@@ -70,34 +70,6 @@ Array.prototype.forEach.call(inputs, function (input) {
         var fileee = this.files[0];
         console.log(fileee);
 
-        $('.subFile').click(function (e) {
-            const upload = { uploadedFile: fileee };
-            console.log(upload.uploadedFile);
-            $.ajax({
-                type: "POST",
-                url: "/Node/AddFile",
-                data: upload,
-                dataType: "html",
-                async: true,
-                success: function (result) {
-                    $("body").html(result);
-                }
-            });
-        });
+        
     });
 });
-
-
-var submitForm = document.getElementsByClassName("subFile")[0];
-var form1 = document.getElementsByClassName("formLeft")[0];
-submitForm.addEventListener('click', (e) => {
-    alert("пытаюсь отправить");
-    e.preventDefault();
-    form1.submit(function (e) {
-        e.preventDefault();
-        console.log("я тут");
-        console.log(e);
-        alert(e);
-    });
-});
-

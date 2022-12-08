@@ -60,12 +60,16 @@ namespace NodeManager.Web.Controllers
 
             if (!repos.Sections.Any(x => x.Name == section))
                 section = (string)null;
-
+            Users user = null;
+            if (HttpContext.User.Identity.IsAuthenticated)
+                user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+            
+                
             //Task<Categories> cat = repos.Categories.FirstOrDefaultAsync(x => x.Name.Equals(category));
             //Task<Sections> sec = repos.Sections.FirstOrDefaultAsync(x => x.Name.Equals(section));
             Categories cat = repos.Categories.FirstOrDefault(x => x.Name.Equals(category));
             Sections sec = repos.Sections.FirstOrDefault(x => x.Name.Equals(section));
-            
+
             pagInfo.TotalItems = repos.FamilySymbols
                     .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
                     .Count();
@@ -76,13 +80,16 @@ namespace NodeManager.Web.Controllers
                     .OrderBy(x => x.Id)
                     .ToListAsync();
 
-            NodesViewModel model = new NodesViewModel(){ CurrentSec = sec };
+            NodesViewModel model = new NodesViewModel() { CurrentSec = sec };
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.UserName = HttpContext.User.Identity.Name;
+            //if(model.IsLogin)
+            model.Role = user.Role;
             Dictionary<int, string> data = new Dictionary<int, string>();
             model.Symbols = await nodes;
             foreach (var file in repos.Files) data.Add(file.Id, file.FilePath);
             model.PrjList = data;
-            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            
             model.tagList = await repos.Tags.Select(x => x.Value).ToListAsync();
             model.PagingInfo = pagInfo;
             model.categorySection = GetCategorySection();
@@ -109,7 +116,7 @@ namespace NodeManager.Web.Controllers
         [Route("List1")]
         public ViewResult List1(NodeSearchModel inputData)
         {
-            
+
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
             pagInfo.CurrentPage = inputData.Page;
@@ -121,6 +128,11 @@ namespace NodeManager.Web.Controllers
             {
                 inputData.Section = (string)null;
             }
+
+            Users user = null;
+            if (HttpContext.User.Identity.IsAuthenticated)
+                user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+
             Categories cat = repos.Categories.FirstOrDefault(x => x.Name.Equals(inputData.Category));
             Sections sec = repos.Sections.FirstOrDefault(x => x.Name.Equals(inputData.Section));
             pagInfo.TotalItems = repos.FamilySymbols
@@ -146,11 +158,14 @@ namespace NodeManager.Web.Controllers
             {
                 model.categorySection.SelectedSection = sec.Id;
             }
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.UserName = HttpContext.User.Identity.Name;
+            //if (model.IsLogin)
+                model.Role = user.Role;
             Dictionary<int, string> data = new Dictionary<int, string>();
             foreach (var file in repos.Files) data.Add(file.Id, file.FilePath);
             model.PrjList = data;
-            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
             model.PagingInfo = pagInfo;
             return View(model);
@@ -160,6 +175,10 @@ namespace NodeManager.Web.Controllers
         [Route("Symbol/{id:int}")]
         public async Task<ViewResult> FamSymbol(int id)
         {
+            Users user = null;
+            if (HttpContext.User.Identity.IsAuthenticated)
+                user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+
             FamSymbolViewModel model = new FamSymbolViewModel()
             {
                 _familySymbol = await repos.FamilySymbols.FirstOrDefaultAsync(x => x.Id == id),
@@ -167,8 +186,11 @@ namespace NodeManager.Web.Controllers
                     .Where(c => c.SymbolId == id)
                     .OrderBy(c => c.Id)
             };
-            model.UserName = HttpContext.User.Identity.Name;
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            model.UserName = HttpContext.User.Identity.Name;
+            //if (model.IsLogin)
+                model.Role = user.Role;
+            
             return View(model);
         }
 
@@ -183,8 +205,13 @@ namespace NodeManager.Web.Controllers
             HashSet<int> tagsId = new HashSet<int>();
             List<FamilySymbol> resList = new List<FamilySymbol>();
             IEnumerable<int> connections;
+            Users user = null;
+            
             try
             {
+                if (HttpContext.User.Identity.IsAuthenticated)
+                    user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+
                 foreach (var tag in tags)
                 {
                     tagsId.Add((await repos.Tags.FirstOrDefaultAsync(x => x.Value.Equals(tag.ToLower()))).Id);
@@ -223,8 +250,10 @@ namespace NodeManager.Web.Controllers
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
             model.tagList = await repos.Tags.Select(x => x.Value).ToListAsync();
-            model.UserName = HttpContext.User.Identity.Name;
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            model.UserName = HttpContext.User.Identity.Name;
+            //if (model.IsLogin)
+                model.Role = user.Role;
 
             return View("List", model);
         }
@@ -242,8 +271,13 @@ namespace NodeManager.Web.Controllers
             //HashSet<int> tagsId = new HashSet<int>();
             IEnumerable<int> connections;
             Task<List<FamilySymbol>> nodes = null;
+            Users user = null;
             try
             {
+
+                if (HttpContext.User.Identity.IsAuthenticated)
+                    user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+
                 model.Symbols = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name.ToLower()))
                                                    .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
                                                    .Take(pagInfo.ItemsPerPage)
@@ -257,7 +291,7 @@ namespace NodeManager.Web.Controllers
                 model.IsTagSearchEmpty = true;
             }
 
-            
+
             model.PagingInfo = pagInfo;
             Dictionary<int, string> data = new Dictionary<int, string>();
             //model.Symbols = await nodes;
@@ -266,8 +300,11 @@ namespace NodeManager.Web.Controllers
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
             model.tagList = await repos.Tags.Select(x => x.Value).ToListAsync();
-            model.UserName = HttpContext.User.Identity.Name;
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            model.UserName = HttpContext.User.Identity.Name;
+            //if (model.IsLogin)
+                model.Role = user.Role;
+            
             pagInfo.TotalItems = await repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name)).CountAsync();
 
             return View("List", model);
@@ -314,8 +351,11 @@ namespace NodeManager.Web.Controllers
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
             pagInfo.CurrentPage = page;
-            
+
             var model = new NodesViewModel();
+            Users user = null;
+            if (HttpContext.User.Identity.IsAuthenticated)
+                user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
 
             pagInfo.TotalItems = repos.FamilySymbols.Where(x => x.FileId == fileId).Count();
             model.PagingInfo = pagInfo;
@@ -325,8 +365,10 @@ namespace NodeManager.Web.Controllers
                                                .ToList();
             model.categorySection = GetCategorySection(fileId);
             model.CurrentSec = null;
-            model.UserName = HttpContext.User.Identity.Name;
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            model.UserName = HttpContext.User.Identity.Name;
+            //if (model.IsLogin)
+                model.Role = user.Role;
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
             model.IsProjectSection = true;
 
@@ -345,6 +387,7 @@ namespace NodeManager.Web.Controllers
         [Route("AddFile")]
         //[RequestFormLimits(MultipartBodyLengthLimit = 262144000)]
         //[RequestFormLimits(MultipartBodyLengthLimit = Int64.MaxValue)]
+        [RequestSizeLimit(268435456)]
         public async Task<IActionResult> AddFile(IFormFile uploadedFile)
         {
             List<string> logs = new List<string>();
@@ -362,10 +405,10 @@ namespace NodeManager.Web.Controllers
 
                     // путь к папке Files
                     string guid = Guid.NewGuid().ToString();
-                    string fullPath = _appEnvironment.WebRootPath + "/Files/" + guid + uploadedFile.FileName;
+                    string root = _appEnvironment.WebRootPath;
                     string path = "/Files/" + guid + uploadedFile.FileName;
                     // сохраняем файл в папку Files в каталоге wwwroot
-                    using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                    using (var fileStream = new FileStream(root + path, FileMode.Create))
                     {
                         await uploadedFile.CopyToAsync(fileStream);
                     }
@@ -377,14 +420,14 @@ namespace NodeManager.Web.Controllers
                     }
 
                     var db = new DBUploader(repos, _appEnvironment);
-                    db.UploadToDB(fullPath, path);
+                    db.UploadToDB(root, path);
 
                     logs.Add("After work");
                     logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
                     logs.Add("FamSymbols.Count(" + repos.FamilySymbols.Count().ToString() + ")");
                     logs.Add("} - AddFile");
                     logs.Add("");
-                    
+
                 }
                 System.IO.File.AppendAllLines(logPath, logs);
                 return RedirectToAction("List", "Node");
@@ -466,94 +509,68 @@ namespace NodeManager.Web.Controllers
             }
             return categorySection;
         }
+            /// <summary>
+            /// Action for upload large file
+            /// </summary>
+            /// <remarks>
+            /// Request to this action will not trigger any model binding or model validation,
+            /// because this is a no-argument action
+            /// </remarks>
+            /// <returns></returns>
+            //[HttpPost]
+            //[Route(nameof(UploadLargeFile))]
+            //public async Task<IActionResult> UploadLargeFile()
+            //{
+            //    var request = HttpContext.Request;
 
-        [HttpPost]
-        [DisableFormValueModelBinding]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UploadPhysical()
-        {
-            if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
-            {
-                ModelState.AddModelError("File",
-                    $"The request couldn't be processed (Error 1).");
-                // Log error
+            //    // validation of Content-Type
+            //    // 1. first, it must be a form-data request
+            //    // 2. a boundary should be found in the Content-Type
+            //    if (!request.HasFormContentType ||
+            //        !MediaTypeHeaderValue.TryParse(request.ContentType, out var mediaTypeHeader) ||
+            //        string.IsNullOrEmpty(mediaTypeHeader.Boundary.Value))
+            //    {
+            //        return new UnsupportedMediaTypeResult();
+            //    }
 
-                return BadRequest(ModelState);
-            }
+            //    var reader = new MultipartReader(mediaTypeHeader.Boundary.Value, request.Body);
+            //    var section = await reader.ReadNextSectionAsync();
 
-            var boundary = MultipartRequestHelper.GetBoundary(
-                MediaTypeHeaderValue.Parse(Request.ContentType),
-                _defaultFormOptions.MultipartBoundaryLengthLimit);
-            var reader = new MultipartReader(boundary, HttpContext.Request.Body);
-            var section = await reader.ReadNextSectionAsync();
+            //    // This sample try to get the first file from request and save it
+            //    // Make changes according to your needs in actual use
+            //    while (section != null)
+            //    {
+            //        var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition,
+            //            out var contentDisposition);
 
-            while (section != null)
-            {
-                var hasContentDispositionHeader =
-                    ContentDispositionHeaderValue.TryParse(
-                        section.ContentDisposition, out var contentDisposition);
+            //        if (hasContentDispositionHeader && contentDisposition.DispositionType.Equals("form-data") &&
+            //            !string.IsNullOrEmpty(contentDisposition.FileName.Value))
+            //        {
+            //            // Don't trust any file name, file extension, and file data from the request unless you trust them completely
+            //            // Otherwise, it is very likely to cause problems such as virus uploading, disk filling, etc
+            //            // In short, it is necessary to restrict and verify the upload
+            //            // Here, we just use the temporary folder and a random file name
 
-                if (hasContentDispositionHeader)
-                {
-                    // This check assumes that there's a file
-                    // present without form data. If form data
-                    // is present, this method immediately fails
-                    // and returns the model error.
-                    if (!MultipartRequestHelper
-                        .HasFileContentDisposition(contentDisposition))
-                    {
-                        ModelState.AddModelError("File",
-                            $"The request couldn't be processed (Error 2).");
-                        // Log error
+            //            // Get the temporary folder, and combine a random file name with it
+            //            var fileName = Path.GetRandomFileName();
+            //            var saveToPath = Path.Combine(Path.GetTempPath(), fileName);
+            //            string guid = Guid.NewGuid().ToString();
+            //            string fullPath = _appEnvironment.WebRootPath + "/Files/" + guid + uploadedFile.FileName;
 
-                        return BadRequest(ModelState);
-                    }
-                    else
-                    {
-                        // Don't trust the file name sent by the client. To display
-                        // the file name, HTML-encode the value.
-                        var trustedFileNameForDisplay = WebUtility.HtmlEncode(
-                                contentDisposition.FileName.Value);
-                        var trustedFileNameForFileStorage = Path.GetRandomFileName();
+            //        using (var targetStream = System.IO.File.Create(fullPath))
+            //            {
+            //                await section.Body.CopyToAsync(targetStream);
+            //            }
 
-                        // **WARNING!**
-                        // In the following example, the file is saved without
-                        // scanning the file's contents. In most production
-                        // scenarios, an anti-virus/anti-malware scanner API
-                        // is used on the file before making the file available
-                        // for download or for use by other systems. 
-                        // For more information, see the topic that accompanies 
-                        // this sample.
+            //            return Ok();
+            //        }
 
-                        var streamedFileContent = await FileHelpers.ProcessStreamedFile(
-                            section, contentDisposition, ModelState,
-                            _permittedExtensions, _fileSizeLimit);
+            //        section = await reader.ReadNextSectionAsync();
+            //    }
 
-                        if (!ModelState.IsValid)
-                        {
-                            return BadRequest(ModelState);
-                        }
-
-                        using (var targetStream = System.IO.File.Create(
-                            Path.Combine(_targetFilePath, trustedFileNameForFileStorage)))
-                        {
-                            await targetStream.WriteAsync(streamedFileContent);
-
-                            _logger.LogInformation(
-                                "Uploaded file '{TrustedFileNameForDisplay}' saved to " +
-                                "'{TargetFilePath}' as {TrustedFileNameForFileStorage}",
-                                trustedFileNameForDisplay, _targetFilePath,
-                                trustedFileNameForFileStorage);
-                        }
-                    }
-                }
-
-                // Drain any remaining section body that hasn't been consumed and
-                // read the headers for the next section.
-                section = await reader.ReadNextSectionAsync();
-            }
-
-            return Created(nameof(StreamingController), null);
-        }
+            //    // If the code runs to this location, it means that no files have been saved
+            //    return BadRequest("No files data in the request.");
+            //}
+        
     }
 }
