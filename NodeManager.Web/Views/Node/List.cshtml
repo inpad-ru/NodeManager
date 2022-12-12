@@ -13,10 +13,16 @@
     <div class="but_downld">
         <button class="b_homePage" onclick="window.location.href='/Node/List/1'" title="На главную страницу"><span class="fa fa-home"></span></button>
         
-        @if (@Model.IsProjectSection)
+        @if (@Model.IsProjectSection && Model.UserName != null)
         {
             ViewData["Title"] = "Узлы проекта.";
             <button class="b_download" onclick="window.location.href='/Node/GetFile/@Model.Symbols.First().FileId'" title="Скачать проект"><span class="fa-solid fa-download"></span></button>
+            
+            @if (Model.Role == 1)
+            {
+                @*<button class="b_edit" onclick="" title="Редактировать"><span class="fa-solid fa-pencil"></span></button>*@
+                <button class="b_delete" title="Удалить"><span class="fa-solid fa-trash"></span></button>
+            }
         }
 
         @await Component.InvokeAsync("Menu", Model.categorySection)

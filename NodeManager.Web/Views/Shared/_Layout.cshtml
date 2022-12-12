@@ -19,7 +19,8 @@
             <h5 class="nameForMain">Узлы предоставлены для обязательной адаптации к проекту</h5>
             <div class="button_group_left">
                 <button class="b_back" onclick="window.history.back()" title="Назад"><span class="fa-solid fa-arrow-left"></span></button>
-                @if (Model.UserName != null)
+                @*@await Component.InvokeAsync("Upload")*@
+                @if (Model.UserName != null && Model.Role == 1)
                 {
                     <form asp-action="AddFile" asp-controller="Node" method="post" enctype="multipart/form-data" class="formLeft upload-file__wrapper">
                         <input type="file" name="uploadedFile" id="uploadedFile" class="upload-file__input" />

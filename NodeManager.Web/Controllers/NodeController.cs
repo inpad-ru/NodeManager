@@ -84,7 +84,10 @@ namespace NodeManager.Web.Controllers
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.UserName = HttpContext.User.Identity.Name;
             //if(model.IsLogin)
-            model.Role = user.Role;
+            //model.Role = user.Role;
+            if (user == null)
+                model.Role = 0;
+            else model.Role = user.Role;
             Dictionary<int, string> data = new Dictionary<int, string>();
             model.Symbols = await nodes;
             foreach (var file in repos.Files) data.Add(file.Id, file.FilePath);

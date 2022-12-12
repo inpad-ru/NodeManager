@@ -676,6 +676,7 @@ ul {
 
 .b_edit, .b_delete {
     width: 41px;
+    margin-left: 5px;
 }
 
 .but_homeP {
