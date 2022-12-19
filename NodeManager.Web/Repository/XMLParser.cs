@@ -6,6 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 //using NodeManager.Domain;
 using NodeManager.Web.DBInfrastucture;
+using NodeManager.Web.Models.Entities;
+using System.Xml.Serialization;
+using System.IO;
+using System.IO.Compression;
 
 namespace NodeManager.Web
 {
@@ -92,6 +96,19 @@ namespace NodeManager.Web
             //    db.RevViews.Add(rv);
             //}
             return db;
+        }
+
+        public NodeManagerDB XMLToObjects3(Stream stream)
+        {
+            NodeManagerDB DB = null;
+            //using (FileStream fs = new FileStream($@"{path}\DB.xml", FileMode.Open))
+            //{
+
+            XmlSerializer formatter = new XmlSerializer(typeof(NodeManagerDB));
+            DB = (NodeManagerDB)formatter.Deserialize(stream);
+
+            //}
+            return DB;
         }
 
         private List<string> GetTags(XElement view)

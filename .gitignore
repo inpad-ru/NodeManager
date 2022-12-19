@@ -364,3 +364,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/NodeManager.Web/wwwroot/Files/1666293a-de91-48a8-bd5a-a25b267ebc0a1.nmdb

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Content Remove="App.config" />
+    <Content Remove="wwwroot\Files\1666293a-de91-48a8-bd5a-a25b267ebc0a1.nmdb" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Files\" />
+    <Folder Include="wwwroot\Files\Images\" />
   </ItemGroup>
 
 </Project>

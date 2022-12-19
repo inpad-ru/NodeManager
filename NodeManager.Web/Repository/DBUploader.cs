@@ -25,34 +25,40 @@ namespace NodeManager.Web
             context = repo;
             _appEnvironment = appEnvironment;
         }
-        public void UploadToDB(string root, string link)
+        public async void UploadToDB(string root, string path)
         {
             try
             {
+                root = root.Replace("\\", "/");
                 XDocument xmlDoc = null;
-                Dictionary<int, Stream> streamDic = new Dictionary<int, Stream>();
+                Stream stream = null;
+                Dictionary<int, string> streamDic = new Dictionary<int, string>();
 
-                var path = root + "/Files/" + link.Split('/').Last().Split('.').First();
-
-                var temp = ZipFile.OpenRead(link).Entries;
+                //var path = root + "/Files/" + link.Split('/').Last().Split('.').First();
+                
+                var temp = ZipFile.OpenRead(root + path).Entries;
                 foreach (var entry in temp)
                 {
                     if (entry.FullName.EndsWith(".xml"))
                     {
                         xmlDoc = XDocument.Load(entry.Open());
+                        stream = entry.Open();
                     }
                     if (entry.FullName.EndsWith(".jpg"))
                     {
-                        var pathOfImg = entry.FullName.Split('-', '.');
-                        streamDic.Add(Convert.ToInt32(pathOfImg[1]), entry.Open());
+                        var splitedName = entry.FullName.Split('-', '.');
+                        if (!Directory.Exists(root + "/Files/Images/")) Directory.CreateDirectory(root + "/Files/Images/");
+                        string pathToImg = ("/Files/Images/" +  Guid.NewGuid().ToString() + splitedName[1] + ".jpg");
+                        UploadImage(root + pathToImg, entry.Open());
+                        streamDic.Add(Convert.ToInt32(splitedName[1]), pathToImg);
                     }
                 }
-
+                
                 int counter = 0;
 
-
                 var xmlParser = new XMLParser();
-                var oldDb = xmlParser.XMLToObjects2(xmlDoc);
+                var oldDb = new OldDB(xmlParser.XMLToObjects3(stream));
+                //var oldDb2 = xmlParser.XMLToObjects2(xmlDoc);
 
                 IEnumerable<Categories> cats = oldDb.RevViews
                     .Select(x => new Categories() { Name = x.Category })
@@ -81,10 +87,10 @@ namespace NodeManager.Web
                     }
                 }
 
-                if (!context.Files.Where(x => x.FilePath.Equals(oldDb.FileName)).Any())
-                {
-                    context.dbContext.Files.Add(new Files { FilePath = oldDb.FileName });
-                }
+                //if (!context.Files.Where(x => x.FilePath.Equals(oldDb.FileName)).Any())
+                //{
+                //    context.dbContext.Files.Add(new Files { FilePath = oldDb.FileName });
+                //}
                 context.dbContext.SaveChanges();
 
                 foreach (var j in oldDb.RevViews)
@@ -96,8 +102,8 @@ namespace NodeManager.Web
                             Name = j.Name,
                             //ImagePath = j.ImagePath,
                             Scale = j.Scale,
-                            Image = streamDic.ContainsKey(j.ID) ? ReadFully(streamDic[j.ID]) : null,
-                            FileId = context.Files.FirstOrDefault(x => x.FilePath.Equals(j.ImagePath)).Id,
+                            Image = streamDic.ContainsKey(j.ID) ? streamDic[j.ID] : null,
+                            FileId = context.Files.FirstOrDefault(x => x.FilePath.Equals(path)).Id,
                             CategoryId = context.Categories.FirstOrDefault(x => x.Name.Equals(j.Category)).Id,
                             SectionId = context.Sections.FirstOrDefault(x => x.Name.Equals(j.Section)).Id
                         });
@@ -148,18 +154,30 @@ namespace NodeManager.Web
                                 SymbolId = context.FamilySymbols.FirstOrDefault(r => r.Name == z.RevView.Name).Id,
                                 Name = z.Name,
                                 Value = z.Value,
-                                StorageType = z.StorageType
+                                StorageType = (int)z.StorageType
                             });
                     }
                     context.dbContext.SaveChanges();
                 }
 
-                File.Delete(link);
+                //File.Delete(link);
             }
             catch (Exception ex) 
             { 
                 ex.ToString();
             }
+        }
+
+        private void UploadImage(string path, Stream stream)
+        {
+            try
+            {
+                using (var streamReader = new FileStream(path, FileMode.Create))
+                {
+                    stream.CopyTo(streamReader);
+                }
+            }
+            catch { }
         }
 
         private byte[] ImgToBytes(string filename)

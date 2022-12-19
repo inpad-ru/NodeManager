@@ -10,7 +10,7 @@
                 @foreach (var nodI in Model.Symbols)
                 {
                     <div class="node">
-                        <img class="img-responsive center-block" src="data:image/jpg;base64,@FamSymbolViewModel.ImageByteToBase64ImageTag(nodI.Image)"/>
+                        <img class="img-responsive center-block" src="@nodI.Image"/>
                         <button class="btn" onclick="window.location.href='#@nodI.Id';"><span class="fas fa-search-plus"></span></button>
                         <div class="node_name">
                             <p title="@nodI.Name">@FamSymbolViewModel.GetCutString(nodI.Name)</p>
@@ -21,7 +21,7 @@
                                 <button class="dwn"><span class="far fa-save fa-lg" style="color: white"></span></button>
                                 <figcaption>
                                     <p>@nodI.Name</p>
-                                    <img class="img-responsive center-block" src="data:image/jpg;base64,@FamSymbolViewModel.ImageByteToBase64ImageTag(nodI.Image)"/>
+                                    <img class="img-responsive center-block" src="@nodI.Image"/>
                                 </figcaption>
                             </figure>
                         </div>

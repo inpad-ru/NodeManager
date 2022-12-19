@@ -38,8 +38,8 @@ body {
 
 /* Header buttons */
 
-h5 {
-    font-size: 16px;
+.nameForMain, .nameForNode {
+    font-size: 16px !important;
     white-space: normal;
     text-align: center;
     font-weight: bold;
@@ -65,7 +65,7 @@ h5 {
     justify-self: start;
 }*/
 
-.b_back, .b_download, .formLeft, .b_search_name, .b_search_tag, .but_user {
+.b_back, .b_homePage, .b_homeP, .b_download, .formLeft, .b_search_name, .search_by_name, .b_search_tag, .but_user {
     background-color: white;
     color: black;
     font-size: 20px;
@@ -82,7 +82,11 @@ h5 {
 }
 
 .b_download {
-    margin-left: 5%;
+    margin-left: 5px;
+}
+
+.b_homePage {
+    margin-left: 10%;
 }
 
 /* Поле загрузки файлов/проектов */
@@ -149,6 +153,12 @@ input[type=file] {
     margin: 0;
     height: 43px;
     vertical-align: middle !important;
+    display: inline-flex;
+    /*display: inline-block;*/
+}
+
+.subscription {
+    display: inline-flex;
 }
 
 .search_by_name {
@@ -169,7 +179,7 @@ input[type=file] {
 }
 
 .b_search_name {
-
+    margin-left: 5px;
 }
 
 
@@ -188,6 +198,10 @@ input[type=file] {
     line-height: normal;
     margin: auto;
     vertical-align: middle;
+}
+
+.pTag {
+    font-size: 20px !important;
 }
 
 /* Настройки для поиска по тегу */
@@ -408,21 +422,37 @@ input.chosen-search-input.default {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
 }
 
 .but_downld {
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 8.7%;
-    margin-left: 5%;
+    /*margin-left: 5%;*/
     height: 43px;
 }
 
 .nav_filters {
     position: -webkit-sticky; /* Safari */
     position: sticky;
-    top: 13%;
+    top: 11%;
     z-index: 300;
+}
+
+.scroll { /* для левого меню */
+    position: -webkit-sticky;
+    position: sticky;
+    top: 11%;
+    z-index: 300;
+}/* для левого меню */
+
+.but_home {
+    /*margin-bottom: 10px;*/
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    margin-left: 5%;
 }
 
 .plug {
@@ -439,7 +469,7 @@ input.chosen-search-input.default {
     display: inline-block;
     width: 360px;
     height: 350px;
-    margin: 5% 0 0 5%;
+    margin: 5% 0 0 4%;
     border: 1px solid black;
     text-align: center;
 }
@@ -450,6 +480,7 @@ input.chosen-search-input.default {
 }
 
 .node_name {
+    font-size: 20px !important;
     width: 100%;
     border-top: 1px solid black;
     text-align: center;
@@ -469,6 +500,18 @@ p, span {
 .btn {
     position: relative;
     transform: translate(395%, -10%);
+}
+
+/* Нумерация страниц - Pagination */
+
+.pages {
+    margin-left: 30px;
+}
+.pagination {
+    /*padding-top: 15px;*/
+    /*padding-bottom: 15px;*/
+    
+    margin: 5% 0 5% 2%;
 }
 
 
@@ -499,6 +542,7 @@ ul {
     list-style-type: none;
     width: 90%;
     color: black;
+    font-size: 20px !important;
 }
 
 .but_subcategory {
@@ -506,6 +550,7 @@ ul {
     text-decoration: none;
     width: 100%;
     color: black;
+    font-size: 20px !important;
 }
 
 .accordion-menu li.open .dropdownlink .fa-caret-down {
@@ -564,11 +609,13 @@ ul {
 .headerNode {
     display: grid;
     grid-template-rows: auto auto;
-    grid-auto-columns: 50% 50%;
+    /*grid-auto-columns: 40% 60%;*/
+    /*width: 100%;*/
     background-color: white;
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 0;
+    /*max-width: 1200px;*/
 }
 
 /* Content */
@@ -579,13 +626,20 @@ ul {
 }
 
 /* Header button */
+/*.nameForNode {
+    text-align: center;
+    font-weight: bold;
+    word-break: break-all;
+    grid-row: 1;
+    grid-column: 1 / 5;
+}*/
 
 .but_group {
     grid-row: 2;
     grid-column: 1 / 2;
     align-self: center;
     justify-self: start;
-    margin-left: 4%;
+    margin-left: 5%;
 }
 
 /*.but_close {
@@ -608,6 +662,7 @@ ul {
     background-color: white;
     color: black;
     font-size: 20px;
+    max-height: 43px;
     border: 1px solid #DAD9D9;
     cursor: pointer;
     align-items: center;
@@ -616,16 +671,29 @@ ul {
     padding: 5px 10px;
     /*line-height: normal;*/
     margin: auto;
+    z-index: 500;
 }
 
 .b_edit, .b_delete {
     width: 41px;
+    margin-left: 5px;
+}
+
+.but_homeP {
+    /*margin-bottom: 10px;*/
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    margin-bottom: 10px;
+}
+
+.b_GoToProject {
+    font-size: 20px !important;
 }
 
 
 /* Параметры узлов, файл FamSymbol.cshtml  */
 .param_section {
-    margin: 5% 5% 5% 10%;
+    margin: 3% 5% 5% 9%;
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 11%;
@@ -637,58 +705,111 @@ ul {
     box-sizing: border-box;
     background-color: white;
     color: black;
-    border-radius: 10px;
-    word-break: inherit;
+   /* border-radius: 10px;*/
+    /*border-bottom: none;*/
+    /*word-break: inherit;*/
 }
 
-.scroll {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 11%;
-    z-index: 300;
-}
-
-.scroll-table table {
+.scroll-table-body table {
     width: 100%;
     table-layout: fixed;
     border: none;
 }
 
 .scroll-table-body {
-    max-height: 750px;
+    width: 100%;
+    max-height: 600px;
+    min-height: 500px;
     overflow-x: auto;
     margin-top: 0px;
+    word-break: break-word;
     /*margin-bottom: 20px;*/
-    border-bottom: 1px solid #eee;
+    /*border-bottom: 1px solid #eee;*/
 }
 
 .scroll-table {
     position: -webkit-sticky;
     position: sticky;
     top: 11%;
-    z-index: 300;
-    top: 15%;
     z-index: 100;
 }
 
 table, th, td {
     border: 1px solid #DAD9D9;
     border-radius: 10px;
-    font-size: 18px;
+    /*font-size: 18px;*/
 }
 
 th {
+    width: 50%;
     text-align: center;
+    font-size: 18px;
 }
 
 td {
+    /*border-top: none;*/
     width: 50%;
+    font-size: 16px;
 }
 
+
+/*.parameters {
+    width: 100%;
+    border: none;
+    margin-bottom: 20px;
+    border-collapse: separate;
+}
+.parameters thead th {
+	font-weight: bold;
+	text-align: left;
+	border: none;
+	padding: 10px 15px;
+	background: #EDEDED;
+	font-size: 14px;
+	border-top: 1px solid #ddd;
+}
+.parameters tr th:first-child, .parameters tr td:first-child {
+    border-left: 1px solid #ddd;
+}
+.parameters tr th:last-child, .parameters tr td:last-child {
+    border-right: 1px solid #ddd;
+}
+.parameters thead tr th:first-child {
+	border-radius: 10px 0 0 0;
+}
+.parameters thead tr th:last-child {
+	border-radius: 0 10px 0 0;
+}
+.scroll-table-body tbody td {
+    text-align: left;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    vertical-align: top;
+}*/
+/*.scroll-table-body tbody tr:nth-child(even) {
+    background: #F8F8F8;
+}*/
+/*.scroll-table-body tbody tr:last-child td {
+    border-bottom: 1px solid #ddd;
+}
+.scroll-table-body tbody tr:last-child td:first-child {
+	border-radius: 0 0 0 10px;
+}
+.scroll-table-body tbody tr:last-child td:last-child {
+	border-radius: 0 0 10px 0;
+}*/
+
 /* Стили для скролла */
+
+/*Убрать полосу прокрутки у элемента*/
+.scroll-table-body::-webkit-scrollbar {
+    width: 0;
+}
+
 ::-webkit-scrollbar {
     /*width: 6px;*/
-    display: none;
+    /*display: none;*/
 }
 
 /*::-webkit-scrollbar-track {
@@ -709,7 +830,6 @@ td {
 /* Страница авторизации Login.cshtml и регистрации Register.cshtml ------------------------------------------------------------ */
 
 .page_register, .page_login {
-    /*background: yellow;*/
     position: absolute;
     top: 50%;
     left: 50%;

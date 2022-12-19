@@ -13,6 +13,7 @@ namespace NodeManager.Web.Models
         public FamilySymbol _familySymbol { get; set; }
         public IEnumerable<RevitParameter> _revitParameters { get; set; }
         public string UserName { get; set; }
+        public int Role { get; set; }
         public bool IsLogin { get; set; }
 
         public static string ImageByteToBase64ImageTag(byte[] array)

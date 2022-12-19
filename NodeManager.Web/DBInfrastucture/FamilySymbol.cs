@@ -29,7 +29,7 @@ namespace NodeManager.Web.DBInfrastucture
         public string Name { get; set; }
         public Nullable<int> FileId { get; set; }
         public Nullable<int> Scale { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
         //public string Tags { get; set; }
         public Nullable<int> CategoryId { get; set; }
         public Nullable<int> SectionId { get; set; }
@@ -37,7 +37,7 @@ namespace NodeManager.Web.DBInfrastucture
 
 
 
-        
+
 
         [ForeignKey("CategoryId")]
         public virtual Categories Category { get; set; }

@@ -40,8 +40,8 @@ namespace NodeManager.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<NodeManagerDBEntities>(options => options.UseMySQL(_configString.GetConnectionString("NodeManagerDBEntities1")));
-            services.AddDbContext<NodeManagerDBEntities>(options => options.UseSqlServer(_configString.GetConnectionString("NodeManagerDBEntities")));
+            services.AddDbContext<NodeManagerDBEntities>(options => options.UseMySQL(_configString.GetConnectionString("NodeManagerDBEntities1")));
+            //services.AddDbContext<NodeManagerDBEntities>(options => options.UseSqlServer(_configString.GetConnectionString("NodeManagerDBEntities")));
             services.AddControllersWithViews();
             services.AddTransient<INodes, NodeRep>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
