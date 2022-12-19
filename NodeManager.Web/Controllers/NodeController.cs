@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
+using Microsoft.AspNetCore.Session;
 
 //using NodeManager.Domain;
 using NodeManager.Web.Abstract;
@@ -30,13 +31,18 @@ namespace NodeManager.Web.Controllers
 {
     [Route("")]
     [Route("Node")]
-
     public class NodeController : Controller
     {
         private INodes repos;
         private readonly IWebHostEnvironment _appEnvironment;
         private IHostingEnvironment Environment;
         private string logPath;
+        public static List<string> logs;
+
+        static NodeController()
+        {
+            logs = new List<string>();
+        }
 
         public NodeController(INodes repo, IWebHostEnvironment appEnvironment)
         {
@@ -45,11 +51,15 @@ namespace NodeManager.Web.Controllers
             logPath = _appEnvironment.WebRootPath + "/Files/log.txt";
         }
 
+        //~NodeController()
+        //{
+        //    Console.WriteLine("I'm here");
+        //}
+
         [Route("")]
         [Route("List/{page:int}/{section?}/{category?}")]
         public async Task<ViewResult> List(string section, string category, int page = 1)
         {
-            //throw new NotImplementedException("dgeg");
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
             pagInfo.CurrentPage = page;
@@ -60,11 +70,13 @@ namespace NodeManager.Web.Controllers
 
             if (!repos.Sections.Any(x => x.Name == section))
                 section = (string)null;
+
             Users user = null;
             if (HttpContext.User.Identity.IsAuthenticated)
                 user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
-            
-                
+            logs.Add(String.Format(System.DateTime.Now.ToString() + " CurrentUser: {1}, Action: {0}", nameof(List), user == null ? "null" : user.Name));
+            logs.Add(String.Format("Parameters - Section: {0}, Category: {1}, Page: {2}", section, category, page.ToString()));
+
             //Task<Categories> cat = repos.Categories.FirstOrDefaultAsync(x => x.Name.Equals(category));
             //Task<Sections> sec = repos.Sections.FirstOrDefaultAsync(x => x.Name.Equals(section));
             Categories cat = repos.Categories.FirstOrDefault(x => x.Name.Equals(category));
@@ -84,15 +96,12 @@ namespace NodeManager.Web.Controllers
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.UserName = HttpContext.User.Identity.Name;
             //if(model.IsLogin)
-            //model.Role = user.Role;
-            if (user == null)
-                model.Role = 0;
-            else model.Role = user.Role;
+            model.Role = user != null ? user.Role : -1;
             Dictionary<int, string> data = new Dictionary<int, string>();
             model.Symbols = await nodes;
             foreach (var file in repos.Files) data.Add(file.Id, file.FilePath);
             model.PrjList = data;
-            
+
             model.tagList = await repos.Tags.Select(x => x.Value).ToListAsync();
             model.PagingInfo = pagInfo;
             model.categorySection = GetCategorySection();
@@ -104,6 +113,7 @@ namespace NodeManager.Web.Controllers
             {
                 model.categorySection.SelectedSection = sec.Id;
             }
+            //PutLogsIntoFile();
             return View(model);
             //return View("AddFile");
         }
@@ -164,11 +174,11 @@ namespace NodeManager.Web.Controllers
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.UserName = HttpContext.User.Identity.Name;
             //if (model.IsLogin)
-                model.Role = user.Role;
+            model.Role = user != null ? user.Role : -1;
             Dictionary<int, string> data = new Dictionary<int, string>();
             foreach (var file in repos.Files) data.Add(file.Id, file.FilePath);
             model.PrjList = data;
-            
+
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
             model.PagingInfo = pagInfo;
             return View(model);
@@ -181,6 +191,8 @@ namespace NodeManager.Web.Controllers
             Users user = null;
             if (HttpContext.User.Identity.IsAuthenticated)
                 user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+            logs.Add(String.Format(System.DateTime.Now.ToString() + " CurrentUser: {1}, Action: {0}", nameof(FamSymbol), user == null ? "null" : user.Name));
+            logs.Add(String.Format("Parameters - Id: {0}", id.ToString()));
 
             FamSymbolViewModel model = new FamSymbolViewModel()
             {
@@ -192,8 +204,8 @@ namespace NodeManager.Web.Controllers
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.UserName = HttpContext.User.Identity.Name;
             //if (model.IsLogin)
-                model.Role = user.Role;
-            
+            model.Role = user != null ? user.Role : -1;
+            //PutLogsIntoFile();
             return View(model);
         }
 
@@ -209,11 +221,13 @@ namespace NodeManager.Web.Controllers
             List<FamilySymbol> resList = new List<FamilySymbol>();
             IEnumerable<int> connections;
             Users user = null;
-            
+
             try
             {
                 if (HttpContext.User.Identity.IsAuthenticated)
                     user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+                logs.Add(String.Format(System.DateTime.Now.ToString() + " CurrentUser: {1}, Action: {0}", nameof(Search), user == null ? "null" : user.Name));
+                logs.Add(String.Format("Parameters - Page: {0}, Tags: {1}", page.ToString(), tags));
 
                 foreach (var tag in tags)
                 {
@@ -256,8 +270,8 @@ namespace NodeManager.Web.Controllers
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.UserName = HttpContext.User.Identity.Name;
             //if (model.IsLogin)
-                model.Role = user.Role;
-
+            model.Role = user != null ? user.Role : -1;
+            //PutLogsIntoFile();
             return View("List", model);
         }
 
@@ -280,6 +294,8 @@ namespace NodeManager.Web.Controllers
 
                 if (HttpContext.User.Identity.IsAuthenticated)
                     user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+                logs.Add(String.Format(System.DateTime.Now.ToString() + " CurrentUser: {1}, Action: {0}", nameof(SearchName), user == null ? "null" : user.Name));
+                logs.Add(String.Format("Parameters - Page: {0}, Name: {1}", page.ToString(), name));
 
                 model.Symbols = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name.ToLower()))
                                                    .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
@@ -306,10 +322,10 @@ namespace NodeManager.Web.Controllers
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.UserName = HttpContext.User.Identity.Name;
             //if (model.IsLogin)
-                model.Role = user.Role;
-            
-            pagInfo.TotalItems = await repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name)).CountAsync();
+            model.Role = user != null ? user.Role : -1;
 
+            pagInfo.TotalItems = await repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name)).CountAsync();
+            //PutLogsIntoFile();
             return View("List", model);
         }
 
@@ -319,17 +335,46 @@ namespace NodeManager.Web.Controllers
         [Route("Delete/{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
+            Users user = null;
+            if (HttpContext.User.Identity.IsAuthenticated)
+                user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+            logs.Add(String.Format(System.DateTime.Now.ToString() + " CurrentUser: {1}, Action: {0}", nameof(Delete), user == null ? "null" : user.Name));
+            logs.Add(String.Format("Parameters - Id: {0}", id.ToString()));
+
             var fs = await repos.FamilySymbols.FirstOrDefaultAsync(x => x.Id == id);
-            var fsTagIds = repos.FSTags.Where(x => x.FSId == id);
-            repos.dbContext.Remove(fs);
-            repos.dbContext.RemoveRange(fsTagIds);
+            if (fs == null) return RedirectToAction("List", "Node");
+
+            List<FSTags> fsTagsIds = new List<FSTags>();
+            List<FamilySymbol> famSymbols = new List<FamilySymbol>();
+            List<RevitParameter> revitParameters = new List<RevitParameter>();
+
+            famSymbols.AddRange(repos.FamilySymbols.Where(x => x.FileId == fs.FileId));
+            foreach (var i in famSymbols)
+            {
+                fsTagsIds.AddRange(repos.FSTags.Where(x => x.FSId == i.Id));
+                revitParameters.AddRange(repos.RevParameters.Where(x => x.SymbolId == i.Id));
+            }
+            var file = repos.Files.FirstOrDefault(x => x.Id == fs.FileId);
+
+            repos.dbContext.RemoveRange(famSymbols);
+            repos.dbContext.RemoveRange(fsTagsIds);
+            repos.dbContext.RemoveRange(revitParameters);
+            repos.dbContext.Remove(file);
             await repos.dbContext.SaveChangesAsync();
+            if (System.IO.File.Exists(file.FilePath)) System.IO.File.Delete(file.FilePath);
+            //PutLogsIntoFile();
             return RedirectToAction("List", "Node");
         }
 
         [Route("GetFile/{id:int}")]
         public async Task<IActionResult> GetFile(int id)
         {
+            Users user = null;
+            if (HttpContext.User.Identity.IsAuthenticated)
+                user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+            logs.Add(String.Format(System.DateTime.Now.ToString() + " CurrentUser: {1}, Action: {0}", nameof(GetFile), user == null ? "null" : user.Name));
+            logs.Add(String.Format("Parameters - Id: {0}", id.ToString()));
+
             //List<string> logs = new List<string>();
             //logs.Add(System.DateTime.Now.ToString() + " GetFile - {");
             //logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
@@ -343,7 +388,7 @@ namespace NodeManager.Web.Controllers
             //logs.Add("} - GetFile");
             //logs.Add("");
             //System.IO.File.AppendAllLines(logPath, logs);
-
+            //PutLogsIntoFile();
             return PhysicalFile(file_path, file_type, file_name);
         }
 
@@ -359,6 +404,8 @@ namespace NodeManager.Web.Controllers
             Users user = null;
             if (HttpContext.User.Identity.IsAuthenticated)
                 user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+            logs.Add(String.Format(System.DateTime.Now.ToString() + " CurrentUser: {1}, Action: {0}", nameof(GetFile), user == null ? "null" : user.Name));
+            logs.Add(String.Format("Parameters - Page: {0}, FileId: {1}", page.ToString(), fileId.ToString()));
 
             pagInfo.TotalItems = repos.FamilySymbols.Where(x => x.FileId == fileId).Count();
             model.PagingInfo = pagInfo;
@@ -371,10 +418,10 @@ namespace NodeManager.Web.Controllers
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.UserName = HttpContext.User.Identity.Name;
             //if (model.IsLogin)
-                model.Role = user.Role;
+            model.Role = user != null ? user.Role : -1;
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
             model.IsProjectSection = true;
-
+            //PutLogsIntoFile();
             return View("List", model);
         }
 
@@ -398,14 +445,15 @@ namespace NodeManager.Web.Controllers
             //throw new NotImplementedException(uploadedFile.Length.ToString());
             try
             {
-                if (uploadedFile == null) logs.Add(System.DateTime.Now.ToString() + " uploadedFile = null");
+                Users user = null;
+                if (HttpContext.User.Identity.IsAuthenticated)
+                    user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+                logs.Add(String.Format(System.DateTime.Now.ToString() + " CurrentUser: {1}, Action: {0}", nameof(AddFile), user == null ? "null" : user.Name));
+                logs.Add(String.Format("Parameters - File Size: {0}", uploadedFile == null ? "null" : uploadedFile.Length.ToString()));
+
+                if (uploadedFile == null) logs.Add("uploadedFile = null");
                 else
                 {
-
-                    logs.Add(System.DateTime.Now.ToString() + " AddFile - {Length:" + uploadedFile.Length);
-                    logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
-                    logs.Add("FamSymbols.Count(" + repos.FamilySymbols.Count().ToString() + ")");
-
                     // путь к папке Files
                     string guid = Guid.NewGuid().ToString();
                     string root = _appEnvironment.WebRootPath;
@@ -423,22 +471,18 @@ namespace NodeManager.Web.Controllers
                     }
 
                     var db = new DBUploader(repos, _appEnvironment);
+
                     db.UploadToDB(root, path);
-
-                    logs.Add("After work");
-                    logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
-                    logs.Add("FamSymbols.Count(" + repos.FamilySymbols.Count().ToString() + ")");
-                    logs.Add("} - AddFile");
-                    logs.Add("");
-
                 }
-                System.IO.File.AppendAllLines(logPath, logs);
+                //System.IO.File.AppendAllLines(logPath, logs);
+                //PutLogsIntoFile();
                 return RedirectToAction("List", "Node");
             }
             catch (Exception ex)
             {
-                System.IO.File.AppendAllText(logPath, uploadedFile.ToString());
-                System.IO.File.AppendAllText(logPath, ex.Message);
+                //System.IO.File.AppendAllText(logPath, uploadedFile.ToString());
+                logs.Add(ex.Message);
+                //PutLogsIntoFile();
                 return RedirectToAction("List", "Node");
             }
         }
@@ -512,68 +556,20 @@ namespace NodeManager.Web.Controllers
             }
             return categorySection;
         }
-            /// <summary>
-            /// Action for upload large file
-            /// </summary>
-            /// <remarks>
-            /// Request to this action will not trigger any model binding or model validation,
-            /// because this is a no-argument action
-            /// </remarks>
-            /// <returns></returns>
-            //[HttpPost]
-            //[Route(nameof(UploadLargeFile))]
-            //public async Task<IActionResult> UploadLargeFile()
-            //{
-            //    var request = HttpContext.Request;
+        [HttpPost]
+        [Route("Logs")]
+        public void LogsIn()
+        {
+            PutLogsIntoFile();
+        }
 
-            //    // validation of Content-Type
-            //    // 1. first, it must be a form-data request
-            //    // 2. a boundary should be found in the Content-Type
-            //    if (!request.HasFormContentType ||
-            //        !MediaTypeHeaderValue.TryParse(request.ContentType, out var mediaTypeHeader) ||
-            //        string.IsNullOrEmpty(mediaTypeHeader.Boundary.Value))
-            //    {
-            //        return new UnsupportedMediaTypeResult();
-            //    }
-
-            //    var reader = new MultipartReader(mediaTypeHeader.Boundary.Value, request.Body);
-            //    var section = await reader.ReadNextSectionAsync();
-
-            //    // This sample try to get the first file from request and save it
-            //    // Make changes according to your needs in actual use
-            //    while (section != null)
-            //    {
-            //        var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition,
-            //            out var contentDisposition);
-
-            //        if (hasContentDispositionHeader && contentDisposition.DispositionType.Equals("form-data") &&
-            //            !string.IsNullOrEmpty(contentDisposition.FileName.Value))
-            //        {
-            //            // Don't trust any file name, file extension, and file data from the request unless you trust them completely
-            //            // Otherwise, it is very likely to cause problems such as virus uploading, disk filling, etc
-            //            // In short, it is necessary to restrict and verify the upload
-            //            // Here, we just use the temporary folder and a random file name
-
-            //            // Get the temporary folder, and combine a random file name with it
-            //            var fileName = Path.GetRandomFileName();
-            //            var saveToPath = Path.Combine(Path.GetTempPath(), fileName);
-            //            string guid = Guid.NewGuid().ToString();
-            //            string fullPath = _appEnvironment.WebRootPath + "/Files/" + guid + uploadedFile.FileName;
-
-            //        using (var targetStream = System.IO.File.Create(fullPath))
-            //            {
-            //                await section.Body.CopyToAsync(targetStream);
-            //            }
-
-            //            return Ok();
-            //        }
-
-            //        section = await reader.ReadNextSectionAsync();
-            //    }
-
-            //    // If the code runs to this location, it means that no files have been saved
-            //    return BadRequest("No files data in the request.");
-            //}
-        
+        private void PutLogsIntoFile()
+        {
+            if (logs.Count() != 0)
+            {
+                System.IO.File.AppendAllLines(logPath, logs);
+                logs.Clear();
+            }
+        }
     }
 }
