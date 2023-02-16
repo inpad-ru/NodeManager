@@ -62,5 +62,14 @@ Array.prototype.forEach.call(inputs, function (input) {
             label.innerHTML = labelVal;
 
         document.getElementsByClassName("upload-file__text")[0].title = fileName;
+        console.log(document.getElementsByClassName("upload-file__text")[0].title);
+        console.log('This file size is: ' + this.files[0].size / 1024 / 1024 + "MiB");
+        //alert('This file size is: ' + this.files[0].size / 1024 / 1024 + "MiB");
+        console.log(this.files[0]);
+
+        var fileee = this.files[0];
+        console.log(fileee);
+
+        
     });
 });

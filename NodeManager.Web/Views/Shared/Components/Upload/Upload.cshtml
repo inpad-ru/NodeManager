@@ -1,0 +1,12 @@
+﻿@model NodeManager.Web.Models.NodesViewModel
+
+@if (Model.UserName != null && Model.Role == 1)
+{
+    <form asp-action="AddFile" asp-controller="Node" method="post" enctype="multipart/form-data" class="formLeft upload-file__wrapper">
+        <input type="file" name="uploadedFile" id="uploadedFile" class="upload-file__input" />
+        <label class="upload-file__label" for="uploadedFile">
+            <span class="upload-file__text" title="Загрузить файл/проект">Загрузить файл/проект</span>
+        </label>
+        <button class="subFile" type="submit" title="Загрузить файл/проект"><span class="fa-solid fa-upload"></span></button>
+    </form>
+}

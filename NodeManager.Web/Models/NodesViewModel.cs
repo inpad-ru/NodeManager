@@ -17,6 +17,7 @@ namespace NodeManager.Web.Models
         public Sections CurrentSec { get; set; }
         public CategorySection categorySection { get; set; }
         public string UserName { get; set; }
+        public int Role { get; set; }
         public bool IsLogin { get; set; }
         public List<string> tagList { get; set; }
 
@@ -27,4 +28,10 @@ namespace NodeManager.Web.Models
         public PagingInfo PagingInfo { get; set; }
 
     }
+
+    //public enum Roles
+    //{
+    //    Admin,
+    //    JustRegistered
+    //}
 }

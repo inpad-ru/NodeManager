@@ -16,10 +16,36 @@
     <input type="checkbox" id="nav-toggle" hidden>
     <main class="main_container">
         <header class="main_header">
+            <!-- Yandex.Metrika counter -->
+            <script type="text/javascript">
+                (function (m, e, t, r, i, k, a) {
+                    m[i] = m[i]  function () { (m[i].a = m[i].a  []).push(arguments) };
+                    m[i].l = 1 * new Date();
+                    for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+                    k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+                })
+                    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+                ym(91761379, "init", {
+                    clickmap: true,
+                    trackLinks: true,
+                    accurateTrackBounce: true
+                });
+                ym(91761180, "init", {
+                    clickmap: true,
+                    trackLinks: true,
+                    accurateTrackBounce: true,
+                    webvisor: true
+                });
+            </script>
+            <noscript><div><img src="https://mc.yandex.ru/watch/91761180" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+            <!-- /Yandex.Metrika counter -->
+
             <h5 class="nameForMain">Узлы предоставлены для обязательной адаптации к проекту</h5>
             <div class="button_group_left">
                 <button class="b_back" onclick="window.history.back()" title="Назад"><span class="fa-solid fa-arrow-left"></span></button>
-                @if (Model.UserName != null)
+                @*@await Component.InvokeAsync("Upload")*@
+                @if (Model.UserName != null && Model.Role == 1)
                 {
                     <form asp-action="AddFile" asp-controller="Node" method="post" enctype="multipart/form-data" class="formLeft upload-file__wrapper">
                         <input type="file" name="uploadedFile" id="uploadedFile" class="upload-file__input" />
@@ -76,9 +102,27 @@
                 @RenderBody()
         </div>
     </main>
+    <script>
+        //    window.addEventListener('beforeunload', function (e) {
+        //    console.log("I'm here");
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "/Node/List",
+        //        async: false
+        //    });
+        //    console.log(e);
+ 
+        //    e.preventDefault();
+        //    var cm = '';
+        //    (e || window.event).returnValue = cm;
+        //    return cm;
+        //}, false);
+    </script>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
      <!-- Bootstrap CSS (Cloudflare CDN) -->

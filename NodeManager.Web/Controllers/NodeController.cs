@@ -1,51 +1,57 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using Microsoft.Net.Http.Headers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
 //using NodeManager.Domain;
 using NodeManager.Web.Abstract;
-using NodeManager.Web.Models;
-using NodeManager.Web.Repository;
 using NodeManager.Web.DBInfrastucture;
-
-using System.Linq;
-using System.Drawing;
-using System.IO;
+using NodeManager.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 //using System.Data.Entity;
-using System.Web;
-
 
 namespace NodeManager.Web.Controllers
 {
     [Route("")]
     [Route("Node")]
-
     public class NodeController : Controller
     {
         private INodes repos;
         private readonly IWebHostEnvironment _appEnvironment;
         private IHostingEnvironment Environment;
+        private string logPath;
+        public static List<string> logs;
+        public static int counter;
+
+        static NodeController()
+        {
+            logs = new List<string>();
+        }
 
         public NodeController(INodes repo, IWebHostEnvironment appEnvironment)
         {
             repos = repo;
             _appEnvironment = appEnvironment;
+            logPath = _appEnvironment.WebRootPath + "/Files/Logs/";
+            //var u = System.DateTime.Today.ToString();
+            counter++;
+            
         }
+
+        //~NodeController()
+        //{
+        //    Console.WriteLine("I'm here");
+        //}
 
         [Route("")]
         [Route("List/{page:int}/{section?}/{category?}")]
         public async Task<ViewResult> List(string section, string category, int page = 1)
         {
+            //var y = Microsoft.Extensions.Logging.Logger
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
             pagInfo.CurrentPage = page;
@@ -57,11 +63,19 @@ namespace NodeManager.Web.Controllers
             if (!repos.Sections.Any(x => x.Name == section))
                 section = (string)null;
 
+            Users user = null;
+            if (HttpContext.User.Identity.IsAuthenticated)
+                user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+            string log = "";
+            log += (String.Format("[" + System.DateTime.Now.ToString() + "] CurrentUser: {1}, Action: {0}", nameof(List), user == null ? "null" : user.Name));
+            log += (String.Format(", Parameters - Section: {0}, Category: {1}, Page: {2}", section, category, page.ToString()));
+            logs.Add(log);
+            
             //Task<Categories> cat = repos.Categories.FirstOrDefaultAsync(x => x.Name.Equals(category));
             //Task<Sections> sec = repos.Sections.FirstOrDefaultAsync(x => x.Name.Equals(section));
             Categories cat = repos.Categories.FirstOrDefault(x => x.Name.Equals(category));
             Sections sec = repos.Sections.FirstOrDefault(x => x.Name.Equals(section));
-            
+
             pagInfo.TotalItems = repos.FamilySymbols
                     .Where(x => (category == null || x.CategoryId == cat.Id) && (section == null || x.SectionId == sec.Id))
                     .Count();
@@ -72,13 +86,16 @@ namespace NodeManager.Web.Controllers
                     .OrderBy(x => x.Id)
                     .ToListAsync();
 
-            NodesViewModel model = new NodesViewModel(){ CurrentSec = sec };
+            NodesViewModel model = new NodesViewModel() { CurrentSec = sec };
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.UserName = HttpContext.User.Identity.Name;
+            //if(model.IsLogin)
+            model.Role = user != null ? user.Role : -1;
             Dictionary<int, string> data = new Dictionary<int, string>();
             model.Symbols = await nodes;
             foreach (var file in repos.Files) data.Add(file.Id, file.FilePath);
             model.PrjList = data;
-            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+
             model.tagList = await repos.Tags.Select(x => x.Value).ToListAsync();
             model.PagingInfo = pagInfo;
             model.categorySection = GetCategorySection();
@@ -90,6 +107,7 @@ namespace NodeManager.Web.Controllers
             {
                 model.categorySection.SelectedSection = sec.Id;
             }
+            PutLogsIntoFile();
             return View(model);
             //return View("AddFile");
         }
@@ -105,6 +123,7 @@ namespace NodeManager.Web.Controllers
         [Route("List1")]
         public ViewResult List1(NodeSearchModel inputData)
         {
+
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
             pagInfo.CurrentPage = inputData.Page;
@@ -116,6 +135,11 @@ namespace NodeManager.Web.Controllers
             {
                 inputData.Section = (string)null;
             }
+
+            Users user = null;
+            if (HttpContext.User.Identity.IsAuthenticated)
+                user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+
             Categories cat = repos.Categories.FirstOrDefault(x => x.Name.Equals(inputData.Category));
             Sections sec = repos.Sections.FirstOrDefault(x => x.Name.Equals(inputData.Section));
             pagInfo.TotalItems = repos.FamilySymbols
@@ -141,11 +165,14 @@ namespace NodeManager.Web.Controllers
             {
                 model.categorySection.SelectedSection = sec.Id;
             }
+            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
             model.UserName = HttpContext.User.Identity.Name;
+            //if (model.IsLogin)
+                model.Role = user != null ? user.Role : -1;
             Dictionary<int, string> data = new Dictionary<int, string>();
             foreach (var file in repos.Files) data.Add(file.Id, file.FilePath);
             model.PrjList = data;
-            model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
             model.PagingInfo = pagInfo;
             return View(model);
@@ -155,6 +182,14 @@ namespace NodeManager.Web.Controllers
         [Route("Symbol/{id:int}")]
         public async Task<ViewResult> FamSymbol(int id)
         {
+            Users user = null;
+            if (HttpContext.User.Identity.IsAuthenticated)
+                user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+            string log = "";
+            log += (String.Format("[" + System.DateTime.Now.ToString() + "] CurrentUser: {1}, Action: {0}", nameof(FamSymbol), user == null ? "null" : user.Name));
+            log += (String.Format(", Parameters - Id: {0}", id.ToString()));
+            logs.Add(log);
+
             FamSymbolViewModel model = new FamSymbolViewModel()
             {
                 _familySymbol = await repos.FamilySymbols.FirstOrDefaultAsync(x => x.Id == id),
@@ -162,8 +197,11 @@ namespace NodeManager.Web.Controllers
                     .Where(c => c.SymbolId == id)
                     .OrderBy(c => c.Id)
             };
-            model.UserName = HttpContext.User.Identity.Name;
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            model.UserName = HttpContext.User.Identity.Name;
+            //if (model.IsLogin)
+                model.Role = user != null ? user.Role : -1;
+            PutLogsIntoFile();
             return View(model);
         }
 
@@ -178,8 +216,17 @@ namespace NodeManager.Web.Controllers
             HashSet<int> tagsId = new HashSet<int>();
             List<FamilySymbol> resList = new List<FamilySymbol>();
             IEnumerable<int> connections;
+            Users user = null;
+
             try
             {
+                if (HttpContext.User.Identity.IsAuthenticated)
+                    user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+                string log = "";
+                log += (String.Format("[" + System.DateTime.Now.ToString() + "] CurrentUser: {1}, Action: {0}", nameof(Search), user == null ? "null" : user.Name));
+                log += (String.Format(", Parameters - Page: {0}, Tags: {1}", page.ToString(), tags));
+                logs.Add(log);
+
                 foreach (var tag in tags)
                 {
                     tagsId.Add((await repos.Tags.FirstOrDefaultAsync(x => x.Value.Equals(tag.ToLower()))).Id);
@@ -218,9 +265,11 @@ namespace NodeManager.Web.Controllers
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
             model.tagList = await repos.Tags.Select(x => x.Value).ToListAsync();
-            model.UserName = HttpContext.User.Identity.Name;
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
-
+            model.UserName = HttpContext.User.Identity.Name;
+            //if (model.IsLogin)
+                model.Role = user != null ? user.Role : -1;
+            PutLogsIntoFile();
             return View("List", model);
         }
 
@@ -237,8 +286,17 @@ namespace NodeManager.Web.Controllers
             //HashSet<int> tagsId = new HashSet<int>();
             IEnumerable<int> connections;
             Task<List<FamilySymbol>> nodes = null;
+            Users user = null;
             try
             {
+
+                if (HttpContext.User.Identity.IsAuthenticated)
+                    user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+                string log = "";
+                log += (String.Format("[" + System.DateTime.Now.ToString() + "] CurrentUser: {1}, Action: {0}", nameof(SearchName), user == null ? "null" : user.Name));
+                log += (String.Format(", Parameters - Page: {0}, Name: {1}", page.ToString(), name));
+                logs.Add(log);
+
                 model.Symbols = repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name.ToLower()))
                                                    .Skip(pagInfo.ItemsPerPage * (pagInfo.CurrentPage - 1))
                                                    .Take(pagInfo.ItemsPerPage)
@@ -252,7 +310,7 @@ namespace NodeManager.Web.Controllers
                 model.IsTagSearchEmpty = true;
             }
 
-            
+
             model.PagingInfo = pagInfo;
             Dictionary<int, string> data = new Dictionary<int, string>();
             //model.Symbols = await nodes;
@@ -261,10 +319,13 @@ namespace NodeManager.Web.Controllers
             model.categorySection = GetCategorySection();
             model.categorySection.SelectedSection = null;
             model.tagList = await repos.Tags.Select(x => x.Value).ToListAsync();
-            model.UserName = HttpContext.User.Identity.Name;
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            model.UserName = HttpContext.User.Identity.Name;
+            //if (model.IsLogin)
+                model.Role = user != null ? user.Role : -1;
+            
             pagInfo.TotalItems = await repos.FamilySymbols.Where(x => x.Name.ToLower().Contains(name)).CountAsync();
-
+            PutLogsIntoFile();
             return View("List", model);
         }
 
@@ -274,20 +335,78 @@ namespace NodeManager.Web.Controllers
         [Route("Delete/{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
+            Users user = null;
+            if (HttpContext.User.Identity.IsAuthenticated)
+                user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+            string log = "";
+            log += (String.Format("[" + System.DateTime.Now.ToString() + "] CurrentUser: {1}, Action: {0}", nameof(Delete), user == null ? "null" : user.Name));
+            log += (String.Format(", Parameters - Id: {0}", id.ToString()));
+            logs.Add(log);
+
             var fs = await repos.FamilySymbols.FirstOrDefaultAsync(x => x.Id == id);
-            var fsTagIds = repos.FSTags.Where(x => x.FSId == id);
-            repos.dbContext.Remove(fs);
-            repos.dbContext.RemoveRange(fsTagIds);
+            if(fs == null) return RedirectToAction("List", "Node");
+
+            List<FSTags> fsTagsIds = new List<FSTags>();
+            List<FamilySymbol> famSymbols = new List<FamilySymbol>();
+            List<RevitParameter> revitParameters = new List<RevitParameter>();
+
+            famSymbols.AddRange(repos.FamilySymbols.Where(x => x.FileId == fs.FileId));
+            foreach(var i in famSymbols)
+            {
+                fsTagsIds.AddRange(repos.FSTags.Where(x => x.FSId == i.Id));
+                revitParameters.AddRange(repos.RevParameters.Where(x => x.SymbolId == i.Id));
+                if (System.IO.File.Exists(i.Image)) System.IO.File.Delete(i.Image);
+            }
+            var file = repos.Files.FirstOrDefault(x => x.Id == fs.FileId);
+            
+            repos.dbContext.RemoveRange(famSymbols);
+            repos.dbContext.RemoveRange(fsTagsIds);
+            repos.dbContext.RemoveRange(revitParameters);
+            repos.dbContext.Remove(file);
             await repos.dbContext.SaveChangesAsync();
+            Dictionary<Sections, int> sections = new Dictionary<Sections, int>();
+            Dictionary<Categories, int> categories = new Dictionary<Categories, int>();
+            foreach (Sections s in repos.Sections)
+                sections.Add(s, 0);
+            foreach (Categories c in repos.Categories)
+                categories.Add(c, 0);
+            foreach (Categories c in categories.Keys)
+                categories[c] = repos.FamilySymbols.Where(x => x.CategoryId == c.Id).Count();
+            foreach (Sections s in sections.Keys)
+                sections[s] = repos.FamilySymbols.Where(x => x.SectionId == s.Id).Count();
+            repos.dbContext.RemoveRange(sections.Where(x => x.Value == 0).Select(x => x.Key));
+            repos.dbContext.RemoveRange(categories.Where(x => x.Value == 0).Select(x => x.Key));
+            repos.dbContext.SaveChangesAsync();
+            if (System.IO.File.Exists(file.FilePath)) System.IO.File.Delete(file.FilePath);
+            PutLogsIntoFile();
             return RedirectToAction("List", "Node");
         }
 
         [Route("GetFile/{id:int}")]
         public async Task<IActionResult> GetFile(int id)
         {
+            Users user = null;
+            if (HttpContext.User.Identity.IsAuthenticated)
+                user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+            string log = "";
+            log += (String.Format("[" + System.DateTime.Now.ToString() + "] CurrentUser: {1}, Action: {0}", nameof(GetFile), user == null ? "null" : user.Name));
+            log += (String.Format(", Parameters - Id: {0}", id.ToString()));
+            logs.Add(log);
+
+            //List<string> logs = new List<string>();
+            //logs.Add(System.DateTime.Now.ToString() + " GetFile - {");
+            //logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
+
             string file_path = _appEnvironment.WebRootPath + (await repos.Files.FirstOrDefaultAsync(x => x.Id == id)).FilePath;
             string file_type = "archive/.nmdb";
             string file_name = file_path.Split('/').Last();
+
+            //logs.Add("After work");
+            //logs.AddRange(Directory.GetFiles(_appEnvironment.WebRootPath + "/Files/").ToList());
+            //logs.Add("} - GetFile");
+            //logs.Add("");
+            //System.IO.File.AppendAllLines(logPath, logs);
+            PutLogsIntoFile();
             return PhysicalFile(file_path, file_type, file_name);
         }
 
@@ -297,8 +416,15 @@ namespace NodeManager.Web.Controllers
             var pagInfo = new PagingInfo();
             pagInfo.ItemsPerPage = 12;
             pagInfo.CurrentPage = page;
-            
+
             var model = new NodesViewModel();
+            Users user = null;
+            if (HttpContext.User.Identity.IsAuthenticated)
+                user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+            string log = "";
+            log += (String.Format("[" + System.DateTime.Now.ToString() + "] CurrentUser: {1}, Action: {0}", nameof(GetFile), user == null ? "null" : user.Name));
+            log += (String.Format(", Parameters - Page: {0}, FileId: {1}", page.ToString(), fileId.ToString()));
+            logs.Add(log);
 
             pagInfo.TotalItems = repos.FamilySymbols.Where(x => x.FileId == fileId).Count();
             model.PagingInfo = pagInfo;
@@ -308,11 +434,13 @@ namespace NodeManager.Web.Controllers
                                                .ToList();
             model.categorySection = GetCategorySection(fileId);
             model.CurrentSec = null;
-            model.UserName = HttpContext.User.Identity.Name;
             model.IsLogin = HttpContext.User.Identity.IsAuthenticated;
+            model.UserName = HttpContext.User.Identity.Name;
+            //if (model.IsLogin)
+                model.Role = user != null ? user.Role : -1;
             model.tagList = repos.Tags.Select(x => x.Value).ToList();
             model.IsProjectSection = true;
-
+            PutLogsIntoFile();
             return View("List", model);
         }
 
@@ -326,81 +454,107 @@ namespace NodeManager.Web.Controllers
 
         [HttpPost]
         [Route("AddFile")]
-        [RequestFormLimits(MultipartBodyLengthLimit = Int64.MaxValue)]
+        [RequestSizeLimit(268435456)]
         public async Task<IActionResult> AddFile(IFormFile uploadedFile)
         {
-            if (uploadedFile != null)
+            List<string> logs = new List<string>();
+            string log = "";
+            try
             {
-                // путь к папке Files
-                string guid = Guid.NewGuid().ToString();
-                string fullPath = _appEnvironment.WebRootPath + "/Files/" + guid + uploadedFile.FileName;
-                string path = "/Files/" + guid + uploadedFile.FileName;
-                // сохраняем файл в папку Files в каталоге wwwroot
-                using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                Users user = null;
+                if (HttpContext.User.Identity.IsAuthenticated)
+                    user = repos.Users.FirstOrDefault(x => x.Name.ToLower() == HttpContext.User.Identity.Name);
+
+                log += (String.Format("[" + System.DateTime.Now.ToString() + "] CurrentUser: {1}, Action: {0}", nameof(AddFile), user == null ? "null" : user.Name));
+                log += (String.Format(", Parameters - File Size: {0}", uploadedFile == null ? "null" : uploadedFile.Length.ToString()));
+                logs.Add(log);
+
+                if (uploadedFile != null) 
                 {
-                    await uploadedFile.CopyToAsync(fileStream);
+                    // путь к папке Files
+                    string guid = Guid.NewGuid().ToString();
+                    string root = _appEnvironment.WebRootPath;
+                    string path = "/Files/" + guid + uploadedFile.FileName;
+                    // сохраняем файл в папку Files в каталоге wwwroot
+                    using (var fileStream = new FileStream(root + path, FileMode.Create))
+                    {
+                        await uploadedFile.CopyToAsync(fileStream);
+                    }
+                    if (!repos.Files.Where(x => x.FilePath == path).Any())
+                    {
+                        Files file = new Files { FilePath = path };
+                        repos.dbContext.Add(file);
+                        await repos.dbContext.SaveChangesAsync();
+                    }
+
+                    var db = new DBUploader(repos, _appEnvironment);
+
+                    db.UploadToDB(root, path);
                 }
-                if (!repos.Files.Where(x => x.FilePath == path).Any())
-                {
-                    Files file = new Files { FilePath = path };
-                    repos.dbContext.Add(file);
-                    await repos.dbContext.SaveChangesAsync();
-                }
-               
-                var db = new DBUploader(repos, _appEnvironment);
-                db.UploadToDB(fullPath, path);
+                //System.IO.File.AppendAllLines(logPath, logs);
+                PutLogsIntoFile();
+                return RedirectToAction("List", "Node");
             }
+            catch (Exception ex)
+            {
+                //System.IO.File.AppendAllText(logPath, uploadedFile.ToString());
+                log = "";
+                log += (String.Format(System.DateTime.Now.ToString() + " Action: {0}", nameof(AddFile)));
+                log += (ex.Message);
+                logs.Add(log);
+                PutLogsIntoFile();
+                return RedirectToAction("List", "Node");
+            }
+        }
+
+
+        [Route("dbClean")]
+        public IActionResult DBClean()
+        {
+            var fs = repos.FamilySymbols.Where(x => true);
+            var fsTagIds = repos.FSTags.Where(x => true);
+            var cat = repos.Categories.Where(x => true);
+            var sec = repos.Sections.Where(x => true);
+            var fi = repos.Files.Where(x => true);
+            var tags = repos.Tags.Where(x => true);
+            var revP = repos.RevParameters.Where(x => true);
+
+            repos.dbContext.RemoveRange(revP);
+            repos.dbContext.RemoveRange(fs);
+            repos.dbContext.RemoveRange(fsTagIds);
+            repos.dbContext.RemoveRange(tags);
+            repos.dbContext.RemoveRange(cat);
+            repos.dbContext.RemoveRange(sec);
+            repos.dbContext.RemoveRange(fi);
+            repos.dbContext.SaveChanges();
             return RedirectToAction("List", "Node");
         }
 
-
-        //[Route("dbClean")]
-        //public IActionResult DBClean()
+        //[HttpGet]
+        //[Route("db")]
+        //public IActionResult DBLargeFile()
         //{
-        //    var fs = repos.FamilySymbols.Where(x => x.Id != null);
-        //    var fsTagIds = repos.FSTags.Where(x => x.Id != null);
-        //    var cat = repos.Categories.Where(x => x.Id != null);
-        //    var sec = repos.Sections.Where(x => x.Id != null);
-        //    var fi = repos.Files.Where(x => x.Id != null);
-        //    var tags = repos.Tags.Where(x => x.Id != null);
-        //    var revP = repos.RevParameters.Where(x => x.Id != null);
-
-        //    repos.dbContext.RemoveRange(revP);
-        //    repos.dbContext.RemoveRange(fs);
-        //    repos.dbContext.RemoveRange(fsTagIds);
-        //    repos.dbContext.RemoveRange(tags);
-        //    repos.dbContext.RemoveRange(cat);
-        //    repos.dbContext.RemoveRange(sec);
-        //    repos.dbContext.RemoveRange(fi);
-        //    repos.dbContext.SaveChanges();
-        //    return RedirectToAction("List", "Node");
+        //    return View("LargeFile");
         //}
 
-        [HttpGet]
-        [Route("db")]
-        public IActionResult DBLargeFile()
-        {
-            return View("LargeFile");
-        }
+        //[HttpPost]
+        //[Route("db")]
+        //[RequestFormLimits(MultipartBodyLengthLimit = 104857600)]
+        //public IActionResult Upload(IFormFile file, [FromServices] IHostingEnvironment env)
+        //{
 
-        [HttpPost]
-        [Route("db")]
-        [RequestFormLimits(MultipartBodyLengthLimit = 104857600)]
-        public IActionResult Upload(IFormFile file, [FromServices] IHostingEnvironment env)
-        {
+        //    string fileName = $"{env.WebRootPath}\\{file.FileName}";
 
-            string fileName = $"{env.WebRootPath}\\{file.FileName}";
+        //    using (FileStream fs = System.IO.File.Create(fileName))
+        //    {
+        //        file.CopyTo(fs);
+        //        fs.Flush();
+        //    }
 
-            using (FileStream fs = System.IO.File.Create(fileName))
-            {
-                file.CopyTo(fs);
-                fs.Flush();
-            }
+        //    ViewData["message"] = $"{file.Length} bytes uploaded successfully!";
 
-            ViewData["message"] = $"{file.Length} bytes uploaded successfully!";
-
-            return View("List");
-        }
+        //    return View("List");
+        //}
 
         private CategorySection GetCategorySection(Nullable<int> fileId = null)
         {
@@ -421,6 +575,25 @@ namespace NodeManager.Web.Controllers
                 }
             }
             return categorySection;
+        }
+
+        [HttpPost]
+        [Route("Logs")]
+        public void LogsIn()
+        {
+            PutLogsIntoFile();
+        }
+
+        private void PutLogsIntoFile()
+        {
+            var currentDate = System.DateTime.Today.ToString().Split(' ').First().Replace('/','.');
+            var fullPath = logPath.Replace('\\', '/') + String.Format("{0}Logs.txt", currentDate);
+
+            if (logs.Count() != 0)
+            {
+                System.IO.File.AppendAllLines(fullPath, logs);
+                logs.Clear();
+            }
         }
     }
 }

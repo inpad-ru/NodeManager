@@ -17,16 +17,42 @@
 </head>
 <body>
     <main class="containerNode">
+        <header>
+            <!-- Yandex.Metrika counter -->
+            <script type="text/javascript">
+                (function (m, e, t, r, i, k, a) {
+                    m[i] = m[i]  function () { (m[i].a = m[i].a  []).push(arguments) };
+                    m[i].l = 1 * new Date();
+                    for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+                    k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+                })
+                    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+                ym(91761379, "init", {
+                    clickmap: true,
+                    trackLinks: true,
+                    accurateTrackBounce: true
+                });
+                ym(91761180, "init", {
+                    clickmap: true,
+                    trackLinks: true,
+                    accurateTrackBounce: true,
+                    webvisor: true
+                });
+            </script>
+            <noscript><div><img src="https://mc.yandex.ru/watch/91761180" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+            <!-- /Yandex.Metrika counter -->
+        </header>
         <div class="headerNode">
            <h5 class="nameForNode">@Model._familySymbol.Name</h5>
            <div class="but_group">
                <button class="b_backFS" onclick="window.history.back()" title="Назад"><span class="fa-solid fa-arrow-left"></span></button>
                <button class="b_GoToProject" onclick=window.location.href="/Node/1/ProjectSection/@Model._familySymbol.FileId" title="Перейти к проекту">Перейти к проекту</button>
-               @if (Model.UserName != null)
-               {
+               @*@if (Model.UserName != null  && Model.Role == 1)
+               {*@
                    @*<button class="b_edit" onclick="" title="Редактировать"><span class="fa-solid fa-pencil"></span></button>*@
-                   <button class="b_delete" onclick=window.location.href="/Node/Delete/@Model._familySymbol.Id" title="Удалить"><span class="fa-solid fa-trash"></span></button>
-               }
+                   @*<button class="b_delete" onclick=window.location.href="/Node/Delete/@Model._familySymbol.Id" title="Удалить"><span class="fa-solid fa-trash"></span></button>
+               }*@
            </div>
            @*<div class="but_close">
                <button class="b_close" onclick="window.history.back()" title="Закрыть"><span class="fas fa-times"></span></button>
@@ -65,7 +91,7 @@
                 </div>
             </div>
             <div class="node_picture">
-                <img class="nodePic" src="data:image/jpg;base64,@FamSymbolViewModel.ImageByteToBase64ImageTag(Model._familySymbol.Image)"/>
+                <img class="nodePic" src="@Model._familySymbol.Image"/>
             </div>
         </div>
     </main>

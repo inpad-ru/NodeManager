@@ -11,12 +11,18 @@
 
 <div class="nav_menu">
     <div class="but_downld">
-        <button class="b_homePage" onclick="window.location.href='/Node/List/1'" title="На главную страницу"><span class="fa fa-home"></span></button>
+        <button class="b_homePage" id="butHome" onclick="window.location.href='/Node/List/1'" title="На главную страницу"><span class="fa fa-home"></span></button>
         
-        @if (@Model.IsProjectSection)
+        @if (@Model.IsProjectSection && Model.UserName != null)
         {
             ViewData["Title"] = "Узлы проекта.";
             <button class="b_download" onclick="window.location.href='/Node/GetFile/@Model.Symbols.First().FileId'" title="Скачать проект"><span class="fa-solid fa-download"></span></button>
+            
+            @if (Model.Role == 1)
+            {
+                @*<button class="b_edit" onclick="" title="Редактировать"><span class="fa-solid fa-pencil"></span></button>*@
+                <button class="b_delete" title="Удалить"><span class="fa-solid fa-trash"></span></button>
+            }
         }
 
         @await Component.InvokeAsync("Menu", Model.categorySection)
@@ -28,7 +34,7 @@
         {
             <div class="node">
                 <button class="btn" onclick="window.location.href='/Symbol/@nodI.Id';"><span class="fas fa-search-plus"></span></button>
-                <img class="img-responsive center-block" src="data:image/jpg;base64,@FamSymbolViewModel.ImageByteToBase64ImageTag(nodI.Image)"/>
+                <img class="img-responsive center-block" src="@nodI.Image"/>
                 <div class="node_name">
                     <p title="@nodI.Name">@FamSymbolViewModel.GetCutString(nodI.Name)</p>
                 </div>
